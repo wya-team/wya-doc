@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+const chalk = require('chalk');
+const program = require('cac')();
+const { resolve } = require('path');
+const App = require('../node');
+
+const { log } = console;
+program
+	.version(require('../package').version);
+
+// 使用指令参数 如 wya server;
+program
+	.usage('<cmd>');
+
+// doc dev
+program
+	.command('dev [sourceDir]', 'development mode')
+	.option('-p, --port <port>', 'server port (default: 8080)')
+	.option('--host <host>', 'server host (default: 0.0.0.0)')
+	.action(async (sourceDir = '.', commandOptions) => {
+		let app = new App({
+			sourceDir: resolve(sourceDir),
+			...commandOptions
+		});
+		await app.process();
+		app.dev();
+	});
+
+// doc build
+program
+	.command('build [targetDir]', 'production mode')
+	.option('-d, --dest <dest>', 'build output dir (default: docs/dist)')
+	.action(async (sourceDir = '.', commandOptions) => {
+		let app = new App({
+			sourceDir: resolve(sourceDir),
+			...commandOptions
+		});
+		await app.process();
+		app.build();
+	});
+
+// 任意匹配
+program
+	.command('*')
+	.action((cmd) => log(chalk`{red Invalid mode ${cmd}}`));
+
+program.help();
+program.version('1.0.0');
+program.parse();

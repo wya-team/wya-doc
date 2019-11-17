@@ -1,0 +1,64 @@
+{
+  "name": "@wya/doc",
+  "version": "1.0.0",
+  "description": "wya-doc for js",
+  "main": "index.js",
+  "files": [],
+  "scripts": {
+    "link": "npm link",
+    "dev": "doc dev",
+    "build": "doc build",
+    "lint": "esw --ext .vue,.js node/ client/",
+    "lint:fix": "npm run lint -- --fix",
+    "lint:watch": "npm run lint -- --fix --watch"
+  },
+  "author": "wya-team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wya-team/wya-doc"
+  },
+  "bugs": {
+    "url": "https://github.com/wya-team/wya-doc/issues"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "dependencies": {
+    "cac": "^6.5.3",
+    "chalk": "^3.0.0",
+    "fs-extra": "^8.1.0",
+    "html-webpack-plugin": "^3.2.0",
+    "portfinder": "^1.0.25",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0",
+    "webpack-merge": "^4.2.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-markdown": "^1.0.1",
+    "eslint-plugin-vue": "^6.0.1",
+    "eslint-watch": "^6.0.1"
+  },
+  "lint-staged": {
+    "{src,bin}/**/*": [
+      "esw --fix",
+      "git add"
+    ],
+    "*.md": [
+      "esw --ext '.md' --fix",
+      "git add"
+    ]
+  },
+  "pre-commit": [
+    "lint-staged"
+  ],
+  "bin": {
+    "doc": "bin/doc"
+  }
+}
