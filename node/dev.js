@@ -42,11 +42,11 @@ class DevProcess extends EventEmitter {
 	 * https://webpack.js.org/guides/development/#using-webpack-dev-middleware
 	 * @returns {module.DevProcess}
 	 */
-	createServer() {
-		const compiler = webpack(Config.get('webpack'));
+	createServer(compilerConfig, devServerConfig) {
+		const compiler = webpack(Config.get('webpack', compilerConfig));
 		let server = new WebpackDevServer(
 			compiler, 
-			Config.get('server')
+			Config.get('server', devServerConfig)
 		);
 
 		this.server = server;

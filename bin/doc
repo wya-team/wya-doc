@@ -17,6 +17,7 @@ program
 	.command('dev [sourceDir]', 'development mode')
 	.option('-p, --port <port>', 'server port (default: 8080)')
 	.option('--host <host>', 'server host (default: 0.0.0.0)')
+	.option('--config <config file>', 'config options file')
 	.action(async (sourceDir = '.', commandOptions) => {
 		let app = new App({
 			sourceDir: resolve(sourceDir),
