@@ -1,0 +1,13 @@
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+a {
+	color: $c333;
+	text-decoration: none;;
+}
+
+ul, li {
+	list-style: none;
+	padding: 0;
+}
