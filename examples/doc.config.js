@@ -1,17 +1,24 @@
-const routes = require('./routes.config');
-
 module.exports = {
-	nav: {
-		// side: './nav.config.json'
-		side: require('./nav.config.js')
-	},
-	routes,
-	i18n: {
-		langMap: {
-			'zh-CN': '简体中文',
-			'en': 'English'
+	version: '1.0.0',
+	routes: {
+		'/index': {
+			default: './components/index.vue',
+			sidebar: null,
+			header: null,
+			footer: null,
+			extra: null,
 		},
-		defaultLang: 'zh-CN'
+		'/components/:name': {
+			default: null,
+			sidebar: {},
+			header: './components/header.vue',
+			footer: './components/footer.vue',
+			extra: null,
+		}
+	},
+	i18n: {
+		'zh-CN': '简体中文',
+		// 'en': 'English'
 	},
 	webpackConfig: {
 		devServer: {}

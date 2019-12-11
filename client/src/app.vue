@@ -3,18 +3,18 @@
 		<div class="page__wrapper">
 			<router-view name="header" />
 			<div class="page-main__wrapper">
-				<router-view name="side" class="page-main__side" />
+				<router-view name="sidebar" class="page-main__sidebar" />
 				<section class="page-main__content">
 					<router-view />
 				</section>
 			</div>
 			<router-view name="footer" />
 		</div>
+		<router-view name="extra" />
 	</div>
 </template>
 
 <script>
-// import PageHeader from './components/layout/header';
 
 export default {
 	name: 'app'
@@ -29,7 +29,7 @@ export default {
 			margin: 80px auto 0;
 		}
 		
-		@include element(side) {
+		@include element(sidebar) {
 			margin-right: 40px;
 		}
 		@include element(content) {

@@ -7,19 +7,22 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const { resolve } = path;
 
 const ROOT_PATH = process.cwd();
+
 const getWebpackConfig = (options) => { 
 	return {
 		mode: 'development',
 		// 生成文件，是模块构建的终点
 		output: {
 			path: path.resolve(__dirname, '../dist'),
-			filename: 'bundle.js'
+			filename: `js/[name].bundle.js`, // 每个页面对应的主js的生成配置
+			chunkFilename: `js/[name].chunk.js`, // chunk生成的配置
+			sourceMapFilename: `js/[name].bundle.map`,
+			publicPath: '/',
 		},
 		resolve: {
 			extensions: ['.vue', '.js', '.json'],
 			alias: {
 			  'vue$': 'vue/dist/vue.esm.js',
-			  '@': resolve(__dirname, '../client/src'),
 			  '@assets': resolve(__dirname, '../client/src/assets'),
 			  '@style': resolve(__dirname, '../client/src/style'),
 			  '@components': resolve(__dirname, '../client/src/components'),
@@ -35,8 +38,36 @@ const getWebpackConfig = (options) => {
 				{
 					test: /\.js$/,
 					exclude: /node_modules/,
-					include: [/node_modules\\lit-html/], // https://github.com/jantimon/html-webpack-plugin/issues/1237
-					loader: 'babel-loader'
+					use: {
+						loader: 'babel-loader',
+						options: {
+							compact: false,
+							cacheDirectory: true,
+							presets: [
+								"@babel/preset-env"
+							],
+							plugins: [
+								"@babel/plugin-proposal-export-namespace-from",
+								"@babel/plugin-proposal-export-default-from",
+								"@babel/plugin-proposal-function-bind",
+								"@babel/plugin-syntax-dynamic-import",
+								"@babel/plugin-syntax-jsx",
+								"transform-vue-jsx",
+								[
+									"@babel/plugin-proposal-decorators",
+									{
+										"legacy": true
+									}
+								],
+								[
+									"@babel/plugin-proposal-class-properties",
+									{
+										"loose": true
+									}
+								]
+							]
+						}
+					}
 				},
 				{
 					test: /\.vue$/,
@@ -47,23 +78,21 @@ const getWebpackConfig = (options) => {
 					use: [
 						'vue-style-loader',
 						'css-loader',
+						'sass-loader',
 						{
-							loader: 'sass-loader',
+							loader: 'sass-resources-loader',
 							options: {
-								// prependData: `@import '~@style/mixins/bem.scss';\n` // TODO：sass-loader@8.x应该是这种写法，但为什么不行？
-								data: `@import '~@style/themes/var.scss';\n@import '@wya/sass/lib/mixins/bem.scss';\n`
+								resources: [
+									path.resolve(__dirname, "../client/src/style/themes/var.scss"),
+									path.resolve(__dirname, "../node_modules/@wya/sass/lib/mixins/bem.scss")
+								]
 							}
 						}
 					]
 				},
 				{
-					test: /\.md/,
-					use: [
-						'vue-loader',
-						{
-							loader: resolve(__dirname, './md-loader/index.js')
-						}
-					]
+					test: /\.(png|jpg|gif|eot|ttf|woff|woff2|svg)$/,
+					loader: 'url-loader'
 				}
 			]
 		},
@@ -89,7 +118,8 @@ const getWebpackConfig = (options) => {
 const getServerConfig = (options) => {
 	return {
 		hot: true,
-		quiet: true
+		quiet: true,
+		historyApiFallback: true,
 	};
 };
 

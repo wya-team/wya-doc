@@ -1,9 +1,8 @@
 const fs = require('fs-extra');
 const path = require('path');
-const { inspect } = require('util');
+const { js: beautify } = require('js-beautify');
 const DevProcess = require('./dev');
 const BuildProcess = require('./build');
-const { genRoutes } = require('./utils');
 
 module.exports = class App {
 	constructor(options = {}) {
@@ -37,43 +36,52 @@ module.exports = class App {
 	 */
 	async process() {
 		return new Promise((resolve, reject) => {
-			const { i18n, nav } = this.docConfig;
-			const routes = genRoutes(this.docConfig.routes, this.docDir, i18n);
-			const content = `export default ${routes};`;
+			const { i18n, routes } = this.docConfig;
+			// 输出文件
+			fs.outputFileSync(
+				path.resolve(__dirname, '../client/src/routes.js'), 
+				this.generateCode(routes, i18n), 
+				'utf-8'
+			);
 
-			try {
-				// 将生成的路由配置写入client下
-				const routeDest = path.resolve(__dirname, '../client/src/routes.js');
-				fs.outputFileSync(routeDest, content, 'utf-8');
-
-				// 复制左侧导航配置到client下
-				let sideNav = '';
-				if (typeof nav.side === 'string') { // 传入文件路径
-					const ext = path.extname(nav.side);
-					const sideFrom = path.resolve(this.sourceDir, nav.side);
-					sideNav = fs.readFileSync(sideFrom, 'utf-8');
-					if (ext === '.json') {
-						sideNav = `export default ${sideNav}`;
-					}
-				} else { // 直接传入导航配置对象
-					sideNav = `export default ${JSON.stringify(nav.side)}`;
-				}
-				
-				const sideDest = path.resolve(__dirname, '../client/src/nav-side.js');
-				fs.writeFileSync(sideDest, sideNav, 'utf-8');
-			} catch (error) {
-				reject(new Error(error));
-				return;
-			}
-			
-			// 如果提供了header的导航配置，则也复制一份到client下
-			if (nav.header) {
-				const headerFrom = path.resolve(this.sourceDir, nav.header);
-				const headerDest = path.resolve(__dirname, '../client/src/nav-header.json');
-				fs.copyFileSync(headerFrom, headerDest);
-			}
 			resolve();
 		});
+	}
+
+	generateCode(routes, i18n) {
+		let langs = Object.keys(i18n) || [''];
+		let content = ''; 
+
+		// 生成新的路径 TODO: 转移目录至当前文件夹下 default import
+		const getPath = (cPath, lang) => {
+			return cPath && typeof cPath === 'string' 
+				? `require('${path.resolve(this.sourceDir, `./docs/${lang}`, cPath)}').default`
+				: typeof cPath === 'object' && cPath != null
+					? `require('${path.resolve(__dirname, '../client/src/components/layout/sidebar.vue')}').default`
+					: null; 
+		};
+		// TODO: code split
+		// default: () => ({
+		// 	component: xxx
+		// }),
+		langs.forEach((lang) => {
+			Object.keys(routes).forEach((routePath) => {
+				const { default: _default, header, footer, sidebar, extra } = routes[routePath];
+				content += `{
+					path: '${lang ? `/${lang}` : ''}${routePath}',
+					sidebar: ${JSON.stringify(sidebar)},
+					components: {
+						default: ${getPath(_default, lang)},
+						header: ${getPath(header, lang)},
+						footer: ${getPath(footer, lang)},
+						extra: ${getPath(extra, lang)},
+						sidebar: ${getPath(sidebar, lang)},
+					},
+				},`;
+			});
+		});
+
+		return `export default ${beautify(`[${content}]`, { 'indent-with-tabs': true })};`;
 	}
 
 	async dev() {
@@ -81,11 +89,14 @@ module.exports = class App {
 		await this.process();
 		this.devProcess = new DevProcess(this);
 		await this.devProcess.process();
+		
 		const error = await new Promise(resolve => {
 			try {
 				const { devServer, ...rest } = this.docConfig.webpackConfig;
 				this.devProcess
-					// .on('fileChanged', ({ type, target }) => { })
+					.on('fileChanged', ({ type, target }) => { 
+						this.process();
+					})
 					.createServer(rest, devServer)
 					.listen(resolve);
 			} catch (err) {

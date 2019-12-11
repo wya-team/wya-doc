@@ -41,15 +41,12 @@
 </template>
 
 <script>
-import sideNav from '@/nav-side';
-
-console.log(window.lang);
 
 export default {
-	name: 'side-nav',
+	name: 'sidebar',
 	data() {
 		return {
-			navs: sideNav instanceof Object ? sideNav[window.lang] : sideNav
+			navs: []
 		};
 	}
 };

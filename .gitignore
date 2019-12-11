@@ -51,7 +51,10 @@ npm-error.log
 # user config
 routes.dev.js
 user.config.js
+client/src/routes.js
 
 # lock
 yarn.lock
 package-lock.json
+
+

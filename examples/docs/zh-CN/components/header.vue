@@ -1,10 +1,10 @@
 <template>
-	<div>vc-alert</div>
+	<div>这个header from wya-vc</div>
 </template>
 
 <script>
 export default {
-	name: ''
+	name: 'hhh'
 };
 </script>
 

@@ -1,4 +1,5 @@
 const { EventEmitter } = require('events');
+const path = require('path');
 const webpack = require('webpack');
 const portfinder = require('portfinder');
 const WebpackDevServer = require('webpack-dev-server');
@@ -18,9 +19,22 @@ class DevProcess extends EventEmitter {
 	 * 为启动dev服务器准备必要的数据
 	 */
 	async process() {
+		this.watchSourceFiles();
+
 		await this.resolvePort();
 		await this.resolveHost();
+		
 		return this;
+	}
+
+	watchSourceFiles() {
+		// TODO	
+		// () => {
+		// 	this.emit('fileChanged', {
+		// 		type,
+		// 		target
+		// 	});
+		// };	
 	}
 
 	async resolvePort() {
