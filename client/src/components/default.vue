@@ -1,5 +1,5 @@
 <template>
-	<div :style="contentStyle" class="v-layout-content">
+	<div :style="contentStyle" class="v-layout-content g-md-reset">
 		<div v-md="content" />
 	</div>
 </template>

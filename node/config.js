@@ -121,7 +121,7 @@ const getWebpackConfig = (options) => {
 			})
 		],
 		externals: {
-			'highlight.js': 'hljs'
+			// 'highlight.js': 'hljs'
 		}
 	};
 };
