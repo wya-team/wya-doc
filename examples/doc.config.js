@@ -17,6 +17,13 @@ module.exports = {
 		'/components/:name': {
 			default: 'default',
 			sidebar,
+			header: 'default',
+			footer: 'default',
+			extra: null,
+		},
+		'/api/:name': {
+			default: 'default',
+			sidebar,
 			header: './components/header.vue',
 			footer: './components/footer.vue',
 			extra: null,

@@ -1,5 +1,5 @@
 <template>
-	<div class="md-content">
+	<div :style="contentStyle" class="v-layout-content">
 		<div v-md="content" />
 	</div>
 </template>
@@ -15,10 +15,24 @@ export default {
 	directives: {
 		md
 	},
+	props: {
+		layoutStatus: Object
+	},
 	data() {
 		return {
 			content: ''
 		};
+	},
+	computed: {
+		contentStyle() {
+			return this.layoutStatus.sidebar 
+				? {
+					marginLeft: '300px', 
+					paddingBottom: '60px',
+					paddingRight: '130px'
+				}
+				: {};
+		}
 	},
 	mounted() {
 		ajax({
@@ -39,6 +53,6 @@ export default {
 
 <style lang="scss">
 @include block(md-content) {
-	flex: 1;
+	
 }
 </style>

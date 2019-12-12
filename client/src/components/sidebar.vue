@@ -1,53 +1,55 @@
 <template>
-	<div class="side-nav">
-		<ul class="">
-			<li 
-				v-for="(oneItem, index) in navs"
-				:key="index"
-				class="side-nav__item"
-			>
-				<a>{{ oneItem.name }}</a>
-				<ul v-if="oneItem.children" clas="sub-nav">
-					<li
-						v-for="(subNav, subIndex) in oneItem.children"
-						:key="subIndex"
-						class="side-nav__item"
-					>
-						<router-link :to="`${locale}${subNav.path}`">
-							{{ subNav.name }}
-						</router-link>
-					</li>
-				</ul>
-				<ul v-else-if="oneItem.groups" clas="sub-nav">
-					<li
-						v-for="(group, groupIndex) in oneItem.groups"
-						:key="groupIndex"
-					>
-						<div class="side-nav__groupname">
-							{{ group.groupName }}
-						</div>
-						<ul>
-							<li 
-								v-for="component in group.list"
-								:key="component.path"
-								class="side-nav__item"
-							>
-								<router-link :to="`${locale}${component.path}`">
-									{{ component.title }}
-								</router-link>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</li>
-		</ul>
+	<div class="c-layout-sidebar">
+		<div class="c-layout-sidebar__scroller">
+			<ul class="">
+				<li 
+					v-for="(oneItem, index) in navs"
+					:key="index"
+					class="c-layout-sidebar__item"
+				>
+					<a>{{ oneItem.name }}</a>
+					<ul v-if="oneItem.children">
+						<li
+							v-for="(subNav, subIndex) in oneItem.children"
+							:key="subIndex"
+							class="c-layout-sidebar__item"
+						>
+							<router-link :to="`${locale}${subNav.path}`">
+								{{ subNav.name }}
+							</router-link>
+						</li>
+					</ul>
+					<ul v-else-if="oneItem.groups">
+						<li
+							v-for="(group, groupIndex) in oneItem.groups"
+							:key="groupIndex"
+						>
+							<div class="c-layout-sidebar__groupname">
+								{{ group.groupName }}
+							</div>
+							<ul>
+								<li 
+									v-for="component in group.list"
+									:key="component.path"
+									class="c-layout-sidebar__item"
+								>
+									<router-link :to="`${locale}${component.path}`">
+										{{ component.title }}
+									</router-link>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
 	</div>
 </template>
 
 <script>
 
 export default {
-	name: 'sidebar',
+	name: 'c-layout-sidebar',
 	data() {
 		const { locale } = this.$global;
 		const { sidebar } = this.$route.meta || {};
@@ -55,36 +57,61 @@ export default {
 			locale: locale ? `/${locale}/components` : `/components`,
 			navs: sidebar[locale] || sidebar
 		};
+	},
+	mounted() {
+		this.$vc.emit('layout-sidebar', { status: true });
+	},
+	beforeDestroy() {
+		this.$vc.emit('layout-sidebar', { status: false });
 	}
 };
 </script>
 
 <style lang="scss">
-@include block(side-nav) {
-	overflow: auto;
-	padding: 0 40px 0 0;
-	flex-shrink: 0;
-	height: calc(100vh - 80px);
+@include block(c-layout-sidebar) {
+	width: 260px;
+	padding-top: 29px;
+	float: left;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	border-right: 1px solid #ededed;
+	background: #fff;
+	z-index: 1;
+	transform: translateX(0);
+	@include element(scroller) {
+		position: absolute;
+		top: 90px;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		overflow: auto;
+	}
 	@include element(item) {
 		a {
-			display: block;
-			padding: 15px 0;
-			font-size: 16px;
-			color: #333;
-		}
-		& .side-nav__item a {
-			padding: 10px 0;
+			padding-left: 42px;
+			// color: #f29718;
 			font-size: 14px;
-			color: #515151;
-			&:hover {
-				color: $main;
-			}
+			letter-spacing: 0px;
+			height: 40px;
+			line-height: 40px;
+		}
+		&.c-layout-sidebar__item a {
+			padding-left: 54px;
+			color: #666;
+			font-size: 12px;
+			font-family: PingFangSC-Light;
+			letter-spacing: 0px;
+			height: 36px;
+			line-height: 36px;
+			cursor: pointer;
+			font-size: 14px;
 		}
 	}
 	@include element(groupname) {
-		padding: 8px 0;
+		padding: 8px 0 8px 54px;
 		font-size: 12px;
-		color: #999999;
+		color: #000;
 	}
 }
 </style>
