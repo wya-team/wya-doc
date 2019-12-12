@@ -1,5 +1,5 @@
 <template>
-	<div>这个header from wya-vc</div>
+	<div>这个header</div>
 </template>
 
 <script>

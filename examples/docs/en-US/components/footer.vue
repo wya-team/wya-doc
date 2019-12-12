@@ -1,5 +1,5 @@
 <template>
-	<div>这个footer from wya-vc</div>
+	<div>this is footer</div>
 </template>
 
 <script>

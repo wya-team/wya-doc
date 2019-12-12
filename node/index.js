@@ -1,8 +1,8 @@
 const fs = require('fs-extra');
 const path = require('path');
-const { js: beautify } = require('js-beautify');
 const DevProcess = require('./dev');
 const BuildProcess = require('./build');
+const { generateRoutes } = require('./helper/index');
 
 module.exports = class App {
 	constructor(options = {}) {
@@ -36,52 +36,21 @@ module.exports = class App {
 	 */
 	async process() {
 		return new Promise((resolve, reject) => {
+			const { sourceDir } = this;
 			const { i18n, routes } = this.docConfig;
 			// 输出文件
 			fs.outputFileSync(
 				path.resolve(__dirname, '../client/src/routes.js'), 
-				this.generateCode(routes, i18n), 
+				generateRoutes({
+					sourceDir,
+					routes, 
+					i18n,
+				}), 
 				'utf-8'
 			);
 
 			resolve();
 		});
-	}
-
-	generateCode(routes, i18n) {
-		let langs = Object.keys(i18n) || [''];
-		let content = ''; 
-
-		// 生成新的路径 TODO: 转移目录至当前文件夹下 default import
-		const getPath = (cPath, lang) => {
-			return cPath && typeof cPath === 'string' 
-				? `require('${path.resolve(this.sourceDir, `./docs/${lang}`, cPath)}').default`
-				: typeof cPath === 'object' && cPath != null
-					? `require('${path.resolve(__dirname, '../client/src/components/layout/sidebar.vue')}').default`
-					: null; 
-		};
-		// TODO: code split
-		// default: () => ({
-		// 	component: xxx
-		// }),
-		langs.forEach((lang) => {
-			Object.keys(routes).forEach((routePath) => {
-				const { default: _default, header, footer, sidebar, extra } = routes[routePath];
-				content += `{
-					path: '${lang ? `/${lang}` : ''}${routePath}',
-					sidebar: ${JSON.stringify(sidebar)},
-					components: {
-						default: ${getPath(_default, lang)},
-						header: ${getPath(header, lang)},
-						footer: ${getPath(footer, lang)},
-						extra: ${getPath(extra, lang)},
-						sidebar: ${getPath(sidebar, lang)},
-					},
-				},`;
-			});
-		});
-
-		return `export default ${beautify(`[${content}]`, { 'indent-with-tabs': true })};`;
 	}
 
 	async dev() {

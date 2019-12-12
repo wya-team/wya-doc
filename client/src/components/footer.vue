@@ -1,12 +1,10 @@
 <template>
-	<div class="page-footer">
-		footer
-	</div>
+	<div>这个footer</div>
 </template>
 
 <script>
 export default {
-	name: 'page-footer'
+	name: 'hhh'
 };
 </script>
 

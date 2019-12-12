@@ -2,25 +2,16 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import routes from './routes';
 import App from './app.vue';
-import { Global } from './global';
+import GLOBAL from './global';
 
-import 'highlight.js/styles/github.css';
 import '@style/index.scss';
 
-Global.init();
+Vue.use(GLOBAL);
 Vue.use(Router);
 const router = new Router({
 	mode: 'history',
 	routes
 });
-
-router.afterEach(() => {
-	Vue.nextTick(() => {
-		const codeBlocks = document.querySelectorAll('pre code:not(.hljs)');
-		Array.prototype.forEach.call(codeBlocks, hljs.highlightBlock);
-	});
-});
-
 
 // - 实例
 const app = new Vue({

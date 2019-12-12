@@ -13,7 +13,9 @@
 						:key="subIndex"
 						class="side-nav__item"
 					>
-						<a :href="`#${subNav.path}`">{{ subNav.name }}</a>
+						<router-link :to="`${locale}${subNav.path}`">
+							{{ subNav.name }}
+						</router-link>
 					</li>
 				</ul>
 				<ul v-else-if="oneItem.groups" clas="sub-nav">
@@ -30,7 +32,9 @@
 								:key="component.path"
 								class="side-nav__item"
 							>
-								<a :href="`#${component.path}`">{{ component.title }}</a>
+								<router-link :to="`${locale}${component.path}`">
+									{{ component.title }}
+								</router-link>
 							</li>
 						</ul>
 					</li>
@@ -45,8 +49,11 @@
 export default {
 	name: 'sidebar',
 	data() {
+		const { locale } = this.$global;
+		const { sidebar } = this.$route.meta || {};
 		return {
-			navs: []
+			locale: locale ? `/${locale}/components` : `/components`,
+			navs: sidebar[locale] || sidebar
 		};
 	}
 };

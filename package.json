@@ -6,8 +6,8 @@
   "files": [],
   "scripts": {
     "link": "npm link",
-    "dev": "doc dev",
-    "build": "doc build",
+    "dev": "doc dev ./examples/",
+    "build": "doc build ./examples/",
     "lint": "esw --ext .vue,.js node/ client/",
     "lint:fix": "npm run lint -- --fix",
     "lint:watch": "npm run lint -- --fix --watch"
@@ -22,7 +22,7 @@
     "url": "https://github.com/wya-team/wya-doc/issues"
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=10"
   },
   "dependencies": {
     "@babel/core": "^7.7.5",
@@ -52,13 +52,11 @@
     "friendly-errors-webpack-plugin": "^1.7.0",
     "fs-extra": "^8.1.0",
     "highlight.js": "^9.16.2",
+    "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "js-beautify": "^1.10.2",
     "lodash": "^4.17.15",
-    "markdown-it": "^10.0.0",
-    "markdown-it-anchor": "^5.2.5",
-    "markdown-it-chain": "^1.3.0",
-    "markdown-it-container": "^2.0.0",
+    "marked": "^0.7.0",
     "node-sass": "^4.13.0",
     "portfinder": "^1.0.25",
     "postcss-import": "^12.0.1",

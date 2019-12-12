@@ -93,6 +93,17 @@ const getWebpackConfig = (options) => {
 				{
 					test: /\.(png|jpg|gif|eot|ttf|woff|woff2|svg)$/,
 					loader: 'url-loader'
+				},
+				{
+					test: /\.md$/,
+					use: [
+						{ 
+							loader: "html-loader",
+							options: {
+								minimize: false // 如果被压缩了，就无法正常解析了
+							}
+						}
+					]
 				}
 			]
 		},

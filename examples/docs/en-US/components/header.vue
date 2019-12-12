@@ -1,5 +1,5 @@
 <template>
-	<div>这个header</div>
+	<div>this is header</div>
 </template>
 
 <script>
