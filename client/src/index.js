@@ -31,7 +31,19 @@ const app = new Vue({
 // 先不考虑服务端渲染情况
 router.onReady(() => {
 	app.$mount();
+
+	const { redirect } = sessionStorage;
+	delete sessionStorage.redirect;
+
+	// github pages hack
+	const curUrl = `${location.pathname}${location.search}${location.hash}`;
+	if (redirect && redirect.includes(PRE_ROUTER_URL) && redirect != curUrl) {
+		try {
+			router.push(redirect.replace(PRE_ROUTER_URL, '/'));
+		} catch (e) {
+			location.href = redirect;
+		}
+	}
 });
 
-window.lang = 'zh-CN';
 window.app = app;
