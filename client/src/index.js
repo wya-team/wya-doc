@@ -13,7 +13,7 @@ const router = new Router({
 	// TODO: 由webpack配置所得
 	base: process.env.NODE_ENV === 'development' 
 		? '/' 
-		: '/wya-doc/site/',
+		: '__DOC_BASE__',
 	routes
 });
 
@@ -36,11 +36,10 @@ router.onReady(() => {
 	delete sessionStorage.redirect;
 
 	// github pages hack
-	// TODO: 需要webpack修改配置
 	const curUrl = `${location.pathname}${location.search}${location.hash}`;
-	if (redirect && redirect.includes('/wya-doc/site/') && redirect != curUrl) {
+	if (redirect && redirect.includes('__DOC_BASE__') && redirect != curUrl) {
 		try {
-			router.push(redirect.replace('/wya-doc/site/', '/'));
+			router.push(redirect.replace('__DOC_BASE__', '/'));
 		} catch (e) {
 			location.href = redirect;
 		}

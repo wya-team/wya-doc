@@ -6,11 +6,11 @@ const WebpackDevServer = require('webpack-dev-server');
 const Config = require('./config');
 
 class BuildProcess extends EventEmitter {
-	constructor(ctx) {
+	constructor(parent) {
 		super();
 		process.env.NODE_ENV = 'production';
 
-		this.ctx = ctx;
+		this.$parent = parent;
 	}
 
 	/**
@@ -27,9 +27,8 @@ class BuildProcess extends EventEmitter {
 	 * @returns {module.BuildProcess}
 	 */
 	async render() {
-		const { devServer, ...rest } = this.ctx.docConfig.webpackConfig;
 		let info = await new Promise((resolve, reject) => {
-			webpack(Config.get('webpack', rest), (err, stats) => {
+			webpack(Config.get('webpack', this), (err, stats) => {
 				if (err) {
 					return reject(err);
 				}

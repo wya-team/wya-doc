@@ -8,11 +8,11 @@ const { localhost } = require('./helper');
 
 
 class DevProcess extends EventEmitter {
-	constructor(ctx) {
+	constructor(parent) {
 		super();
 		process.env.NODE_ENV = 'development';
 
-		this.ctx = ctx;
+		this.$parent = parent;
 		this.port = 8080;
 		this.host = localhost;
 	}
@@ -40,7 +40,7 @@ class DevProcess extends EventEmitter {
 	}
 
 	async resolvePort() {
-		let port = this.ctx.options.port || this.port;
+		let port = this.$parent.options.port || this.port;
 		
 		portfinder.basePort = parseInt(port, 10);
 		port = await portfinder.getPortPromise();
@@ -49,7 +49,7 @@ class DevProcess extends EventEmitter {
 	}
 
 	async resolveHost() {
-		this.host = this.ctx.options.host || this.host;
+		this.host = this.$parent.options.host || this.host;
 	}
 
 	/**
@@ -59,16 +59,10 @@ class DevProcess extends EventEmitter {
 	 * @returns {module.DevProcess}
 	 */
 	createServer() {
-		const { port, host } = this;
-		const { devServer = {}, ...rest } = this.ctx.docConfig.webpackConfig;
-		const compiler = webpack(Config.get('webpack', rest));
+		const compiler = webpack(Config.get('webpack', this));
 		let server = new WebpackDevServer(
 			compiler, 
-			Config.get('server', {
-				host,
-				port,
-				...devServer,
-			})
+			Config.get('server', this)
 		);
 
 		this.server = server;
