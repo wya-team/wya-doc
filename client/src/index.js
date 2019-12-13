@@ -13,7 +13,7 @@ const router = new Router({
 	// TODO: 由webpack配置所得
 	base: process.env.NODE_ENV === 'development' 
 		? '/' 
-		: '__DOC_BASE__',
+		: __DOC_BASE__,
 	routes
 });
 
@@ -37,9 +37,9 @@ router.onReady(() => {
 
 	// github pages hack
 	const curUrl = `${location.pathname}${location.search}${location.hash}`;
-	if (redirect && redirect.includes('__DOC_BASE__') && redirect != curUrl) {
+	if (redirect && redirect.includes(__DOC_BASE__) && redirect != curUrl) {
 		try {
-			router.push(redirect.replace('__DOC_BASE__', '/'));
+			router.push(redirect.replace(__DOC_BASE__, '/'));
 		} catch (e) {
 			location.href = redirect;
 		}

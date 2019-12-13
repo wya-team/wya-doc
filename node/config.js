@@ -24,9 +24,11 @@ class Config {
 		const { docConfig = {} } = this.$parent.$parent;
 		const { webpackConfig, runtime } = docConfig || {};
 		const { devServer, ...override } = webpackConfig || {};
-		
+		const ENV_IS_DEV = process.env.NODE_ENV === 'development';
+
 		const defaultOptions = {
 			mode: process.env.NODE_ENV,
+			devtool: ENV_IS_DEV ? 'cheap-module-eval-source-map' : undefined,
 			// 生成文件，是模块构建的终点
 			output: {
 				path: path.resolve(__dirname, '../dist'),
@@ -126,6 +128,7 @@ class Config {
 			plugins: [
 				new VueLoaderPlugin(),
 				new HtmlWebpackPlugin({
+					__DEV__: ENV_IS_DEV, 
 					template: path.resolve(__dirname, '../client/index.tpl.html'),
 					inject: 'body',
 					filename: './index.html'
@@ -136,15 +139,19 @@ class Config {
 					}
 				}),
 				new webpack.DefinePlugin({
-					__DEV__: String(process.env.NODE_ENV === 'development'),
-					__DOC_BASE__: '/',
-					__DOC_VERSION__: '1.0.0',
+					__DEV__: JSON.stringify(ENV_IS_DEV),
+					__DOC_BASE__: "'/'",
+					__DOC_VERSION__: "'1.0.0'",
 					...runtime.define
 				})
 			],
-			externals: {
-				// 'highlight.js': 'hljs'
-			}
+			externals: !ENV_IS_DEV 
+				? {
+					vue: 'Vue',
+					lodash: '_',
+					marked: 'marked'
+				}
+				: {}
 		};
 		// 不允许被覆盖的配置
 		const noOverrideConfig = {

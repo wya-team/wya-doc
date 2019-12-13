@@ -5,9 +5,10 @@ import { Storage } from '@wya/utils';
 
 class GlobalBase {
 	constructor() {
-
+		this.debug = __DEV__;
+		
 		// 版本号，由webpack注入
-		this.version = '__DOC_VERSION__';
+		this.version = __DOC_VERSION__;
 
 		// 当前选择语言
 		this.locale = Storage.get('@wya/doc/locale') 

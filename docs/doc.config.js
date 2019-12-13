@@ -44,14 +44,13 @@ module.exports = {
 				? '/'
 				: '/wya-doc/site/'
 		},
-		devServer: {}
+		devServer: {},
 	},
 
-	// 全局化修改
-	runtime: {
+	runtime: { 
 		define: {
-			__DOC_BASE__: process.env.NODE_ENV === 'development' ? '/' : '/wya-doc/site/',
-			__DOC_VERSION__: '1.0.0',
+			__DOC_BASE__: `'${process.env.NODE_ENV === 'development' ? '/' : '/wya-doc/site/'}'`,
+			__DOC_VERSION__: "'1.0.0'",
 		}
 	}
 };
