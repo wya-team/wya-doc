@@ -10,6 +10,10 @@ Vue.use(GLOBAL);
 Vue.use(Router);
 const router = new Router({
 	mode: 'history',
+	// TODO: 由webpack配置所得
+	base: process.env.NODE_ENV === 'development' 
+		? '/' 
+		: '/wya-doc/site/',
 	routes
 });
 
