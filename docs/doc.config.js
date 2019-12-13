@@ -1,3 +1,4 @@
+const path = require('path');
 const sidebar = require('./nav.config.js');
 
 module.exports = {
@@ -37,6 +38,12 @@ module.exports = {
 		'en-US': 'English'
 	},
 	webpackConfig: {
+		output: {
+			path: path.resolve(__dirname, '../site/'),
+			publicPath: process.env.NODE_ENV === 'development'
+				? '/'
+				: '/wya-doc/site/'
+		},
 		devServer: {}
 	}
 };

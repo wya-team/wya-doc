@@ -6,8 +6,8 @@
   "files": [],
   "scripts": {
     "link": "npm link",
-    "dev": "doc dev ./examples/",
-    "build": "doc build ./examples/",
+    "dev": "doc dev ./docs",
+    "build": "doc build ./docs",
     "lint": "esw --ext .vue,.js node/ client/",
     "lint:fix": "npm run lint -- --fix",
     "lint:watch": "npm run lint -- --fix --watch"

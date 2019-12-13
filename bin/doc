@@ -18,12 +18,11 @@ program
 	.option('-p, --port <port>', 'server port (default: 8080)')
 	.option('--host <host>', 'server host (default: 0.0.0.0)')
 	.option('--config <config file>', 'config options file')
-	.action(async (sourceDir = '.', commandOptions) => {
+	.action((sourceDir = '.', commandOptions) => {
 		let app = new App({
 			sourceDir: resolve(sourceDir),
 			...commandOptions
 		});
-		await app.process();
 		app.dev();
 	});
 
@@ -31,12 +30,11 @@ program
 program
 	.command('build [targetDir]', 'production mode')
 	.option('-d, --dest <dest>', 'build output dir (default: docs/dist)')
-	.action(async (sourceDir = '.', commandOptions) => {
+	.action((sourceDir = '.', commandOptions) => {
 		let app = new App({
 			sourceDir: resolve(sourceDir),
 			...commandOptions
 		});
-		await app.process();
 		app.build();
 	});
 

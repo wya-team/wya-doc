@@ -7,7 +7,7 @@
 <script>
 import { ajax } from '@wya/http';
 // TODO: 做一个资源解析sourcedir ../../../ -> @xxx
-import mdTpl from '../../../examples/docs/zh-CN/alert.md';
+import mdTpl from '../../../docs/zh-CN/alert.md';
 import md from '../markdown';
 
 export default {

@@ -4,6 +4,8 @@ const webpack = require('webpack');
 const portfinder = require('portfinder');
 const WebpackDevServer = require('webpack-dev-server');
 const Config = require('./config');
+const { localhost } = require('./helper');
+
 
 class DevProcess extends EventEmitter {
 	constructor(ctx) {
@@ -12,7 +14,7 @@ class DevProcess extends EventEmitter {
 
 		this.ctx = ctx;
 		this.port = 8080;
-		this.host = '0.0.0.0';
+		this.host = localhost;
 	}
 
 	/**
@@ -38,7 +40,7 @@ class DevProcess extends EventEmitter {
 	}
 
 	async resolvePort() {
-		let port = this.ctx.options.port || this.ctx.siteConfig.port || this.port;
+		let port = this.ctx.options.port || this.port;
 		
 		portfinder.basePort = parseInt(port, 10);
 		port = await portfinder.getPortPromise();
@@ -47,7 +49,7 @@ class DevProcess extends EventEmitter {
 	}
 
 	async resolveHost() {
-		this.host = this.ctx.options.host || this.ctx.siteConfig.host || this.host;
+		this.host = this.ctx.options.host || this.host;
 	}
 
 	/**
@@ -56,11 +58,17 @@ class DevProcess extends EventEmitter {
 	 * https://webpack.js.org/guides/development/#using-webpack-dev-middleware
 	 * @returns {module.DevProcess}
 	 */
-	createServer(compilerConfig, devServerConfig) {
-		const compiler = webpack(Config.get('webpack', compilerConfig));
+	createServer() {
+		const { port, host } = this;
+		const { devServer = {}, ...rest } = this.ctx.docConfig.webpackConfig;
+		const compiler = webpack(Config.get('webpack', rest));
 		let server = new WebpackDevServer(
 			compiler, 
-			Config.get('server', devServerConfig)
+			Config.get('server', {
+				host,
+				port,
+				...devServer,
+			})
 		);
 
 		this.server = server;

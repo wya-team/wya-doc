@@ -10,7 +10,7 @@ module.exports = ({ sourceDir, routes, i18n }) => {
 		if (typeof type === 'string') {
 			return type === 'default' 
 				? `require('${path.resolve(__dirname, `../../client/src/components/${mode}.vue`)}').default`
-				: `require('${path.resolve(sourceDir, `./docs/${lang}`, type)}').default`;
+				: `require('${path.resolve(sourceDir, `./${lang}`, type)}').default`;
 		} else if (typeof type === 'object' && type != null) {
 			return `require('${path.resolve(__dirname, `../../client/src/components/${mode}.vue`)}').default`;
 		}

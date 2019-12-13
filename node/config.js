@@ -143,8 +143,8 @@ const noOverrideConfig = {
 class Config {
 	static get(type = 'webpack', override, options = {}) {
 		let defaultOptions = type === 'webpack' || type === true 
-			? getWebpackConfig(options) 
-			: getServerConfig(options);
+			? getWebpackConfig(override, options) 
+			: getServerConfig(override, options);
 		return merge(defaultOptions, override, type === 'webpack' ? noOverrideConfig : {});
 	}
 }

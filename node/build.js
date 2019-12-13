@@ -11,7 +11,6 @@ class BuildProcess extends EventEmitter {
 		process.env.NODE_ENV = 'production';
 
 		this.ctx = ctx;
-		this.outDir = this.ctx.outDir;
 	}
 
 	/**
@@ -19,11 +18,7 @@ class BuildProcess extends EventEmitter {
 	 * webpack配置项
 	 */
 	async process() {
-		this.overrideConfig = {
-			output: {
-				path: this.outDir,
-			}
-		};
+		// TODO
 	}
 
 	/**
@@ -32,8 +27,9 @@ class BuildProcess extends EventEmitter {
 	 * @returns {module.BuildProcess}
 	 */
 	async render() {
+		const { devServer, ...rest } = this.ctx.docConfig.webpackConfig;
 		let info = await new Promise((resolve, reject) => {
-			webpack(Config.get('webpack', this.overrideConfig), (err, stats) => {
+			webpack(Config.get('webpack', rest), (err, stats) => {
 				if (err) {
 					return reject(err);
 				}
