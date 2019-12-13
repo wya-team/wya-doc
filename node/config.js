@@ -137,6 +137,8 @@ class Config {
 				}),
 				new webpack.DefinePlugin({
 					__DEV__: String(process.env.NODE_ENV === 'development'),
+					__DOC_BASE__: '/',
+					__DOC_VERSION__: '1.0.0',
 					...runtime.define
 				})
 			],
