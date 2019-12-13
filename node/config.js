@@ -10,7 +10,7 @@ const ROOT_PATH = process.cwd();
 
 const getWebpackConfig = (options) => { 
 	return {
-		mode: 'development',
+		mode: process.env.NODE_ENV,
 		// 生成文件，是模块构建的终点
 		output: {
 			path: path.resolve(__dirname, '../dist'),
