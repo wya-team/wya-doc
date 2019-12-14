@@ -5,14 +5,6 @@ module.exports = {
 			"path": "/changelog"
 		},
 		{
-			"name": "Element React",
-			"href": "https://elemefe.github.io/element-react/"
-		},
-		{
-			"name": "Element Angular",
-			"href": "https://element-angular.faas.ele.me/"
-		},
-		{
 			"name": "开发指南",
 			"children": [
 				{
@@ -289,14 +281,6 @@ module.exports = {
 		{
 			"name": "Changelog",
 			"path": "/changelog"
-		},
-		{
-			"name": "Element React",
-			"href": "https://elemefe.github.io/element-react/"
-		},
-		{
-			"name": "Element Angular",
-			"href": "https://element-angular.faas.ele.me/"
 		},
 		{
 			"name": "Development",
