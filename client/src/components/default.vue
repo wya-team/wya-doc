@@ -51,7 +51,7 @@ export default {
 			let { name } = this.$route.params;
 			const lang = this.$route.path.split('/')[1];
 			ajax({
-				url: location.origin + `${__DOC_SITE__}docs/${lang}/${name}.md`,
+				url: location.origin + `${__DOC_MD_DIR__}${lang}/${name}.md`,
 				debug: true,
 				localData: null,
 				onAfter: ({ response }) => {
