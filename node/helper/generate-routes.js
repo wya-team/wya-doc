@@ -39,7 +39,7 @@ module.exports = ({ sourceDir, routes, i18n }) => {
 			content += `{
 				path: '${lang ? `/${lang}` : ''}${routePath}',
 				meta: {
-					sidebar: ${JSON.stringify(sidebar)}
+					sidebar: ${JSON.stringify((sidebar && sidebar[lang]) || sidebar)}
 				},
 				components: {
 					default: ${getPath('default', _default, lang)},

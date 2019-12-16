@@ -49,7 +49,7 @@ module.exports = {
 
 	runtime: { 
 		define: {
-			__DOC_BASE__: `'${process.env.NODE_ENV === 'development' ? '/' : '/wya-doc/site/'}'`,
+			__DOC_SITE__: `'${process.env.NODE_ENV === 'development' ? '/' : '/wya-doc/site/'}'`,
 			__DOC_VERSION__: "'1.0.0'",
 		}
 	}

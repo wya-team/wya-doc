@@ -6,8 +6,6 @@
 
 <script>
 import { ajax } from '@wya/http';
-// TODO: 做一个资源解析sourcedir ../../../ -> @xxx
-import mdTpl from '../../../docs/zh-CN/alert.md';
 import md from '../markdown';
 
 export default {
@@ -34,20 +32,42 @@ export default {
 				: {};
 		}
 	},
-	mounted() {
-		ajax({
-			url: location.origin + '/examples/zh-CN/alert.md',
-			debug: true,
-			localData: {
-				status: 1,
-				data: mdTpl
+	watch: {
+		'$route.params.name': {
+			immediate: true,
+			handler(v, oldV) {
+				this.loadData();
 			}
-		}).then((res) => {
-			this.content = res.data;
-		}).catch((e) => {
-			console.log(e);
-		});
+		}
+	},
+	mounted() {
+		this.$vc.on('lang-change', this.loadData);
+	},
+	beforeDestroy() {
+		this.$vc.off('lang-change', this.loadData);
+	},
+	methods: {
+		loadData() {
+			let { name } = this.$route.params;
+			const lang = this.$route.path.split('/')[1];
+			ajax({
+				url: location.origin + `${__DOC_SITE__}docs/${lang}/${name}.md`,
+				debug: true,
+				localData: null,
+				onAfter: ({ response }) => {
+					return {
+						status: 1,
+						data: response.data || '请刷新后再试试'
+					};
+				}
+			}).then((res) => {
+				this.content = res.data;
+			}).catch((e) => {
+				console.log(e);
+			});
+		}
 	}
+
 };
 </script>
 

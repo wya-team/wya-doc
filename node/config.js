@@ -21,10 +21,19 @@ class Config {
 
 	generateDefault() {
 		const { port, host } = this.$parent;
-		const { docConfig = {} } = this.$parent.$parent;
+		const { docConfig = {}, sourceDir } = this.$parent.$parent;
 		const { webpackConfig, runtime } = docConfig || {};
 		const { devServer, ...override } = webpackConfig || {};
 		const ENV_IS_DEV = process.env.NODE_ENV === 'development';
+
+		const loaderPath = [
+			path.resolve(__dirname, '../node_modules', "./@xls/public"),
+			path.resolve(__dirname, '../node_modules', "./@wya/vc"),
+			path.resolve(__dirname, '../node_modules', "./@wya/vm"),
+			path.resolve(__dirname, '../node_modules', "./iview"),
+			path.resolve(__dirname, '../client'),
+			sourceDir
+		];
 
 		const defaultOptions = {
 			mode: process.env.NODE_ENV,
@@ -52,6 +61,7 @@ class Config {
 					{
 						test: /\.js$/,
 						exclude: /node_modules/,
+						// include: loaderPath,
 						use: {
 							loader: 'babel-loader',
 							options: {
@@ -85,7 +95,8 @@ class Config {
 					},
 					{
 						test: /\.vue$/,
-						loader: 'vue-loader'
+						loader: 'vue-loader',
+						// include: loaderPath
 					},
 					{
 						test: /\.(scss|css)$/,
@@ -136,7 +147,7 @@ class Config {
 				}),
 				new webpack.DefinePlugin({
 					__DEV__: JSON.stringify(ENV_IS_DEV),
-					__DOC_BASE__: "'/'",
+					__DOC_SITE__: "'/'",
 					__DOC_VERSION__: "'1.0.0'",
 					...runtime.define
 				})

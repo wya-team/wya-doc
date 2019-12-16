@@ -14,7 +14,7 @@
 							:key="subIndex"
 							class="c-layout-sidebar__item"
 						>
-							<router-link :to="`${locale}${subNav.path}`">
+							<router-link :to="`${rootPath}${subNav.path}`">
 								{{ subNav.name }}
 							</router-link>
 						</li>
@@ -33,7 +33,7 @@
 									:key="component.path"
 									class="c-layout-sidebar__item"
 								>
-									<router-link :to="`${locale}${component.path}`">
+									<router-link :to="`${rootPath}${component.path}`">
 										{{ component.title }}
 									</router-link>
 								</li>
@@ -51,18 +51,28 @@
 export default {
 	name: 'c-layout-sidebar',
 	data() {
-		const { locale } = this.$global;
 		const { sidebar } = this.$route.meta || {};
+		const lang = this.$route.path.split('/')[1];
 		return {
-			locale: locale ? `/${locale}/components` : `/components`,
-			navs: sidebar[locale] || sidebar
+			rootPath: lang ? `/${lang}/components` : `/components`,
+			navs: sidebar
 		};
 	},
+
+
 	mounted() {
 		this.$vc.emit('layout-sidebar', { status: true });
+		this.$vc.on('lang-change', this.handleUpdate);
 	},
 	beforeDestroy() {
 		this.$vc.emit('layout-sidebar', { status: false });
+		this.$vc.off('lang-change', this.handleUpdate);
+	},
+	methods: {
+		handleUpdate() {
+			const { sidebar } = this.$route.meta || {};
+			this.navs = sidebar;
+		}
 	}
 };
 </script>

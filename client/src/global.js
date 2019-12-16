@@ -10,9 +10,7 @@ class GlobalBase {
 		this.version = __DOC_VERSION__;
 
 		// 当前选择语言
-		this.locale = Storage.get('@wya/doc/locale') 
-			|| document.querySelector('html').lang
-			|| 'zh-CN';
+		this.lang = Storage.get('@wya/doc/lang');
 	}
 }
 

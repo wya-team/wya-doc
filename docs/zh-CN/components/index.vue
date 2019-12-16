@@ -1,7 +1,7 @@
 <template>
 	<div class="v-index">
 		<router-link to="/zh-CN/components/alert">
-			<h1>Hello @wya/doc</h1>
+			<h1>Hello @wya/doc - zh-CN</h1>
 		</router-link>
 		<c-playground />
 	</div>

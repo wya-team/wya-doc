@@ -7,19 +7,48 @@
 					<span>@wya/doc</span>
 				</div>
 			</router-link>
-			<div>icon2</div>
+			<select v-model="currentLang" @change="handleChange">
+				<option 
+					v-for="lang in langs" 
+					:key="lang" 
+					:value="lang"
+				>{{ lang }}</option>
+			</select>
 		</div>
 	</div>
 </template>
 
-<script>
+<script>	
+import { Storage } from '@wya/utils';
+
 export default {
 	name: 'c-layout-header',
+	data() {
+		const lang = this.$route.path.split('/')[1];
+		return {
+			currentLang: lang,
+			langs: ['zh-CN', 'en-US']
+		};
+	},
 	mounted() {
 		this.$vc.emit('layout-header', { status: true });
 	},
 	beforeDestroy() {
 		this.$vc.emit('layout-header', { status: false });
+	},
+	methods: {
+		handleChange(e) {
+			let value = e.target.value;
+			Storage.set('@wya/doc/lang', value);
+			this.$global.lang = value;
+
+			// REPLACE
+			let lang = app.$route.path.split('/');
+			lang[1] = value; 
+			this.$router.replace(`${__DOC_SITE__}${lang.slice(1).join('/')}${location.search}${location.hash}`);
+
+			this.$vc.emit('lang-change');
+		}
 	}
 };
 </script>
