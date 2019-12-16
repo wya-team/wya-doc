@@ -1,12 +1,11 @@
 import Vc from '@wya/vc/lib/vc/index';
 import { Storage } from '@wya/utils';
-// import DemoBlock from './components/demo-block.vue';
-// import VcAlert from './components/vc-alert.vue';
+import Playground from './components/playground';
 
 class GlobalBase {
 	constructor() {
 		this.debug = __DEV__;
-		
+
 		// 版本号，由webpack注入
 		this.version = __DOC_VERSION__;
 
@@ -23,9 +22,8 @@ export default {
 	install(Vue) {
 		Vue.prototype.$global = Global;
 
-		// Vue.component('demo-block', DemoBlock);
-		// Vue.component('vc-alert', VcAlert);
 		Vue.use(Vc);
+		Vue.component(Playground.name, Playground);
 	}
 };
 

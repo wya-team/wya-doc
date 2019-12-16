@@ -44,12 +44,8 @@ class Config {
 				  '@assets': resolve(__dirname, '../client/src/assets'),
 				  '@style': resolve(__dirname, '../client/src/style'),
 				  '@components': resolve(__dirname, '../client/src/components'),
-				  '@nm': resolve(__dirname, '../node_modules'),
-				},
-				modules: [
-					'node_modules',
-					resolve(__dirname, 'wya-doc/node_modules')
-				]
+				  '@utils': resolve(__dirname, '../client/src/utils'),
+				}
 			},
 			module: {
 				rules: [

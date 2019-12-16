@@ -48,6 +48,7 @@
     "cac": "^6.5.3",
     "chalk": "^3.0.0",
     "chokidar": "^3.3.0",
+    "codemirror": "^5.49.2",
     "css-loader": "^3.3.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "fs-extra": "^8.1.0",
