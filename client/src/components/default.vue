@@ -62,13 +62,15 @@ export default {
 		socket && socket.off('md-update', this.loadData);
 	},
 	methods: {
-		loadData() {
+		async loadData() {
 			let { name } = this.$route.params;
-			const lang = this.$route.path.split('/')[1];
+			let lang = this.$route.path.split('/')[1];
+			let url = location.origin + `${__DOC_MD_DIR__}${lang}/${name}.md`;
+			let { data } = await this.$global.db.read(url) || {};
 			ajax({
-				url: location.origin + `${__DOC_MD_DIR__}${lang}/${name}.md`,
+				url,
 				debug: true,
-				localData: null,
+				localData: data,
 				onAfter: ({ response }) => {
 					return {
 						status: 1,
@@ -77,6 +79,12 @@ export default {
 				}
 			}).then((res) => {
 				this.content = res.data;
+
+				this.$global.db.update({
+					__id: url,
+					data: res,
+				});
+				
 			}).catch((e) => {
 				console.log(e);
 			});
