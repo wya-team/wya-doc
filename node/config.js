@@ -20,7 +20,7 @@ class Config {
 	}
 
 	generateDefault() {
-		const { port, host } = this.$parent;
+		let { port, host } = this.$parent;
 		const { docConfig = {}, sourceDir } = this.$parent.$parent;
 		const { webpackConfig, runtime } = docConfig || {};
 		const { devServer, ...override } = webpackConfig || {};
@@ -147,6 +147,7 @@ class Config {
 				}),
 				new webpack.DefinePlugin({
 					__DEV__: JSON.stringify(ENV_IS_DEV),
+					__DOC_SOCKET__: `'ws://${host}:${++port}'`,
 					__DOC_SITE__: "'/'",
 					__DOC_VERSION__: "'1.0.0'",
 					...runtime.define

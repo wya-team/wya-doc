@@ -12,7 +12,9 @@
 					v-for="lang in langs" 
 					:key="lang" 
 					:value="lang"
-				>{{ lang }}</option>
+				>
+					{{ lang }}
+				</option>
 			</select>
 		</div>
 	</div>
@@ -20,6 +22,7 @@
 
 <script>	
 import { Storage } from '@wya/utils';
+import { LANG_TAG } from '../constants';
 
 export default {
 	name: 'c-layout-header',
@@ -39,7 +42,7 @@ export default {
 	methods: {
 		handleChange(e) {
 			let value = e.target.value;
-			Storage.set('@wya/doc/lang', value);
+			Storage.set(LANG_TAG, { lang: value });
 			this.$global.lang = value;
 
 			// REPLACE

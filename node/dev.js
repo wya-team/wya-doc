@@ -2,9 +2,13 @@ const { EventEmitter } = require('events');
 const path = require('path');
 const webpack = require('webpack');
 const portfinder = require('portfinder');
+const chokidar = require('chokidar');
+
 const WebpackDevServer = require('webpack-dev-server');
 const Config = require('./config');
 const { localhost } = require('./helper');
+const setSocket = require('./helper/socket');
+
 
 
 class DevProcess extends EventEmitter {
@@ -31,12 +35,23 @@ class DevProcess extends EventEmitter {
 
 	watchSourceFiles() {
 		// TODO	
-		// () => {
-		// 	this.emit('fileChanged', {
-		// 		type,
-		// 		target
-		// 	});
-		// };	
+		// this.emit('fileChanged', {
+		// 	type,
+		// 	target
+		// });
+		
+		this.docsWatcher = chokidar.watch(
+			['**/*.md'], 
+			{
+				cwd: this.$parent.sourceDir,
+				ignored: ['node_modules'],
+				ignoreInitial: true
+			}
+		);	
+
+		this.docsWatcher.on('all', (type, fullpath) => {
+			this.socket.emit('md-update', { type, path: fullpath });
+		});
 	}
 
 	async resolvePort() {
@@ -65,6 +80,13 @@ class DevProcess extends EventEmitter {
 			Config.get('server', this)
 		);
 
+		let { port, host } = this;
+
+		port++;
+		this.socket = setSocket({
+			port,
+			host,
+		});
 		this.server = server;
 		return this;
 	}

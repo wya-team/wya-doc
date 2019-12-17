@@ -1,0 +1,1 @@
+export const LANG_TAG = '@wya/doc/lang';

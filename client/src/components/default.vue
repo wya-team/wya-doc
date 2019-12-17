@@ -8,6 +8,19 @@
 import { ajax } from '@wya/http';
 import md from '../markdown';
 
+let socket;
+if (__DEV__) {
+	let { Socket } = require('@wya/socket');
+	socket = new Socket();
+	socket.connect(__DOC_SOCKET__);
+
+	socket.on('open', () => {
+		socket.send(JSON.stringify({
+			type: 'open'
+		}));
+	});
+}
+
 export default {
 	name: 'md-online',
 	directives: {
@@ -42,9 +55,11 @@ export default {
 	},
 	mounted() {
 		this.$vc.on('lang-change', this.loadData);
+		socket && socket.on('md-update', this.loadData);
 	},
 	beforeDestroy() {
 		this.$vc.off('lang-change', this.loadData);
+		socket && socket.off('md-update', this.loadData);
 	},
 	methods: {
 		loadData() {

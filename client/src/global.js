@@ -1,6 +1,7 @@
 import Vc from '@wya/vc/lib/vc/index';
 import { Storage } from '@wya/utils';
 import Playground from './components/playground';
+import { LANG_TAG } from './constants';
 
 class GlobalBase {
 	constructor() {
@@ -10,7 +11,7 @@ class GlobalBase {
 		this.version = __DOC_VERSION__;
 
 		// 当前选择语言
-		this.lang = Storage.get('@wya/doc/lang');
+		this.lang = (Storage.get(LANG_TAG) || {}).lang;
 	}
 }
 
