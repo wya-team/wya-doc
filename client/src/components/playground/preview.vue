@@ -47,7 +47,6 @@ export default {
 				// const { render, staticRenderFns } = compile(template);
 				const el = document.createElement('div');
 				parent.appendChild(el);
-				console.log(result);
 				this.codeVM = new Vue({ 
 					// render,
 					// staticRenderFns,

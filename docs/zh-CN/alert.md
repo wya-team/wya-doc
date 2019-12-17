@@ -9,7 +9,8 @@
 :::demo Alert 组件提供四种主题，由`type`属性指定，默认值为`info`。
 ```html
 <template>
-  <vc-alert
+<div>
+   <vc-alert
     title="成功提示的文案"
     type="success">
   </vc-alert>
@@ -25,6 +26,7 @@
     title="错误提示的文案"
     type="error">
   </vc-alert>
+</div>
 </template>
 ```
 :::
@@ -33,10 +35,11 @@
 
 Alert 组件提供了两个不同的主题：`light`和`dark`。
 
-:::demo 通过设置`effect`属性来改变主题，默认为`light`。
+
 ```html
 <template>
-  <vc-alert
+  <div>
+    <vc-alert
     title="成功提示的文案"
     type="success"
     effect="dark">
@@ -56,9 +59,10 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
     type="error"
     effect="dark">
   </vc-alert>
+  </div>
 </template>
 ```
-:::
+
 
 
 
@@ -69,7 +73,8 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
 :::demo 在 Alert 组件中，你可以设置是否可关闭，关闭按钮的文本以及关闭时的回调函数。`closable`属性决定是否可关闭，接受`boolean`，默认为`true`。你可以设置`close-text`属性来代替右侧的关闭图标，注意：`close-text`必须为文本。设置`close`事件来设置关闭时的回调。
 ```html
 <template>
-  <vc-alert
+ <div>
+    <vc-alert
     title="不可关闭的 alert"
     type="success"
     :closable="false">
@@ -84,6 +89,7 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
     type="warning"
     @close="hello">
   </vc-alert>
+ </div>
 </template>
 
 <script>
@@ -105,7 +111,8 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
 :::demo 通过设置`show-icon`属性来显示 Alert 的 icon，这能更有效地向用户展示你的显示意图。
 ```html
 <template>
-  <vc-alert
+  <div>
+    <vc-alert
     title="成功提示的文案"
     type="success"
     show-icon>
@@ -125,6 +132,7 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
     type="error"
     show-icon>
   </vc-alert>
+  </div>
 </template>
 ```
 :::
@@ -136,7 +144,8 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
 :::demo
 ```html
 <template>
-  <vc-alert
+  <div>
+    <vc-alert
     title="成功提示的文案"
     type="success"
     center
@@ -160,6 +169,7 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
     center
     show-icon>
   </vc-alert>
+  </div>
 </template>
 ```
 :::
@@ -185,7 +195,8 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
 :::demo 最后，这是一个同时具有 icon 和辅助性文字的样例。
 ```html
 <template>
-  <vc-alert
+  <div>
+    <vc-alert
     title="成功提示的文案"
     type="success"
     description="文字说明文字说明文字说明文字说明文字说明文字说明"
@@ -209,6 +220,7 @@ Alert 组件提供了两个不同的主题：`light`和`dark`。
     description="文字说明文字说明文字说明文字说明文字说明文字说明"
     show-icon>
   </vc-alert>
+  </div>
 </template>
 ```
 :::

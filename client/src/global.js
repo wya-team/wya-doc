@@ -3,6 +3,7 @@ import { Storage } from '@wya/utils';
 import { IndexedDB } from './utils';
 import Playground from './components/playground';
 import { LANG_TAG } from './constants';
+import Alert from './components/vc-alert';
 
 class GlobalBase {
 	constructor() {
@@ -29,6 +30,7 @@ export default {
 
 		Vue.use(Vc);
 		Vue.component(Playground.name, Playground);
+		Vue.component(Alert.name, Alert);
 	}
 };
 

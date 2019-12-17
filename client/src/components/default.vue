@@ -6,7 +6,8 @@
 
 <script>
 import { ajax } from '@wya/http';
-import md from '../markdown';
+// import md from '../markdown';
+import md from '../md';
 
 let socket;
 if (__DEV__) {

@@ -9,7 +9,7 @@ export default {
 	name: 'c-playground-error',
 	props: {
 		error: {
-			type: Error,
+			type: String,
 			default: ''
 		}
 	}

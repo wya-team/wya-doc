@@ -25,9 +25,15 @@ export default {
 		'c-playground-preview': Preview,
 		'c-playground-error': CError
 	},
+	props: {
+		source: {
+			type: String,
+			default: ''
+		}
+	},
 	data() {
 		return {
-			code: '',
+			code: this.source,
 			error: '',
 			previewStyle: {
 				// TODO: 拖拽调整宽度
@@ -46,7 +52,6 @@ $block: c-playground;
 
 @include block($block) {
 	display: flex;
-	margin: 100px;
 	width: 100%;
 	border: 1px solid $c-border;
 	border-radius: 4px;
@@ -65,6 +70,9 @@ $block: c-playground;
 			border-left: 5px solid rgba(0, 0, 0, .5);
 			border-right: 5px solid rgba(0, 0, 0, .5);
 		}
+	}
+	@include element(preview) {
+		flex-shrink: 0;
 	}
 	.c-playground-editor {
 		flex: 1;

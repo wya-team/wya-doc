@@ -61,7 +61,7 @@ class Config {
 					{
 						test: /\.js$/,
 						exclude: /node_modules/,
-						// include: loaderPath,
+						include: loaderPath,
 						use: {
 							loader: 'babel-loader',
 							options: {
@@ -96,7 +96,7 @@ class Config {
 					{
 						test: /\.vue$/,
 						loader: 'vue-loader',
-						// include: loaderPath
+						include: loaderPath
 					},
 					{
 						test: /\.(scss|css)$/,

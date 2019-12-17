@@ -1,7 +1,7 @@
 <template>
 	<div class="c-playground-editor">
 		<c-playground-toolbar />
-		<div id="code" />
+		<div :id="uid" />
 	</div>
 </template>
 
@@ -9,6 +9,7 @@
 import CodeMirror from 'codemirror';
 import 'codemirror/theme/material-palenight.css';
 import 'codemirror/lib/codemirror.css';
+import { getUid } from '@utils/index';
 
 import Toolbar from './toolbar';
 
@@ -29,15 +30,23 @@ export default {
 	},
 	data() {
 		return {
-			editor: null
+			editor: null,
+			code: '',
+			uid: getUid()
 		};
 	},
+	watch: {
+		value(v) {
+			this.code !== v && this.editor.setValue(v);
+		}
+	},
 	mounted() {
-		this.editor = CodeMirror(document.getElementById('code'), {
+		this.editor = CodeMirror(document.getElementById(this.uid), {
 			mode: 'text/javascript',
 			theme: 'material-palenight',
 			tabSize: 4
 		});
+		this.editor.setValue(this.value);
 		this.editor.on('change', this.handleCodeChange);
 	},
 	beforeDestroy() {
@@ -45,14 +54,15 @@ export default {
 	},
 	methods: {
 		handleCodeChange(instance) {
-			const content = this.editor.getValue();
-
-			this.$emit('change', content);
+			this.code = this.editor.getValue();
+			this.$emit('change', this.code);
 		}
 	},
 };
 </script>
 
 <style lang="scss">
-
+.c-playground-editor {
+	overflow: hidden;
+}
 </style>
