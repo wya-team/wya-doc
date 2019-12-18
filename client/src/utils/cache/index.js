@@ -1,3 +1,6 @@
-import IndexedDB from './indexed-db';
+export { default as IndexedDB } from './indexed-db';
 
-export { IndexedDB };
+/**
+ * TODO: 读取js资源进行js缓存
+ */
+
