@@ -67,7 +67,11 @@ export default {
 			let { name } = this.$route.params;
 			let lang = this.$route.path.split('/')[1];
 			let url = location.origin + `${__DOC_MD_DIR__}${lang}/${name}.md`;
-			let { data } = await this.$global.db.read(url) || {};
+			let data;
+
+			if (!__DEV__) {
+				data = (await this.$global.db.read(url) || {}).data;
+			}
 			ajax({
 				url,
 				debug: true,
@@ -81,7 +85,7 @@ export default {
 			}).then((res) => {
 				this.content = res.data;
 
-				this.$global.db.update({
+				!__DEV__ && this.$global.db.update({
 					__id: url,
 					data: res,
 				});
