@@ -1,16 +1,18 @@
 <template>
 	<div class="c-playground-editor">
 		<c-playground-toolbar />
-		<div :id="uid" />
+		<textarea :id="uid" />
 	</div>
 </template>
 
 <script>
 import CodeMirror from 'codemirror';
-import 'codemirror/theme/material-palenight.css';
+import 'codemirror/mode/javascript/javascript.js';
+import 'codemirror/addon/selection/active-line.js';
+import 'codemirror/theme/material.css';
 import 'codemirror/lib/codemirror.css';
-import { getUid } from '@utils/index';
 
+import { getUid } from '@utils/index';
 import Toolbar from './toolbar';
 
 export default {
@@ -41,10 +43,10 @@ export default {
 		}
 	},
 	mounted() {
-		this.editor = CodeMirror(document.getElementById(this.uid), {
+		this.editor = CodeMirror.fromTextArea(document.getElementById(this.uid), {
 			mode: 'text/javascript',
-			theme: 'material-palenight',
-			tabSize: 4
+			theme: 'material',
+			styleActiveLine: true // 光标所在行高亮
 		});
 		this.editor.setValue(this.value);
 		this.editor.on('change', this.handleCodeChange);
