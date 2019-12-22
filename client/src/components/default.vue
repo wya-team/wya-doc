@@ -7,8 +7,7 @@
 <script>
 import hljs from 'highlight.js';
 import { ajax } from '@wya/http';
-// import md from '../markdown';
-import md from '../md';
+import md from '../markdown';
 
 import 'highlight.js/styles/github.css';
 
