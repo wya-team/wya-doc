@@ -29,18 +29,27 @@ export default {
 	},
 	data() {
 		return {
-			tools: [
-				{
-					icon: '',
-					tipContent: '全屏',
-					clickHandler: this.handleFullScreen
-				}
-			]
+			isFullscreen: false
 		};
 	},
+	computed: {
+		tools() {
+			const tools = [];
+			if (document.fullscreenEnabled) {
+				tools.push({
+					icon: '',
+					tipContent: this.isFullscreen ? '退出全屏' : '全屏',
+					clickHandler: this.handleFullscreen
+				});
+			}
+			return tools;
+		}
+	},
 	methods: {
-		handleFullScreen() {
-			console.log('full screen');
+		handleFullscreen() {
+			this.isFullscreen = !!document.fullscreenElement;
+			this.isFullscreen = !this.isFullscreen;
+			this.$emit('fullscreen-toggle', this.isFullscreen);
 		}
 	},
 };

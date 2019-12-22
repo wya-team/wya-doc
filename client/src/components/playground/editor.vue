@@ -1,6 +1,6 @@
 <template>
 	<div class="c-playground-editor">
-		<c-playground-toolbar />
+		<c-playground-toolbar @fullscreen-toggle="$emit('fullscreen-toggle', arguments[0])" />
 		<textarea :id="uid" />
 	</div>
 </template>
@@ -64,7 +64,12 @@ export default {
 </script>
 
 <style lang="scss">
-.c-playground-editor {
+@include block(c-playground-editor) {
 	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	.CodeMirror {
+		flex-grow: 1;
+	}
 }
 </style>

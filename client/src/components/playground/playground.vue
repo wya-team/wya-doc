@@ -9,7 +9,7 @@
 			/>
 		</div>
 		<div class="c-playground__resizer" />
-		<c-playground-editor v-model="code" />
+		<c-playground-editor v-model="code" @fullscreen-toggle="handleFullscreen" />
 	</div>
 </template>
 
@@ -42,7 +42,11 @@ export default {
 		};
 	},
 	methods: {
-		
+		handleFullscreen(flag) {
+			if (document.fullscreenEnabled) {
+				flag ? this.$el.requestFullscreen() : document.exitFullscreen();
+			}
+		}
 	},
 };
 </script>
@@ -55,6 +59,7 @@ $block: c-playground;
 	width: 100%;
 	border: 1px solid $c-border;
 	border-radius: 4px;
+	background-color: white;
 	@include element(resizer) {
 		margin: 0 -5px;
 		width: 11px;
