@@ -5,9 +5,12 @@
 </template>
 
 <script>
+import hljs from 'highlight.js';
 import { ajax } from '@wya/http';
 // import md from '../markdown';
 import md from '../md';
+
+import 'highlight.js/styles/github.css';
 
 let socket;
 if (__DEV__) {
@@ -90,6 +93,10 @@ export default {
 					data: res,
 				});
 				
+				this.$nextTick(() => {
+					const blocks = this.$el.querySelectorAll('pre code:not(.hljs)');
+					Array.prototype.forEach.call(blocks, hljs.highlightBlock);
+				});
 			}).catch((e) => {
 				console.log(e);
 			});
