@@ -41,10 +41,21 @@ export default {
 					this.codeVM = null;
 				}
 
-				const { template, script } = transpile(this.source);
+				const { template, script, style } = transpile(this.source);
 
 				const el = document.createElement('div');
 				parent.appendChild(el);
+
+				if (style) {
+					let styleEl = parent.querySelector('style[data-playground]');
+					if (!styleEl) {
+						styleEl = document.createElement('style');
+						styleEl.type = 'text/css';
+						styleEl.dataset.playground = true;
+					}
+					styleEl.innerHTML = style;
+					parent.appendChild(styleEl);
+				}
 
 				this.codeVM = new Vue({ 
 					template,

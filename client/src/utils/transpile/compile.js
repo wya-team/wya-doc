@@ -6,9 +6,6 @@ export default (code, scope) => {
 	const template = stripTemplate(code);
 	let script = stripScript(code);
 	const style = stripStyle(code);
-	// console.log(template, '------------temp');
-	// console.log(script, '--------scr');
-	// console.log(style, '--------sty');
 
 	script = transform(script);
 	if (!template && !script && !style) {
