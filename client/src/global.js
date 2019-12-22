@@ -19,6 +19,12 @@ class GlobalBase {
 			name: 'wyadoc',
 			version: __DOC_VERSION__
 		});
+
+		// TODO: global dependence from doc.config
+		this.dependence = {
+			'@wya/utils': require('@wya/utils'),
+			'@wya/vc': require('@wya/vc/lib/vc')
+		};
 	}
 }
 

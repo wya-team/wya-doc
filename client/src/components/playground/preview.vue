@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import { compile, stripTemplate, stripScript, stripStyle } from '@utils/index';
+import { transpile } from '@utils/index';
 
 export default {
 	name: 'c-playground-preview',
@@ -40,19 +40,17 @@ export default {
 					this.codeVM.$el && parent.removeChild(this.codeVM.$el);
 					this.codeVM = null;
 				}
-				const template = stripTemplate(this.source);
-				const script = stripScript(this.source);
-				const style = stripStyle(this.source);
-				const result = compile(script, this.$global);
-				// const { render, staticRenderFns } = compile(template);
+
+				const { template, script } = transpile(this.source);
+
 				const el = document.createElement('div');
 				parent.appendChild(el);
+
 				this.codeVM = new Vue({ 
-					// render,
-					// staticRenderFns,
 					template,
-					...result
+					...script
 				}).$mount(el);
+
 				this.$emit('update:error', '');
 			} catch (error) {
 				this.$emit('update:error', error);

@@ -36,6 +36,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.7.5",
     "@babel/preset-env": "^7.7.6",
     "@babel/runtime": "^7.7.4",
+    "@babel/standalone": "^7.7.7",
     "@wya/http": "^1.1.10",
     "@wya/ps": "^1.0.2",
     "@wya/sass": "^1.1.10",
