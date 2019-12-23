@@ -60,7 +60,6 @@ class Config {
 				rules: [
 					{
 						test: /\.js$/,
-						exclude: /node_modules/,
 						include: loaderPath,
 						use: {
 							loader: 'babel-loader',
@@ -88,6 +87,20 @@ class Config {
 										{
 											"loose": true
 										}
+									],
+									[
+										"import",
+										{
+											"libraryName": "@wya/vc",
+											"libraryDirectory": "lib",
+											"customName": (name) => {
+												if (/^m-/.test(name)) {
+													return `@wya/vc/lib/${name.replace(/^m-/, '')}/index.m`;
+												}
+												return `@wya/vc/lib/${name}`;
+											}
+										},
+										"@wya/vc"
 									]
 								]
 							}
