@@ -8,11 +8,17 @@ module.exports = class App {
 	constructor(options = {}) {
 		const defaultOptions = {
 			withI18n: false,
-			config: 'doc.config.js'
+			config: 'doc.config.js',
+			browser: 'doc.browser.js'
 		};
 		this.options = { ...defaultOptions, ...options };
 		
 		this.sourceDir = this.options.sourceDir || path.join(__dirname, 'docs.fallback');
+
+		this.browserDir = fs.pathExistsSync(path.resolve(this.sourceDir, this.options.browser))
+			? path.resolve(this.sourceDir, this.options.browser)
+			: null;
+
 		this.cwd = process.cwd();
 
 		if (!fs.existsSync(this.sourceDir)) {

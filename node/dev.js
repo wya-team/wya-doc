@@ -9,8 +9,6 @@ const Config = require('./config');
 const { localhost } = require('./helper');
 const setSocket = require('./helper/socket');
 
-
-
 class DevProcess extends EventEmitter {
 	constructor(parent) {
 		super();

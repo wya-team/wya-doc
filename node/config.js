@@ -21,7 +21,7 @@ class Config {
 
 	generateDefault() {
 		let { port, host } = this.$parent;
-		const { docConfig = {}, sourceDir } = this.$parent.$parent;
+		const { docConfig = {}, sourceDir, browserDir } = this.$parent.$parent;
 		const { webpackConfig, runtime } = docConfig || {};
 		const { devServer, ...override } = webpackConfig || {};
 		const ENV_IS_DEV = process.env.NODE_ENV === 'development';
@@ -164,7 +164,7 @@ class Config {
 		// 不允许被覆盖的配置
 		const noOverrideConfig = {
 			// 入口文件，是模块构建的起点
-			entry: path.resolve(__dirname, '../client/src/index.js'),
+			entry: [browserDir, path.resolve(__dirname, '../client/src/index.js')].filter(i => !!i),
 		};
 
 		return merge(defaultOptions, override, noOverrideConfig);
