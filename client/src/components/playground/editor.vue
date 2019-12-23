@@ -1,6 +1,10 @@
 <template>
 	<div class="c-playground-editor">
-		<c-playground-toolbar @fullscreen-toggle="$emit('fullscreen-toggle', arguments[0])" />
+		<c-playground-toolbar 
+			:code="code"
+			@fullscreen-toggle="$emit('fullscreen-toggle', arguments[0])"
+		/>
+
 		<textarea :id="uid" />
 	</div>
 </template>
@@ -33,7 +37,7 @@ export default {
 	data() {
 		return {
 			editor: null,
-			code: '',
+			code: this.value,
 			uid: getUid()
 		};
 	},
