@@ -1,9 +1,8 @@
 <template>
 	<div class="v-index">
-		<router-link to="/zh-CN/components/alert">
+		<router-link to="/zh-CN/components/installation">
 			<h1>Hello @wya/doc - zh-CN</h1>
 		</router-link>
-		<c-playground />
 	</div>
 </template>
 
@@ -20,5 +19,6 @@ export default {
 	align-items: center;
 	justify-content: center;
 	flex: 1;
+	min-height: 600px;
 }
 </style>

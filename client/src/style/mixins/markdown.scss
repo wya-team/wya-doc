@@ -236,6 +236,9 @@
 	display: block;
 	width: 100%;
 	overflow: auto;
+
+	border-spacing: 0;
+	border-collapse: collapse;
 }
 
 .g-md-reset table th {

@@ -29,9 +29,6 @@ export default {
 	directives: {
 		md
 	},
-	props: {
-		layoutStatus: Object
-	},
 	data() {
 		return {
 			content: ''
@@ -39,7 +36,7 @@ export default {
 	},
 	computed: {
 		contentStyle() {
-			return this.layoutStatus.sidebar 
+			return this.$parent.sidebar 
 				? {
 					marginLeft: '300px', 
 					paddingBottom: '60px',
@@ -57,18 +54,23 @@ export default {
 		}
 	},
 	mounted() {
-		this.$vc.on('lang-change', this.loadData);
+		this.$vc.on('locale-change', this.loadData);
 		socket && socket.on('md-update', this.loadData);
 	},
 	beforeDestroy() {
-		this.$vc.off('lang-change', this.loadData);
+		this.$vc.off('locale-change', this.loadData);
 		socket && socket.off('md-update', this.loadData);
 	},
 	methods: {
 		async loadData() {
-			let { name } = this.$route.params;
-			let lang = this.$route.path.split('/')[1];
-			let url = location.origin + `${__DOC_MD_DIR__}${lang}/${name}.md`;
+			let { name: $name } = this.$route.params;
+			let $locale = this.$route.path.split('/')[1];
+			
+			let { baseMDDir } 	= this.$global.docConfig;
+			let url = typeof baseMDDir === 'string' 
+				? `${location.origin}${baseMDDir}${$locale}/${$name}.md`
+				: baseMDDir($locale, $name);
+
 			let data;
 
 			if (!__DEV__) {
@@ -92,10 +94,10 @@ export default {
 					data: res,
 				});
 				
-				this.$nextTick(() => {
-					const blocks = this.$el.querySelectorAll('pre code:not(.hljs)');
-					Array.prototype.forEach.call(blocks, hljs.highlightBlock);
-				});
+				// this.$nextTick(() => {
+				// 	const blocks = this.$el.querySelectorAll('pre code:not(.hljs)');
+				// 	[...blocks].forEach(hljs.highlightBlock);
+				// });
 			}).catch((e) => {
 				console.log(e);
 			});

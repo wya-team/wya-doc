@@ -1,10 +1,10 @@
 <template>
 	<div id="pages">
-		<router-view name="header" :layout-status="layoutStatus" />
-		<router-view name="sidebar" :layout-status="layoutStatus" />
-		<router-view :layout-status="layoutStatus" />
-		<router-view name="footer" :layout-status="layoutStatus" />
-		<router-view name="extra" :layout-status="layoutStatus" />
+		<router-view name="header" />
+		<router-view name="sidebar" />
+		<router-view />
+		<router-view name="footer" />
+		<router-view name="extra" />
 	</div>
 </template>
 

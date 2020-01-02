@@ -1,9 +1,7 @@
-import Vc from '@wya/vc/lib/vc/index';
-import { Storage } from '@wya/utils';
+import WYA_VC from '@wya/vc';
+import * as Utils from '@wya/utils';
 import { IndexedDB } from './utils';
-import Playground from './components/playground';
-import { LANG_TAG } from './constants';
-import Alert from './components/vc-alert';
+import { LOCALE_TAG } from './constants';
 
 class GlobalBase {
 	constructor() {
@@ -13,17 +11,26 @@ class GlobalBase {
 		this.version = __DOC_VERSION__;
 
 		// 当前选择语言
-		this.lang = (Storage.get(LANG_TAG) || {}).lang;
+		this.lang = (Utils.Storage.get(LOCALE_TAG) || {}).lang;
 
 		this.db = new IndexedDB({
 			name: 'wyadoc',
 			version: __DOC_VERSION__
 		});
 
+		this.docConfig = {
+			...(window.$docConfig || {}),
+			version: __DOC_VERSION__,
+			locales: __DOC_LOCALES__,
+			layout: __DOC_LAYOUT__,
+			baseSiteDir: __DOC_SITE_DIR__,
+			baseMDDir: __DOC_MD_DIR__ || ((locale, name) => `${location.origin}/docs/${locale}/${name}.md`),
+		};
+
 		// TODO: global dependence from doc.config
 		this.dependence = {
-			'@wya/utils': require('@wya/utils'),
-			'@wya/vc': require('@wya/vc'),
+			'@wya/utils': Utils,
+			'@wya/vc': WYA_VC,
 		};
 	}
 }
@@ -34,9 +41,14 @@ export default {
 	install(Vue) {
 		Vue.prototype.$global = Global;
 
-		Vue.use(Vc);
-		Vue.component(Playground.name, Playground);
-		Vue.component(Alert.name, Alert);
+		Vue.use(WYA_VC);
+
+		Vue.filter('i18n', (value, locale) => {
+			if (!value) return '';
+			return typeof value === 'object' 
+				? value[locale]
+				: value;
+		});
 	}
 };
 

@@ -1,6 +1,6 @@
 <template>
 	<div class="v-index">
-		<router-link to="/en-US/components/alert">
+		<router-link to="/en-US/components/installation">
 			<h1>Hello @wya/doc - en-US</h1>
 		</router-link>
 	</div>
@@ -19,5 +19,6 @@ export default {
 	align-items: center;
 	justify-content: center;
 	flex: 1;
+	min-height: 600px;
 }
 </style>

@@ -1,8 +1,8 @@
 const path = require('path');
 const { js: beautify } = require('js-beautify');
 
-module.exports = ({ sourceDir, routes, i18n }) => {
-	let langs = Object.keys(i18n) || [''];
+module.exports = ({ sourceDir, routes, locales }) => {
+	let langs = Object.keys(locales) || [''];
 	let content = ''; 
 
 	// TODO: 文件是否存在

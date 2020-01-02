@@ -16,7 +16,7 @@ import 'codemirror/addon/selection/active-line.js';
 import 'codemirror/theme/material.css';
 import 'codemirror/lib/codemirror.css';
 
-import { getUid } from '@utils/index';
+import { Utils } from '@wya/utils';
 import Toolbar from './toolbar';
 
 export default {
@@ -38,7 +38,7 @@ export default {
 		return {
 			editor: null,
 			code: this.value,
-			uid: getUid()
+			uid: Utils.getUid('editor')
 		};
 	},
 	watch: {

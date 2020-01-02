@@ -37,14 +37,14 @@ module.exports = class App {
 
 		return new Promise((resolve, reject) => {
 			const { sourceDir } = this;
-			const { i18n, routes } = this.docConfig;
+			const { locales, routes } = this.docConfig;
 			// 输出文件
 			fs.outputFileSync(
 				path.resolve(__dirname, '../client/src/routes.js'), 
 				generateRoutes({
 					sourceDir,
 					routes, 
-					i18n,
+					locales,
 				}), 
 				'utf-8'
 			);
@@ -64,7 +64,7 @@ module.exports = class App {
 		const error = await new Promise(resolve => {
 			try {
 				this.devProcess
-					.on('fileChanged', ({ type, target }) => { 
+					.on('fileChanged', () => { 
 						this.process();
 					})
 					.createServer()

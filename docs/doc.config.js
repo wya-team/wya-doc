@@ -1,5 +1,6 @@
 const path = require('path');
 const sidebar = require('./nav.config.js');
+const ENV_IS_DEV = process.env.NODE_ENV === 'development';
 
 module.exports = {
 	version: '1.0.0',
@@ -33,24 +34,24 @@ module.exports = {
 			return '/zh-CN/index';
 		}
 	},
-	i18n: {
+	locales: {
 		'zh-CN': '简体中文',
 		'en-US': 'English'
 	},
 	webpackConfig: {
 		output: {
 			path: path.resolve(__dirname, '../site/'),
-			publicPath: process.env.NODE_ENV === 'development'
+			publicPath: ENV_IS_DEV
 				? '/'
 				: '/wya-doc/site/'
 		},
 		devServer: {},
 	},
-
 	runtime: { 
 		define: {
-			__DOC_SITE__: `'${process.env.NODE_ENV === 'development' ? '/' : '/wya-doc/site/'}'`,
-			__DOC_MD_DIR__: `'${process.env.NODE_ENV === 'development' ? '/docs/' : '/wya-doc/docs/'}'`,
+			__DOC_SITE_DIR__: `'${ENV_IS_DEV ? '/' : '/wya-doc/site/'}'`,
+			__DOC_MD_DIR__: `'${ENV_IS_DEV ? '/docs/' : '/wya-doc/docs/'}'`,
+			// __DOC_MD_DIR__: (lang, name) => { return lang + name; },
 			__DOC_VERSION__: "'1.0.0'",
 		}
 	}

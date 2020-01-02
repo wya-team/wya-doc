@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue';
-import { transpile } from '@utils/index';
+import transpile from './utils/index';
 
 export default {
 	name: 'c-playground-preview',

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import md from './md';
+import Playground from '../components/playground';
 
 export default (el, binding) => {
 	const source = binding.value;
@@ -9,12 +10,12 @@ export default (el, binding) => {
 	}
 	el.innerHTML = result;
 
-	const palygrounds = document.querySelectorAll('div[data-code]');
-	Array.prototype.forEach.call(palygrounds, it => {
+	const palygrounds = el.querySelectorAll('div[data-code]');
+	[...palygrounds].forEach(it => {
 		const code = it.dataset.code;
 		new Vue({
 			render(h) {
-				return <c-playground source={ code }></c-playground>;
+				return <Playground source={code} />;
 			}
 		}).$mount(`#${it.id}`);
 	});

@@ -9,7 +9,7 @@
     "dev": "doc dev ./docs",
     "build": "doc build ./docs",
     "lint": "esw --ext .vue,.js node/ client/",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "npm run lint -- --fix --color",
     "lint:watch": "npm run lint -- --fix --watch"
   },
   "author": "wya-team",
@@ -42,7 +42,7 @@
     "@wya/sass": "^1.1.10",
     "@wya/socket": "^1.0.3",
     "@wya/utils": "^1.5.2",
-    "@wya/vc": "^2.0.0-alpha.3",
+    "@wya/vc": "^2.0.0-alpha.10",
     "babel-loader": "^8.0.6",
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-syntax-jsx": "^6.18.0",

@@ -22,15 +22,11 @@ class Config {
 	generateDefault() {
 		let { port, host } = this.$parent;
 		const { docConfig = {}, sourceDir, browserDir } = this.$parent.$parent;
-		const { webpackConfig, runtime } = docConfig || {};
+		const { webpackConfig, runtime, locales, layout, externalResources, } = docConfig || {};
 		const { devServer, ...override } = webpackConfig || {};
 		const ENV_IS_DEV = process.env.NODE_ENV === 'development';
 
 		const loaderPath = [
-			path.resolve(__dirname, '../node_modules', "./@xls/public"),
-			path.resolve(__dirname, '../node_modules', "./@wya/vc"),
-			path.resolve(__dirname, '../node_modules', "./@wya/vm"),
-			path.resolve(__dirname, '../node_modules', "./iview"),
 			path.resolve(__dirname, '../client'),
 			sourceDir
 		];
@@ -60,7 +56,7 @@ class Config {
 				rules: [
 					{
 						test: /\.js$/,
-						include: loaderPath,
+						exclude: /node_modules/,
 						use: {
 							loader: 'babel-loader',
 							options: {
@@ -87,20 +83,6 @@ class Config {
 										{
 											"loose": true
 										}
-									],
-									[
-										"import",
-										{
-											"libraryName": "@wya/vc",
-											"libraryDirectory": "lib",
-											"customName": (name) => {
-												if (/^m-/.test(name)) {
-													return `@wya/vc/lib/${name.replace(/^m-/, '')}/index.m`;
-												}
-												return `@wya/vc/lib/${name}`;
-											}
-										},
-										"@wya/vc"
 									]
 								]
 							}
@@ -109,7 +91,7 @@ class Config {
 					{
 						test: /\.vue$/,
 						loader: 'vue-loader',
-						include: loaderPath
+						exclude: /node_modules/,
 					},
 					{
 						test: /\.(scss|css)$/,
@@ -149,9 +131,16 @@ class Config {
 				new VueLoaderPlugin(),
 				new HtmlWebpackPlugin({
 					__DEV__: ENV_IS_DEV, 
+					// TODO: 是否考虑针对dev也开放
+					externalResources: ENV_IS_DEV 
+						? ''
+						: externalResources || [
+							'//unpkg.com/@wya/vc/lib/vc.min.css',
+							'//unpkg.com/@wya/vc/lib/vc.min.js'
+						],
 					template: path.resolve(__dirname, '../client/index.tpl.html'),
 					inject: 'body',
-					filename: './index.html'
+					filename: './index.html',
 				}),
 				new FriendlyErrorsPlugin({
 					compilationSuccessInfo: {
@@ -160,8 +149,10 @@ class Config {
 				}),
 				new webpack.DefinePlugin({
 					__DEV__: JSON.stringify(ENV_IS_DEV),
+					__DOC_LOCALES__: JSON.stringify(locales),
+					__DOC_LAYOUT__: JSON.stringify(layout || {}),
 					__DOC_SOCKET__: `'ws://${host}:${++port}'`,
-					__DOC_SITE__: "'/'",
+					__DOC_SITE_DIR__: "'/'",
 					__DOC_VERSION__: "'1.0.0'",
 					...runtime.define
 				})
@@ -170,7 +161,9 @@ class Config {
 				? {
 					vue: 'Vue',
 					lodash: '_',
-					marked: 'marked'
+					'@babel/standalone': 'Babel',
+					'babel-plugin-transform-vue-jsx': 'babel-plugin-transform-vue-jsx',
+					'@wya/vc': 'WYA_VC',
 				}
 				: {}
 		};

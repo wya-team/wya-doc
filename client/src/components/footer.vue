@@ -1,34 +1,44 @@
 <template>
 	<div class="c-layout-footer">
 		<div class="c-layout-footer__content">
-			<div v-for="(items, index) in lists" :key="index" class="c-layout-footer__block">
+			<div v-for="(item, index) in group" :key="index" class="c-layout-footer__block">
 				<div class="c-layout-footer__block--title">
-					{{ index }}
+					{{ item.name | i18n(currentLocale) }}
 				</div>
-				<div v-for="(item, _index) in items" :key="_index" class="c-layout-footer__block--content">
-					<div class="c-layout-footer__list">
-						<div>{{ _index }}</div>
+				<div class="c-layout-footer__block--content">
+					<div v-for="(it, _index) in item.nav" :key="_index" class="c-layout-footer__list">
+						<div 
+							class="c-layout-footer__item"
+							@click="handleNav(item)"
+						>
+							{{ it.name | i18n(currentLocale) }}
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="c-layout-footer__copyright">
-			Copyright © 2020 WeiYiAn Inc.
+			{{ copyright | i18n(currentLocale) }}
 		</div>
 	</div>
 </template>
 
 <script>
+import { DEFAULT_FOOTER } from '../constants';
+import { URLSchema } from '../utils';
+
 export default {
 	name: 'c-layout-footer',
 	data() {
+		const locale = this.$route.path.split('/')[1];
+		const { layout = {} } = this.$global.docConfig;
+		const { footer = DEFAULT_FOOTER } = layout;
+		const { copyright, group } = DEFAULT_FOOTER || [];
+
 		return {
-			lists: [
-				Array.from({ length: 4 }),
-				Array.from({ length: 4 }),
-				Array.from({ length: 4 }),
-				Array.from({ length: 4 })
-			]
+			currentLocale: locale,
+			copyright,
+			group
 		};
 	},
 	mounted() {
@@ -36,6 +46,15 @@ export default {
 	},
 	beforeDestroy() {
 		this.$vc.emit('layout-footer', { status: false });
+	},
+	methods: {
+		handleNav(item) {
+			if (item.target || URLScreme.test(item.path)) {
+				window.open(item.path, item.target);
+			} else {
+				this.$router.push(`/${this.currentLocale}${item.path}`);
+			}
+		}
 	}
 };
 </script>
@@ -71,7 +90,11 @@ $block: c-layout-footer;
 		flex-direction: column;
 		@include element(item) {
 			width: 200px;
-			margin-bottom: 15px;
+			margin: 6px 0;
+			cursor: pointer;
+			&:hover {
+				color: #2d8cf0;
+			}
 		}
 	}
 	

@@ -38,7 +38,7 @@ class DevProcess extends EventEmitter {
 		// 	target
 		// });
 		
-		this.docsWatcher = chokidar.watch(
+		let mdWatcher = chokidar.watch(
 			['**/*.md'], 
 			{
 				cwd: this.$parent.sourceDir,
@@ -47,8 +47,21 @@ class DevProcess extends EventEmitter {
 			}
 		);	
 
-		this.docsWatcher.on('all', (type, fullpath) => {
+		mdWatcher.on('all', (type, fullpath) => {
 			this.socket.emit('md-update', { type, path: fullpath });
+		});
+
+		let jsWatcher = chokidar.watch(
+			['*.js'], 
+			{
+				cwd: this.$parent.sourceDir,
+				ignored: ['node_modules'],
+				ignoreInitial: true
+			}
+		);	
+
+		jsWatcher.on('all', () => {
+			this.emit('fileChanged');
 		});
 	}
 

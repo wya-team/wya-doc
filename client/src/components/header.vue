@@ -1,36 +1,60 @@
 <template>
 	<div class="c-layout-header">
 		<div class="c-layout-header__content">
-			<router-link to="/zh-CN/index">
+			<router-link :to="`/${currentLocale}${header.path}`">
 				<div class="c-layout-header__icon">
-					<img src="https://avatars3.githubusercontent.com/u/34465004?s=200&v=4" alt="">
-					<span>@wya/doc</span>
+					<img v-if="header.logo" :src="header.logo">
+					<span>{{ header.name }}</span>
 				</div>
 			</router-link>
-			<select v-model="currentLang" @change="handleChange">
-				<option 
-					v-for="lang in langs" 
-					:key="lang" 
-					:value="lang"
+			<div style="display: flex; align-items: center">
+				<div class="c-layout-header__nav">
+					<div 
+						v-for="(item, index) in header.nav"
+						:key="index"
+						:class="{'is-active': $route.path === `/${currentLocale}${item.path}`}"
+						class="c-layout-header__nav--item" 
+						@click="handleNav(item)"
+					>
+						<span>
+							{{ item.name | i18n(currentLocale) }}
+						</span>
+					</div>
+				</div>
+				<vc-select 
+					v-model="currentLocale" 
+					:portal="false"
+					style="width: 100px" 
+					@change="handleChange"
 				>
-					{{ lang }}
-				</option>
-			</select>
+					<vc-option 
+						v-for="(localeName, locale) in locales" 
+						:key="locale" 
+						:value="locale"
+					>
+						{{ localeName }}
+					</vc-option>
+				</vc-select>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>	
 import { Storage } from '@wya/utils';
-import { LANG_TAG } from '../constants';
+import { LOCALE_TAG, DEFAULT_HEADER } from '../constants';
+import { URLSchema } from '../utils';
 
 export default {
 	name: 'c-layout-header',
 	data() {
-		const lang = this.$route.path.split('/')[1];
+		const locale = this.$route.path.split('/')[1];
+		const { locales = [], layout = {} } = this.$global.docConfig;
+		const { header = DEFAULT_HEADER } = layout;
 		return {
-			currentLang: lang,
-			langs: ['zh-CN', 'en-US']
+			currentLocale: locale,
+			locales,
+			header
 		};
 	},
 	mounted() {
@@ -40,17 +64,25 @@ export default {
 		this.$vc.emit('layout-header', { status: false });
 	},
 	methods: {
-		handleChange(e) {
-			let value = e.target.value;
-			Storage.set(LANG_TAG, { lang: value });
-			this.$global.lang = value;
+		handleChange(value) {
+			Storage.set(LOCALE_TAG, { locale: value });
+			this.$global.locale = value;
 
+			const { baseSiteDir } = this.$global.docConfig;
 			// REPLACE
-			let lang = app.$route.path.split('/');
-			lang[1] = value; 
-			this.$router.replace(`${__DOC_SITE__}${lang.slice(1).join('/')}${location.search}${location.hash}`);
+			let locale = app.$route.path.split('/');
+			locale[1] = value; 
+			this.$router.replace(`${baseSiteDir}${locale.slice(1).join('/')}${location.search}${location.hash}`);
 
-			this.$vc.emit('lang-change');
+			this.$vc.emit('locale-change');
+		},
+
+		handleNav(item) {
+			if (item.target || URLSchema.test(item.path)) {
+				window.open(item.path, item.target);
+			} else {
+				this.$router.push(`/${this.currentLocale}${item.path}`);
+			}
 		}
 	}
 };
@@ -82,7 +114,8 @@ $block: c-layout-header;
 
 		margin: 0 auto;
 		width: 100%;
-		padding: 15px 30px;
+		height: 60px;
+		padding: 0 30px;
 
 		border: 0 solid #000;
 		box-sizing: border-box;
@@ -101,10 +134,41 @@ $block: c-layout-header;
 			display: inline-block;
 		}
 		span {
-			height: 15px;
+			height: 28px;
+			line-height: 28px;
 			display: inline-block;
 			margin-left: 15px;
+			font-weight: 600;
+			font-size: 16px;
+		}
+	}
+	@include element(nav) {
+		display: flex;
+		flex-direction: row;
+		flex-shrink: 0;
+		align-content: flex-start;
 
+		border: 0 solid #000;
+		box-sizing: border-box;
+		height: 60px;
+		@include modifier(item) {
+			position: relative;
+			display: flex;
+			align-items: center;
+
+			font-size: 14px;
+			padding: 5px 28px;
+			cursor: pointer;
+			box-sizing: border-box;
+			color: #697b8c;
+
+			&.is-active {
+				color: #873bf4;
+				box-shadow: inset 0 2px 0 #873bf4;
+			}
+			&:hover {
+				color: #873bf4;
+			}
 		}
 	}
 

@@ -4,8 +4,14 @@ import routes from './routes';
 import App from './app.vue';
 import GLOBAL from './global';
 
-import '@style/index.scss';
+if (__DEV__) {
+	require('@wya/vc/lib/vc.min.css');
+}
 
+// 使用import 会比上面提前引入
+require('@style/index.scss');
+
+const { baseSiteDir } = GLOBAL.docConfig || {};
 Vue.use(GLOBAL);
 Vue.use(Router);
 const router = new Router({
@@ -13,7 +19,7 @@ const router = new Router({
 	// TODO: 由webpack配置所得
 	base: process.env.NODE_ENV === 'development' 
 		? '/' 
-		: __DOC_SITE__,
+		: baseSiteDir,
 	routes
 });
 
@@ -37,9 +43,9 @@ router.onReady(() => {
 
 	// github pages hack
 	const curUrl = `${location.pathname}${location.search}${location.hash}`;
-	if (redirect && redirect.includes(__DOC_SITE__) && redirect != curUrl) {
+	if (redirect && redirect.includes(baseSiteDir) && redirect != curUrl) {
 		try {
-			router.push(redirect.replace(__DOC_SITE__, '/'));
+			router.push(redirect.replace(baseSiteDir, '/'));
 		} catch (e) {
 			location.href = redirect;
 		}
@@ -49,7 +55,7 @@ router.onReady(() => {
 	if (app.$global.lang && app.$global.lang != lang[1]) {
 		lang[1] = app.$global.lang; 
 
-		let url = `${__DOC_SITE__}${lang.slice(1).join('/')}${location.search}${location.hash}`;
+		let url = `${baseSiteDir}${lang.slice(1).join('/')}${location.search}${location.hash}`;
 		app.$router.replace(url);
 	}
 });
