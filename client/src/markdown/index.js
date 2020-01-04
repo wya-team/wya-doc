@@ -8,6 +8,7 @@ export default (el, binding) => {
 	if (source) {
 		result = md.render(source);
 	}
+	
 	el.innerHTML = result;
 
 	const palygrounds = el.querySelectorAll('div[data-code]');
@@ -19,5 +20,4 @@ export default (el, binding) => {
 			}
 		}).$mount(`#${it.id}`);
 	});
-	
 };

@@ -1,12 +1,13 @@
 <template>
-	<div class="c-playground-editor">
-		<c-playground-toolbar 
-			:code="code"
-			@fullscreen-toggle="$emit('fullscreen-toggle', arguments[0])"
-		/>
-
-		<textarea :id="uid" />
-	</div>
+	<vc-modal 
+		v-model="isActive" 
+		title="编辑" 
+		draggable 
+		:footer="false"
+		:mask="false"
+	>
+		<textarea />
+	</vc-modal>
 </template>
 
 <script>
@@ -16,64 +17,63 @@ import 'codemirror/addon/selection/active-line.js';
 import 'codemirror/theme/material.css';
 import 'codemirror/lib/codemirror.css';
 
-import { Utils } from '@wya/utils';
-import Toolbar from './toolbar';
+import { Portal, Modal } from '@wya/vc';
 
-export default {
+const wrapperComponent = {
 	name: 'c-playground-editor',
 	components: {
-		'c-playground-toolbar': Toolbar
-	},
-	model: {
-		prop: 'value',
-		event: 'change'
+		'vc-modal': Modal
 	},
 	props: {
-		value: {
+		source: {
 			type: String,
 			default: ''
+		},
+		onChange: {
+			type: Function,
+			default: () => (() => {})
 		}
 	},
 	data() {
 		return {
-			editor: null,
-			code: this.value,
-			uid: Utils.getUid('editor')
+			isActive: false,
 		};
 	},
-	watch: {
-		value(v) {
-			this.code !== v && this.editor.setValue(v);
-		}
+	created() {
+		this.editor = null;
 	},
 	mounted() {
-		this.editor = CodeMirror.fromTextArea(document.getElementById(this.uid), {
-			mode: 'text/javascript',
-			theme: 'material',
-			styleActiveLine: true // 光标所在行高亮
+		this.isActive = true;
+
+		this.$nextTick(() => { 
+			this.editor = CodeMirror.fromTextArea(this.$el.querySelector('textarea'), {
+				mode: 'text/javascript',
+				theme: 'material',
+				styleActiveLine: true // 光标所在行高亮
+			});
+			this.editor.setValue(this.source);
+			this.editor.focus();
+			this.editor.on('change', this.handleChange);
 		});
-		this.editor.setValue(this.value);
-		this.editor.on('change', this.handleCodeChange);
 	},
 	beforeDestroy() {
-		this.editor.off('change', this.handleCodeChange);
+		this.editor.off('change', this.handleChange);
 	},
 	methods: {
-		handleCodeChange(instance) {
-			this.code = this.editor.getValue();
-			this.$emit('change', this.code);
+		handleChange() {
+			this.onChange(this.editor.getValue());
 		}
 	},
 };
+
+export default wrapperComponent;
+export const Editor = new Portal(wrapperComponent, {
+	promise: false
+});
 </script>
 
 <style lang="scss">
 @include block(c-playground-editor) {
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
-	.CodeMirror {
-		flex-grow: 1;
-	}
+	
 }
 </style>
