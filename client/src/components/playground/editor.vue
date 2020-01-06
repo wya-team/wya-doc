@@ -67,6 +67,7 @@ const wrapperComponent = {
 	},
 	beforeDestroy() {
 		this.editor.off('change', this.handleChange);
+		this.drag.off();
 	},
 	methods: {
 		update() {

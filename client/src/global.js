@@ -1,4 +1,4 @@
-import WYA_VC from '@wya/vc';
+import * as WYA_VC from '@wya/vc';
 import * as Utils from '@wya/utils';
 import { IndexedDB } from './utils';
 import { LOCALE_TAG } from './constants';

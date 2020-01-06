@@ -68,7 +68,7 @@ export default {
 
 				style && Load.cssCode(style, { id: `style___${this.id}` });
 
-				this.codeVM = new Vue(module).$mount(div);
+				this.codeVM = new Vue(module && module.default ? module.default : module).$mount(div);
 
 				this.error = '';
 			} catch (error) {

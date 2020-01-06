@@ -58,20 +58,33 @@ export default class CompileCtor {
 	parse(code) {
 		try {
 			const { script, template, styles } = compiler.parseComponent(code);
-
 			const { render, staticRenderFns } = this.parseTemplate(template);
 			
-			const value = this.parseScript(script, { render, staticRenderFns });
-			const style = this.parseStyle((styles || []).map(i => i.content).join(`\n`) || '');
+			let value = this.parseScript(script, { render, staticRenderFns });
+			let style = this.parseStyle((styles || []).map(i => i.content).join(`\n`) || '');
+
+			if (!script && !template && !style) {
+				value = code;
+			}
 
 			code = `(function(){
 				var module = {};
 				module.exports = exports = {};
+
+				console.log(module)
 				${value};
-				return module.exports.__esModule ? module.exports.default : exports;
+				return module.exports.__esModule ? exports : module.exports.default;
 			})()`;
+
+			let module; 
+			try {
+				module = new Function(`return ${code}`)() || {};  // eslint-disable-line
+			} catch (e) { 
+				throw new Error(`${e.message} - 编译失败 - parse`);
+			}
+			
 			return {
-				module: new Function(`return ${code}`)() || {}, // eslint-disable-line
+				module,
 				style
 			};
 		} catch (e) {
@@ -112,7 +125,7 @@ export default class CompileCtor {
 				);
 
 			} catch (e) {
-				throw new Error(e);
+				throw new Error(`${e.message} - 编译失败 - template`);
 			}
 		}
 
@@ -122,10 +135,10 @@ export default class CompileCtor {
 		};
 	}
 
-	parseScript(script = {}, opts) {
-		let code;
+	parseScript(script, opts) {
+		script = script || {};
 		try {
-			code = Babel.transform(script.content || 'export default {};', {
+			return Babel.transform(script.content || 'export default {};', {
 				presets: ["env"],
 				plugins: [
 					"proposal-export-namespace-from",
@@ -153,9 +166,8 @@ export default class CompileCtor {
 				]
 			}).code;
 		} catch (e) {
-			throw new Error(e);
+			throw new Error(`${e.message} - 编译失败 - srcipt`);
 		}
-		return code;
 	}
 
 	/**

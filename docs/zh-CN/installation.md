@@ -2,7 +2,7 @@
 
 > zh-CN
 
-### 功能1
+### Basic
 
 :::demo 最后，这是一个同时具有 icon 和辅助性文字的样例。
 ```html
@@ -32,7 +32,7 @@ export default {
 ```
 :::
 
-### 功能2
+### Portal
 
 :::demo 最后，这是一个同时具有 icon 和辅助性文字的样例。
 ```html
@@ -43,7 +43,10 @@ export default {
 </template>
 
 <script>
-export default {
+import { Portal } from '@wya/vc';
+
+const wrapperComponent = {
+	name: 'v-portal',
 	mounted() {
 		console.log('mounted');
 	},
@@ -53,6 +56,9 @@ export default {
 		}
 	}
 };
+
+export default wrapperComponent;
+export const Editor = new Portal(wrapperComponent); 
 </script>
 
 <style>
