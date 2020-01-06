@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import routes from './routes';
 import App from './app.vue';
-import GLOBAL from './global';
+import GLOBAL, { Global } from './global';
 
 if (__DEV__) {
 	require('@wya/vc/lib/vc.min.css');
@@ -11,7 +11,6 @@ if (__DEV__) {
 // 使用import 会比上面提前引入
 require('@style/index.scss');
 
-const { baseSiteDir } = GLOBAL.docConfig || {};
 Vue.use(GLOBAL);
 Vue.use(Router);
 const router = new Router({
@@ -19,7 +18,7 @@ const router = new Router({
 	// TODO: 由webpack配置所得
 	base: process.env.NODE_ENV === 'development' 
 		? '/' 
-		: baseSiteDir,
+		: Global.docConfig.baseSiteDir,
 	routes
 });
 
