@@ -11,6 +11,7 @@ if (__DEV__) {
 // 使用import 会比上面提前引入
 require('@style/index.scss');
 
+const { baseSiteDir } = Global.docConfig || {};
 Vue.use(GLOBAL);
 Vue.use(Router);
 const router = new Router({
@@ -18,7 +19,7 @@ const router = new Router({
 	// TODO: 由webpack配置所得
 	base: process.env.NODE_ENV === 'development' 
 		? '/' 
-		: Global.docConfig.baseSiteDir,
+		: baseSiteDir,
 	routes
 });
 
