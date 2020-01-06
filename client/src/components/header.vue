@@ -98,7 +98,7 @@ $block: c-layout-header;
 
 	position: fixed;
 	top: 0px;
-	z-index: 99999;
+	z-index: 100;
 	width: 100%;
 
 	background-color: #fff;

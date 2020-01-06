@@ -162,7 +162,7 @@ class Config {
 					vue: 'Vue',
 					lodash: '_',
 					'@babel/standalone': 'Babel',
-					'babel-plugin-transform-vue-jsx': '"babel-plugin-transform-vue-jsx"',
+					'@babel/preset-env-standalone': 'BabelPresetEnv',
 					'@wya/vc': 'WYA_VC',
 				}
 				: {}

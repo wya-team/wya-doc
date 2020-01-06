@@ -49,7 +49,7 @@ export default {
 	},
 	methods: {
 		handleNav(item) {
-			if (item.target || URLScreme.test(item.path)) {
+			if (item.target || URLSchema.test(item.path)) {
 				window.open(item.path, item.target);
 			} else {
 				this.$router.push(`/${this.currentLocale}${item.path}`);

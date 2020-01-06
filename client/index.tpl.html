@@ -5,9 +5,9 @@
 	<% if(!htmlWebpackPlugin.options.__DEV__) { %>
 		<script src="//unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
 		<script src="//unpkg.com/lodash@4.17.15/lodash.min.js"></script>
-		<script src="//unpkg.com/@babel/polyfill@7.7.0/browser.js"></script>
-		<script src="//unpkg.com/@babel/standalone/babel.min.js"></script>
-		<script src="//unpkg.com/babel-plugin-transform-vue-jsx@next/dist/babel-plugin-transform-vue-jsx.min.js"></script>
+		<script src="//unpkg.com/@babel/polyfill@7/browser.js"></script>
+		<script src="//unpkg.com/@babel/standalone@7/babel.min.js"></script>
+		<script src="//unpkg.com/@babel/preset-env-standalone@7/babel-preset-env.min.js"></script>
 			<% for (var i in htmlWebpackPlugin.options.externalResources) { %>
 				<% var item = htmlWebpackPlugin.options.externalResources[i] %>
 				<% if(/.css$/.test(item)) { %>
@@ -18,7 +18,7 @@
 			<% } %>
 	<% } %>
 </head>
-<body>
+<body class="PORTAL_TAG_DISABLE">
 	<div id="pages"></div>
 </body>
 </html>

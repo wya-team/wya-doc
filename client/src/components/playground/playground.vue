@@ -9,14 +9,15 @@
 		<div v-if="error" class="c-playground__error">
 			{{ error }}
 		</div>
-		<section v-else ref="preview" class="c-playground__preview" />
+		<section v-show="!error" ref="preview" class="c-playground__preview" />
 	</div>
 </template>
 
 <script>
 import Vue from 'vue';
+import { Load } from '@wya/utils';
 import { Editor } from './editor';
-import transpile from './utils/index';
+import { transpile, Compiler } from './helper';
 
 export default {
 	name: 'c-playground',
@@ -24,6 +25,10 @@ export default {
 		source: {
 			type: String,
 			default: ''
+		},
+		id: {
+			type: String,
+			required: true
 		}
 	},
 	data() {
@@ -56,35 +61,25 @@ export default {
 					this.codeVM = null;
 				}
 
-				const { template, script, style } = transpile(this.code);
-
 				const div = document.createElement('div');
 				el.appendChild(div);
 
-				if (style) {
-					let styleEl = el.querySelector('style[data-playground]');
-					if (!styleEl) {
-						styleEl = document.createElement('style');
-						styleEl.type = 'text/css';
-						styleEl.dataset.playground = true;
-					}
-					styleEl.innerHTML = style;
-					el.appendChild(styleEl);
-				}
+				const { module, style } = Compiler.parse(this.code);
 
-				this.codeVM = new Vue({ 
-					template,
-					...script
-				}).$mount(div);
+				style && Load.cssCode(style, { id: `style___${this.id}` });
+
+				this.codeVM = new Vue(module).$mount(div);
 
 				this.error = '';
 			} catch (error) {
 				this.error = error;
+
+				console.error(error);
 			}
 		},
 		handleEditor() {
 			Editor.popup({
-				source: this.source,
+				source: this.code,
 				onChange: (code) => {
 					this.code = code;
 					this.renderCode(code);

@@ -34,6 +34,10 @@ const app = new Vue({
 	}
 });
 
+router.beforeEach((to, from, next) => {
+	app.$vc.clear();
+	next();
+});
 // 先不考虑服务端渲染情况
 router.onReady(() => {
 	app.$mount();

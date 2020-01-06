@@ -1,12 +1,12 @@
 import Vue from 'vue';
-import md from './md';
-import Playground from '../components/playground';
+import Helper from './helper';
+import Playground from '../components/playground/playground';
 
 export default (el, binding) => {
 	const source = binding.value;
 	let result = '';
 	if (source) {
-		result = md.render(source);
+		result = Helper.render(source);
 	}
 	
 	el.innerHTML = result;
@@ -16,7 +16,12 @@ export default (el, binding) => {
 		const code = it.dataset.code;
 		new Vue({
 			render(h) {
-				return <Playground source={code} />;
+				return h(Playground, {
+					attrs: {
+						source: code,
+						id: it.id
+					}
+				});
 			}
 		}).$mount(`#${it.id}`);
 	});

@@ -20,16 +20,16 @@
 						<span v-else>{{ item.name | i18n(currentLocale) }}</span>
 					</div>
 					<ul v-if="item.children">
-						<li
+						<router-link
 							v-for="(subNav, subIndex) in item.children"
 							:key="subIndex"
 							:class="{'is-active': $route.path === `${rootPath}${subNav.path}`}"
+							:to="`${rootPath}${subNav.path}`"
+							tag="li"
 							class="c-layout-sidebar__item"
 						>
-							<router-link :to="`${rootPath}${subNav.path}`">
-								{{ subNav.name | i18n(currentLocale) }}
-							</router-link>
-						</li>
+							{{ subNav.name | i18n(currentLocale) }}
+						</router-link>
 					</ul>
 					<ul v-else-if="item.group">
 						<li
@@ -40,16 +40,16 @@
 								{{ group.name | i18n(currentLocale) }}
 							</div>
 							<ul>
-								<li 
+								<router-link 
 									v-for="component in group.list"
 									:key="component.path"
 									:class="{'is-active': $route.path === `${rootPath}${component.path}`}"
+									:to="`${rootPath}${component.path}`"
+									tag="li"
 									class="c-layout-sidebar__item"
 								>
-									<router-link :to="`${rootPath}${component.path}`">
-										{{ component.name | i18n(currentLocale) }}
-									</router-link>
-								</li>
+									{{ component.name | i18n(currentLocale) }}
+								</router-link>
 							</ul>
 						</li>
 					</ul>
@@ -137,23 +137,19 @@ export default {
 		}
 
 		.c-layout-sidebar__item {
-			a {
-				padding-left: 54px;
-				color: #697b8c;
-				font-size: 12px;
-				letter-spacing: 0px;
-				height: 36px;
-				line-height: 36px;
-				cursor: pointer;
-				font-size: 14px;
-				font-weight: 400;
-			}
+			padding-left: 54px;
+			color: #697b8c;
+			font-size: 12px;
+			letter-spacing: 0px;
+			height: 36px;
+			line-height: 36px;
+			cursor: pointer;
+			font-size: 14px;
+			font-weight: 400;
 			&.is-active {
 				border-right: 3px solid #873bf4;
 				background-color: #f9f0ff;
-				a {
-					color: #873bf4;
-				}
+				color: #873bf4;
 			}
 			&:hover {
 				background: #f9f9f9;

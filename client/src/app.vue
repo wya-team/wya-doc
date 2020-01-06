@@ -37,6 +37,7 @@ export default {
 			};
 		},
 	},
+
 	created() {
 		this.$vc.on('layout-sidebar', ({ status }) => {
 			this.sidebar = status;
