@@ -1,13 +1,18 @@
 {
   "name": "@wya/doc",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.1",
   "description": "wya-doc for js",
   "main": "index.js",
-  "files": [],
+  "files": [
+      "client/**",
+      "node/**",
+      "bin/**"
+  ],
   "scripts": {
     "link": "npm link",
     "dev": "doc dev ./docs",
     "build": "doc build ./docs",
+    "pub": "npm publish --access public",
     "lint": "esw --ext .vue,.js node/ client/",
     "lint:fix": "npm run lint -- --fix --color",
     "lint:watch": "npm run lint -- --fix --watch"
