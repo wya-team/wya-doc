@@ -1,12 +1,15 @@
 import Vue from 'vue';
-import Helper from './helper';
-import Playground from '../components/playground/playground';
+import { Markdown } from '../utils';
+import Playground from '../components/playground';
 
+/**
+ * directive
+ */
 export default (el, binding) => {
 	const source = binding.value;
 	let result = '';
 	if (source) {
-		result = Helper.render(source);
+		result = Markdown.render(source);
 	}
 	
 	el.innerHTML = result;

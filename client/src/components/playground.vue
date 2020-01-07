@@ -3,7 +3,9 @@
 		<div class="c-playground__header">
 			<div />
 			<div class="c-playground__tools">
-				<vc-clipboard :value="code" tag="span">{{ copyText | i18n(currentLocale) }}</vc-clipboard>
+				<vc-clipboard :value="code" tag="span">
+					{{ copyText | i18n(currentLocale) }}
+				</vc-clipboard>
 				<span @click="handleEditor">&lt;/&gt;</span>
 			</div>
 		</div>
@@ -18,9 +20,9 @@
 import Vue from 'vue';
 import { Load } from '@wya/utils';
 import { Clipboard } from '@wya/vc';
-import { Editor } from './editor';
-import { Compiler } from './helper';
-import { COPY } from '../../constants';
+import { Editor } from './popup/editor';
+import { Compiler } from '../utils';
+import { COPY } from '../constants';
 
 export default {
 	name: 'c-playground',

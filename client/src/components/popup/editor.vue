@@ -21,7 +21,7 @@ import 'codemirror/addon/selection/active-line.js';
 import 'codemirror/theme/material.css';
 import 'codemirror/lib/codemirror.css';
 import { Portal, Transition } from '@wya/vc';
-import { Drag } from './helper';
+import { Drag } from '../../utils';
 
 const wrapperComponent = {
 	name: 'c-playground-editor',
