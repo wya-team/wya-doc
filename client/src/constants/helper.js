@@ -1,16 +1,27 @@
 export const LOCALE_TAG = '@wya/doc/locale';
 
+export const COPY = {
+	'zh-CN': "复制",
+	'en-US': "Copy",
+};
+
 export const DEFAULT_HEADER = {
 	name: '@wya/doc',
 	logo: 'https://avatars3.githubusercontent.com/u/34465004?s=200&v=4',
 	path: '/index',
 	nav: [
 		{
-			name: '首页',
+			"name": {
+				'zh-CN': "首页",
+				'en-US': "Home",
+			},
 			path: '/index'
 		},
 		{
-			name: '团队地址',
+			"name": {
+				'zh-CN': "团队地址",
+				'en-US': "Team Site",
+			},
 			path: 'https://github.com/wya-team',
 			// _blank | _self 
 			target: '_blank',

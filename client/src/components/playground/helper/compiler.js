@@ -63,8 +63,6 @@ export default class CompileCtor {
 			code = `(function(){
 				var module = {};
 				module.exports = exports = {};
-
-				console.log(module)
 				${value};
 				return module.exports.__esModule ? exports : module.exports.default;
 			})()`;

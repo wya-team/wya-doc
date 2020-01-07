@@ -86,10 +86,10 @@ export default {
 		this.$vc.off('locale-change', this.handleUpdate);
 	},
 	methods: {
-		handleUpdate(v) {
+		handleUpdate({ locale }) {
 			const { sidebar } = this.$route.meta || {};
 			this.navs = sidebar;
-			this.currentLocale = v;
+			this.currentLocale = locale;
 		}
 	}
 };

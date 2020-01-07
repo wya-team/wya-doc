@@ -3,6 +3,7 @@
 		<div class="c-playground__header">
 			<div />
 			<div class="c-playground__tools">
+				<vc-clipboard :value="code" tag="span">{{ copyText | i18n(currentLocale) }}</vc-clipboard>
 				<span @click="handleEditor">&lt;/&gt;</span>
 			</div>
 		</div>
@@ -16,11 +17,16 @@
 <script>
 import Vue from 'vue';
 import { Load } from '@wya/utils';
+import { Clipboard } from '@wya/vc';
 import { Editor } from './editor';
-import { transpile, Compiler } from './helper';
+import { Compiler } from './helper';
+import { COPY } from '../../constants';
 
 export default {
 	name: 'c-playground',
+	components: {
+		'vc-clipboard': Clipboard
+	},
 	props: {
 		source: {
 			type: String,
@@ -32,7 +38,9 @@ export default {
 		}
 	},
 	data() {
+		const locale = this.$route.path.split('/')[1];
 		return {
+			currentLocale: locale,
 			code: '',
 			error: ''
 		};
@@ -45,6 +53,9 @@ export default {
 				this.renderCode();
 			}
 		}
+	},
+	created() {
+		this.copyText = COPY;
 	},
 	mounted() {
 		this.renderCode();
@@ -112,10 +123,14 @@ $block: c-playground;
 		@include element(tools) {
 			display: flex;
 			align-items: center;
-			font-size: 20px;
+			font-size: 14px;
 			line-height: 20px;
 			> span {
 				cursor: pointer;
+				margin-left: 10px;
+			}
+			> span:last-child {
+				font-size: 20px;
 			}
 		}
 	}

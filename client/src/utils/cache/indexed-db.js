@@ -70,8 +70,8 @@ export default class IndexedDB {
 					db.close();
 					resolve();
 				}).catch((e) => {
-					console.log(e);
-					reject();
+					console.error(e);
+					reject(e);
 				});
 		});
 	}
@@ -93,8 +93,8 @@ export default class IndexedDB {
 					request.onerror = reject;
 
 				}).catch((e) => {
-					console.log(e);
-					reject();
+					console.error(e);
+					reject(e);
 				});
 		});
 	}
@@ -115,8 +115,8 @@ export default class IndexedDB {
 					request.onerror = reject;
 
 				}).catch((e) => {
-					console.log(e);
-					reject();
+					console.error(e);
+					reject(e);
 				});
 		});
 	}
@@ -134,8 +134,8 @@ export default class IndexedDB {
 					request.onerror = reject;
 
 				}).catch((e) => {
-					console.log(e);
-					reject();
+					console.error(e);
+					reject(e);
 				});
 		});
 	}
@@ -154,8 +154,8 @@ export default class IndexedDB {
 					request.onreject = reject;
 
 				}).catch((e) => {
-					console.log(e);
-					reject();
+					console.error(e);
+					reject(e);
 				});
 		});
 	}
@@ -182,8 +182,8 @@ export default class IndexedDB {
 					request.onerror = reject;
 
 				}).catch((e) => {
-					console.log(e);
-					reject();
+					console.error(e);
+					reject(e);
 				});
 		});
 	}

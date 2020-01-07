@@ -74,7 +74,11 @@ export default {
 			let data;
 
 			if (!__DEV__) {
-				data = (await this.$global.db.read(url) || {}).data;
+				try {
+					data = (await this.$global.db.read(url) || {}).data;
+				} catch (e) {
+					console.log(e);
+				}
 			}
 			ajax({
 				url,
@@ -93,11 +97,7 @@ export default {
 					__id: url,
 					data: res,
 				});
-				
-				// this.$nextTick(() => {
-				// 	const blocks = this.$el.querySelectorAll('pre code:not(.hljs)');
-				// 	[...blocks].forEach(hljs.highlightBlock);
-				// });
+
 			}).catch((e) => {
 				console.log(e);
 			});

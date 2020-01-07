@@ -59,7 +59,7 @@ router.onReady(() => {
 	if (app.$global.lang && app.$global.lang != lang[1]) {
 		lang[1] = app.$global.lang; 
 
-		let url = `${lang.slice(1).join('/')}${location.search}${location.hash}`;
+		let url = `/${lang.slice(1).join('/')}${location.search}${location.hash}`;
 		app.$router.replace(url);
 	}
 });

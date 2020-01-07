@@ -44,8 +44,8 @@ export default {
 
 		Vue.filter('i18n', (value, locale) => {
 			if (!value) return '';
-			return typeof value === 'object' 
-				? value[locale]
+			return typeof value === 'object'  
+				? value[locale] || value['en-US'] || '-'
 				: value;
 		});
 	}
