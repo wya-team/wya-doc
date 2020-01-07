@@ -27,7 +27,6 @@ class GlobalBase {
 			baseMDDir: __DOC_MD_DIR__ || ((locale, name) => `${location.origin}/docs/${locale}/${name}.md`),
 		};
 
-		// TODO: global dependence from doc.config
 		this.dependence = {
 			'@wya/utils': Utils,
 			'@wya/vc': WYA_VC,

@@ -72,7 +72,7 @@ export default {
 			// REPLACE
 			let locale = app.$route.path.split('/');
 			locale[1] = value; 
-			this.$router.replace(`${baseSiteDir}${locale.slice(1).join('/')}${location.search}${location.hash}`);
+			this.$router.replace(`${locale.slice(1).join('/')}${location.search}${location.hash}`);
 
 			this.$vc.emit('locale-change');
 		},

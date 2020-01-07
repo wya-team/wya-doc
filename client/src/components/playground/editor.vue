@@ -4,7 +4,7 @@
 			<div v-show="isActive" ref="wrapper" class="c-playground-editor__wrapper">
 				<div ref="bar" class="c-playground-editor__header">
 					<span>&lt;/&gt;</span>
-					<span style="cursor: pointer;" @click="hide" >&#10005;</span>
+					<span style="cursor: pointer;" @click="hide">&#10005;</span>
 				</div>
 				<div class="c-playground-editor__editor">
 					<textarea ref="textarea" />

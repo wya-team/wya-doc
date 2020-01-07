@@ -1,5 +1,6 @@
 const path = require('path');
 const sidebar = require('./nav.config.js');
+
 const ENV_IS_DEV = process.env.NODE_ENV === 'development';
 
 module.exports = {
