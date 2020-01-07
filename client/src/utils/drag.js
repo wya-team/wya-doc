@@ -51,6 +51,7 @@ export default class Drag {
 	}
 
 	off() {
+		const { el } = this;
 		el.removeEventListener(events.start, this.handleStart, false);
 	}
 

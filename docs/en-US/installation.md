@@ -4,7 +4,7 @@
 
 ### Basic
 
-:::demo
+:::RUNTIME
 ```html
 <template>
 	<div class="v-installation-1">
@@ -34,7 +34,7 @@ export default {
 
 ### Portal
 
-:::demo
+:::RUNTIME
 ```html
 <template>
 	<div class="v-installation-2">

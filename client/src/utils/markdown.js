@@ -3,7 +3,7 @@ import anchor from 'markdown-it-anchor';
 import mdContainer from 'markdown-it-container';
 import markdownIt from 'markdown-it';
 
-const PG_MARK = 'demo';
+const PG_MARK = 'RUNTIME';
 const config = new Config();
 
 config
