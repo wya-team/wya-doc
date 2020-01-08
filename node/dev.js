@@ -32,12 +32,6 @@ class DevProcess extends EventEmitter {
 	}
 
 	watchSourceFiles() {
-		// TODO	
-		// this.emit('fileChanged', {
-		// 	type,
-		// 	target
-		// });
-		
 		let mdWatcher = chokidar.watch(
 			['**/*.md'], 
 			{
@@ -47,12 +41,13 @@ class DevProcess extends EventEmitter {
 			}
 		);	
 
+		// add / unlink / change
 		mdWatcher.on('all', (type, fullpath) => {
 			this.socket.emit('md-update', { type, path: fullpath });
 		});
 
 		let jsWatcher = chokidar.watch(
-			['*.js'], 
+			['**/*.js'], 
 			{
 				cwd: this.$parent.sourceDir,
 				ignored: ['node_modules'],
@@ -60,7 +55,17 @@ class DevProcess extends EventEmitter {
 			}
 		);	
 
-		jsWatcher.on('all', () => {
+		jsWatcher.on('all', (type, fullpath) => {
+
+			if (!path.isAbsolute(fullpath)) {
+				fullpath = path.join(this.$parent.sourceDir, fullpath);
+			}
+
+			// Bust cache, 清理缓存，否则影响require
+			if (fullpath.endsWith('.js')) {
+				delete require.cache[fullpath];
+			}
+			
 			this.emit('fileChanged');
 		});
 	}
