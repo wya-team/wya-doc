@@ -3,7 +3,9 @@ import anchor from 'markdown-it-anchor';
 import mdContainer from 'markdown-it-container';
 import markdownIt from 'markdown-it';
 
-const PG_MARK = 'RUNTIME';
+const RUNTIME = 'RUNTIME';
+const TIP = 'TIP';
+const WARNING = 'WARNING';
 const config = new Config();
 
 config
@@ -23,14 +25,19 @@ config
 
 	.plugin('container')
 	.use($md => {
-		const reg = new RegExp(`^${PG_MARK}\\s*(.*)$`);
-		$md.use(mdContainer, PG_MARK, {
+		const reg = new RegExp(`^${RUNTIME}\\s*(.*)$`);
+		$md.use(mdContainer, RUNTIME, {
 			validate(params) {
 				return params.trim().match(reg);
 			}
 		});
+
+		$md.use(mdContainer, TIP);
+		$md.use(mdContainer, WARNING);
 	})
 	.end();
+
+
 
 const md = config.toMd(markdownIt);
 const defaultRender = md.renderer.rules.fence;
@@ -38,10 +45,10 @@ const defaultRender = md.renderer.rules.fence;
 md.renderer.rules.fence = (tokens, index, ...rest) => {
 	const prevToken = tokens[index - 1];
 
-	// 如果前一个token是:::[PG_MARK]，则表明这个token是需要被识别为playground的
+	// 如果前一个token是:::[RUNTIME]，则表明这个token是需要被识别为playground的
 	const isHit = prevToken 
 		&& prevToken.nesting === 1 
-		&& prevToken.info.match(new RegExp(`^${PG_MARK}\\s*(.*)$`));
+		&& prevToken.info.match(new RegExp(`^${RUNTIME}\\s*(.*)$`));
 	
 	return isHit
 		? `<div id="PG-${index}" data-code="${md.utils.escapeHtml(tokens[index].content)}"></div>`

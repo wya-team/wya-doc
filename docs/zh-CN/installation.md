@@ -2,6 +2,14 @@
 
 > zh-CN
 
+:::TIP
+zh-CN
+:::
+
+:::WARNING
+zh-CN
+:::
+
 ### Basic
 
 :::RUNTIME
