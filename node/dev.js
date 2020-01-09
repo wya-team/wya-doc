@@ -61,11 +61,12 @@ class DevProcess extends EventEmitter {
 				fullpath = path.join(this.$parent.sourceDir, fullpath);
 			}
 
-			// Bust cache, 清理缓存，否则影响require
+			// 清理缓存，否则影响require, 其他引用修改，也要清理入口
 			if (fullpath.endsWith('.js')) {
 				delete require.cache[fullpath];
+				delete require.cache[this.$parent.docDir];
 			}
-			
+
 			this.emit('fileChanged');
 		});
 	}

@@ -13,7 +13,7 @@ module.exports = [
 		},
 		"children": [
 			{
-				"path": "/installation",
+				"path": "/installationss",
 				"name": {
 					'zh-CN': "安装",
 					'en-US': "Installation",

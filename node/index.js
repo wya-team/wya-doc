@@ -14,7 +14,8 @@ module.exports = class App {
 		this.options = { ...defaultOptions, ...options };
 		
 		this.sourceDir = this.options.sourceDir || path.join(__dirname, 'docs.fallback');
-
+		
+		this.docDir = path.join(this.sourceDir, this.options.config);
 		this.browserDir = fs.pathExistsSync(path.resolve(this.sourceDir, this.options.browser))
 			? path.resolve(this.sourceDir, this.options.browser)
 			: null;
