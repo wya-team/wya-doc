@@ -1,285 +1,332 @@
 ## 安装
 
-> zh-CN
+> `zh-CN` zh-CN
 
 :::TIP
-zh-CN
+`zh-CN` zh-CN
 :::
 
 :::WARNING
-zh-CN
+`zh-CN` zh-CN
 :::
 
-### Basic
 
+---
+## 按钮（button）
+
+各种样式的按钮
+
+### 何时使用
+
+使用场景和使用方式
+
+### 基础用法
+通过`type`、`circle`控制按钮的样式
 :::RUNTIME
 ```html
 <template>
-	<div class="v-installation-1">
-		<div @click="handleClick">功能1</div>
+	<div class="vc-wrapper">
+		<vc-button>默认按钮</vc-button>
+		<vc-button type="primary">常规按钮</vc-button>
+		<vc-button type="error">错误按钮</vc-button>
+		<vc-button type="success">成功按钮</vc-button>
+		<vc-button type="warning">警告按钮</vc-button>
+		<vc-button type="text">文字按钮</vc-button>
+		<br>
+		<vc-button circle>默认按钮</vc-button>
+		<vc-button circle type="primary">常规按钮</vc-button>
+		<vc-button circle type="error">错误按钮</vc-button>
+		<vc-button circle type="success">成功按钮</vc-button>
+		<vc-button circle type="warning">警告按钮</vc-button>
 	</div>
 </template>
 
 <script>
+import { Button } from '@wya/vc';
 export default {
+	components: {
+		"vc-button": Button
+	},
 	mounted() {
-		console.log('mounted');
 	},
 	methods: {
-		handleClick() {
-			alert('click');
-		}
 	}
 };
 </script>
 <style>
-.v-installation-1 div {
-	color: red;
-};
+.vc-wrapper>button {
+	margin-bottom: 10px;
+}
 </style>
 ```
 :::
 
-### Portal
-
+### 禁用状态
+按钮不可用状态
 :::RUNTIME
 ```html
 <template>
-	<div class="v-installation-2">
-		<div @click="handleClick">功能2</div>
+	<div>
+		<vc-button disabled type="primary">常规按钮</vc-button>
 	</div>
 </template>
 
 <script>
-import { Portal } from '@wya/vc';
-
-const wrapperComponent = {
-	name: 'v-portal',
+import { Button } from '@wya/vc';
+export default {
+	components: {
+		"vc-button": Button
+	},
 	mounted() {
-		console.log('mounted');
 	},
 	methods: {
-		handleClick() {
-			alert('click');
-		}
 	}
 };
-
-export default wrapperComponent;
-export const Editor = new Portal(wrapperComponent); 
 </script>
-
 <style>
-.v-installation-2 div {
-	color: #873bf4;
-};
 </style>
 ```
 :::
 
+### 不同尺寸
+通过设置`size`为`large` `small`来设置尺寸为大、小的按钮，不设置或者设置`medium`，则尺寸为中
+:::RUNTIME
+```html
+<template>
+	<div class="vc-wrapper">
+		<vc-button size="large">大按钮</vc-button>
+		<vc-button>默认按钮</vc-button>
+		<vc-button size="small">小按钮</vc-button>
+		<br>
+		<vc-button circle size="large">大按钮</vc-button>
+		<vc-button circle>默认按钮</vc-button>
+		<vc-button circle size="small">小按钮</vc-button>
+	</div>
+</template>
 
-## 标题
-
-Markdown 语法：
-
+<script>
+import { Button } from '@wya/vc';
+export default {
+	components: {
+		"vc-button": Button
+	},
+	mounted() {
+	},
+	methods: {
+	}
+};
+</script>
+<style>
+.vc-wrapper>button {
+	margin-bottom: 10px;
+}
+</style>
 ```
-# 第一级标题 `<h1>` 
-## 第二级标题 `<h2>` 
-###### 第六级标题 `<h6>` 
+:::
+### 图标按钮
+:::RUNTIME
+```html
+<template>
+	<div class="vc-wrapper">
+		<vc-button icon="success" type="primary"></vc-button>
+		<vc-button icon="search" type="primary">搜索</vc-button>
+		<vc-button type="primary">搜索 <vc-icon type="search"/></vc-button>
+	</div>
+</template>
+
+<script>
+import { Button, Icon } from '@wya/vc';
+export default {
+	components: {
+		"vc-button": Button,
+		"vc-icon": Icon
+	},
+	mounted() {
+	},
+	methods: {
+	}
+};
+</script>
+<style>
+.vc-wrapper>button {
+	margin-bottom: 10px;
+}
+</style>
 ```
+:::
 
-效果如下：
+### 长按钮
+按钮长度跟随父元素长度
+:::RUNTIME
+```html
+<template>
+	<div>
+		<div class="vc-box"><vc-button type="primary" long>常规按钮</vc-button></div>
+		<div class="vc-box" style="width: 80%"><vc-button type="success" long>常规按钮</vc-button></div>
+		<div class="vc-box" style="width: 40%"><vc-button type="warning" long>常规按钮</vc-button></div>
+	</div>
+</template>
 
-# 第一级标题 `<h1>` 
-## 第二级标题 `<h2>` 
-###### 第六级标题 `<h6>` 
-
-
-
-## 强调
-
-Markdown 语法：
-
+<script>
+import { Button } from '@wya/vc';
+export default {
+	components: {
+		"vc-button": Button
+	},
+	mounted() {
+	},
+	methods: {
+		handlePromise1(e, callback) {
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					resolve();
+				}, 300000);	
+			});
+		},
+	}
+};
+</script>
+<style>
+.vc-box{
+	margin-bottom: 10px;
+}
+</style>
 ```
-*这些文字会生成`<em>`*
-_这些文字会生成`<u>`_
+:::
 
-**这些文字会生成`<strong>`**
-__这些文字会生成`<strong>`__
+### 点击按钮出现加载图标
+点击事件返回一个`promise`
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-button type="primary" @click="handlePromise1">点击加载</vc-button>
+	</div>
+</template>
+
+<script>
+import { Button } from '@wya/vc';
+export default {
+	components: {
+		"vc-button": Button
+	},
+	mounted() {
+	},
+	methods: {
+		handlePromise1(e, callback) {
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					resolve();
+				}, 300000);	
+			});
+		},
+	}
+};
+</script>
+<style>
+</style>
 ```
+:::
 
-效果如下：
+### 按钮组合
+需要用`vc-button-group`包裹，根据`vertical`控制按钮组是水平还是垂直
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-button-group>
+			<vc-button>左</vc-button>
+			<vc-button>右</vc-button>
+		</vc-button-group>
+		<vc-button-group vertical>
+			<vc-button type="primary" icon="up" />
+			<vc-button type="primary" icon="down" />
+		</vc-button-group>
+	</div>
+</template>
 
-*这些文字会生成`<em>`*
-_这些文字会生成`<u>`_
-
-**这些文字会生成`<strong>`**
-__这些文字会生成`<strong>`__
-
-## 换行
-
-四个及以上空格加回车。
-
-## 列表
-
-### 无序列表
-
-Markdown 语法：
-
+<script>
+import { Button } from '@wya/vc';
+export default {
+	components: {
+		"vc-button": Button
+	},
+	mounted() {
+	},
+	methods: {
+	}
+};
+</script>
+<style>
+</style>
 ```
-* 项目一 无序列表 `* + 空格键`
-* 项目二
-* 项目二的子项目一 无序列表 `TAB + * + 空格键`
-* 项目二的子项目二
+:::
+
+### 不同尺寸的按钮组合
+需要用`vc-button-group`包裹，并在`vc-button-group`上通过设置`size`为`large` `small`来设置尺寸为大、小的按钮，不设置或者设置`medium`，则尺寸为中
+:::RUNTIME
+```html
+<template>
+	<div>
+		<vc-button-group size="large">
+			<vc-button>大按钮</vc-button>
+			<vc-button>大按钮</vc-button>
+			<vc-button>大按钮</vc-button>
+		</vc-button-group>
+		<br>
+		<vc-button-group>
+			<vc-button>常规按钮</vc-button>
+			<vc-button>常规按钮</vc-button>
+			<vc-button>常规按钮</vc-button>
+		</vc-button-group>
+		<br>
+		<vc-button-group size="small">
+			<vc-button>小按钮</vc-button>
+			<vc-button>小按钮</vc-button>
+			<vc-button>小按钮</vc-button>
+		</vc-button-group>
+	</div>
+</template>
+
+<script>
+import { Button } from '@wya/vc';
+export default {
+	components: {
+		"vc-button": Button
+	},
+	mounted() {
+	},
+	methods: {
+	}
+};
+</script>
+<style>
+</style>
 ```
+:::
+### API
+### 基础属性
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+type | 按钮的样式选择:`default`、`primary`、`text`、`success`、`error`、`warning` |`String` | `default`
+disabled | 禁止点击 | `Boolean` | `false`
+circle | 按钮是否圆角 | `Boolean` | `false`
+size | 按钮大小:`large`、`medium`、`small` | `String` | `medium`
+icon | 按钮内的图标 | `String` | -
+long | 长按钮 | `Boolean` | `false`
+wait | 阻止重复点击 | `Number` | 250
+htmlType | 按钮的类型: `button`、 `submit`、`reset` [描述](https://www.w3school.com.cn/tags/att_button_type.asp) | `String` | `button`
 
-效果如下：
+### Group 属性
 
-* 项目一 无序列表 `* + 空格键`
-* 项目二
-* 项目二的子项目一 无序列表 `TAB + * + 空格键`
-* 项目二的子项目二
+属性 | 说明 | 类型 | 默认值
+---|---|---|---
+size | 调节按钮组件的大小:`large`、`medium`、`small` | `String` | `medium`
+circle | 按钮是否圆角 | `Boolean` | `false`
+vertical | 按钮纵向排列 | `Boolean` | `false`
 
-### 有序列表
-
-Markdown 语法：
-
-```
-1. 项目一 有序列表 `数字 + . + 空格键`
-2. 项目二 
-3. 项目三
-1. 项目三的子项目一 有序列表 `TAB + 数字 + . + 空格键`
-2. 项目三的子项目二
-```
-
-效果如下：
-
-1. 项目一 有序列表 `数字 + . + 空格键`
-2. 项目二 
-3. 项目三
-1. 项目三的子项目一 有序列表 `TAB + 数字 + . + 空格键`
-2. 项目三的子项目二
-
-### 任务列表（Task lists）
-
-Markdown 语法：
-
-```
-- [ ] 任务一 未做任务 `- + 空格 + [ ]`
-- [x] 任务二 已做任务 `- + 空格 + [x]`
-```
-
-效果如下：
-
-- [ ] 任务一 未做任务 `- + 空格 + [ ]`
-- [x] 任务二 已做任务 `- + 空格 + [x]`
-
-## 图片
-
-Markdown 语法：
-
-```
-![wya-team](https://avatars3.githubusercontent.com/u/34465004?s=200&v=4)
-格式: ![Alt Text](url)
-```
-
-效果如下：
-
-![wya-team](https://avatars3.githubusercontent.com/u/34465004?s=200&v=4)
-
-
-## 链接
-
-Markdown 语法：
-
-```
-email <example@example.com>
-[GitHub](http://github.com)
-自动生成连接  <http://www.github.com/>
-```
-
-效果如下：
-
-Email 连接： <example@example.com>
-[连接标题Github网站](http://github.com)
-自动生成连接像： <http://www.github.com/> 这样
-
-
-## 区块引用
-
-Markdown 语法：
-
-```
-某某说:
-> 第一行引用
-> 第二行费用文字
-```
-
-效果如下
-
-某某说:
-> 第一行引用
-> 第二行费用文字
-
-## 行内代码
-
-Markdown 语法：
-
-```
-像这样即可：`<addr>` `code`
-```
-效果如下：
-
-像这样即可：`<addr>` `code`
-
-## 表格
-
-Markdown 语法：
-
-```
-第一格表头 | 第二格表头
---------- | -------------
-内容单元格 第一列第一格 | 内容单元格第二列第一格
-内容单元格 第一列第二格 多加文字 | 内容单元格第二列第二格
-```
-
-效果如下：
-
-第一格表头 | 第二格表头
---------- | -------------
-内容单元格 第一列第一格 | 内容单元格第二列第一格
-内容单元格 第一列第二格 多加文字 | 内容单元格第二列第二格
-
-
-## 删除线
-
-Markdown 语法：
-
-加删除线像这样用： ~~删除这些~~
-
-效果如下：
-
-加删除线像这样用： ~~删除这些~~
-
-## 分隔线
-
-以下三种方式都可以生成分隔线：
-
-***
-
-*****
-
-- - -
-
-效果如下：
-
-***
-
-*****
-
-- - -
-
-
-
-
-
+### 事件/方法
+特殊说明
+属性 | 说明 | 回调参数
+---|---|---|---
+click | 返回promise就会有loading图标 | --

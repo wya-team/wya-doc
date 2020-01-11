@@ -1,5 +1,5 @@
 <template>
-	<div class="c-layout-footer">
+	<div :style="contentStyle" class="c-layout-footer">
 		<div class="c-layout-footer__content">
 			<div v-for="(item, index) in group" :key="index" class="c-layout-footer__block">
 				<div class="c-layout-footer__block--title">
@@ -18,7 +18,9 @@
 			</div>
 		</div>
 		<div class="c-layout-footer__copyright">
-			{{ copyright | i18n(currentLocale) }}
+			<div class="c-layout-footer__copyright--content">
+				{{ copyright | i18n(currentLocale) }}
+			</div>
 		</div>
 	</div>
 </template>
@@ -40,6 +42,15 @@ export default {
 			copyright,
 			group
 		};
+	},
+	computed: {
+		contentStyle() {
+			return this.$parent.sidebar 
+				? {
+					paddingLeft: '260px', 
+				}
+				: {};
+		}
 	},
 	mounted() {
 		this.$vc.emit('layout-footer', { status: true });
@@ -66,11 +77,15 @@ $block: c-layout-footer;
 	color: #fff;
 	font-size: 14px;
 	font-family: PingFangSC-Regular;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 
 	@include element(content) {
 		max-width: 1180px;
+		width: 100%; 
 		margin: 0 auto;
-		padding: 100px 0 70px;
+		padding: 100px 50px 70px 50px;
 		display: flex;
 		flex-wrap: wrap;
 	}
@@ -79,6 +94,7 @@ $block: c-layout-footer;
 		@include modifier(title) {
 			font-size: 16px;
 			opacity: .5;
+			margin-top: 15px;
 		}
 		@include modifier(content) {
 			margin-top: 30px;
@@ -99,12 +115,14 @@ $block: c-layout-footer;
 	}
 	
 	@include element(copyright) {
-		text-align: center;
-		padding: 16px 40px;
-		margin: 0 50px;
-		border-top: 1px solid #666;
-		color: #999;
+		width: 100%; 
+		padding: 0 50px;
+		@include modifier(content) {
+			text-align: center;
+			padding: 16px 40px;
+			border-top: 1px solid #666;
+			color: #999;
+		}
 	}
-
 }
 </style>

@@ -44,6 +44,7 @@ class Config {
 			},
 			resolve: {
 				extensions: ['.vue', '.js', '.json'],
+				// symlinks: false,
 				alias: {
 				  'vue$': 'vue/dist/vue.esm.js',
 				  '@assets': resolve(__dirname, '../client/src/assets'),

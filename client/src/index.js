@@ -28,9 +28,7 @@ const app = new Vue({
 	el: "#pages",
 	router,
 	render(h) {
-		return (
-			<App />
-		);
+		return h(App);
 	}
 });
 
