@@ -14,17 +14,24 @@ module.exports = class App {
 		this.options = { ...defaultOptions, ...options };
 		
 		this.sourceDir = this.options.sourceDir || path.join(__dirname, 'docs.fallback');
-		
-		this.docDir = path.join(this.sourceDir, this.options.config);
-		this.browserDir = fs.pathExistsSync(path.resolve(this.sourceDir, this.options.browser))
-			? path.resolve(this.sourceDir, this.options.browser)
-			: null;
+		this.tempDir = path.resolve(__dirname, '../.temp/');
+		this.docDir = path.resolve(this.tempDir, defaultOptions.config);
 
 		this.cwd = process.cwd();
 
 		if (!fs.existsSync(this.sourceDir)) {
 			throw new Error('error');
 		}
+
+		// 退出进程
+		process.on('SIGINT', process.exit);
+		fs.emptyDirSync(this.tempDir);
+		fs.copySync(this.sourceDir, this.tempDir);
+
+		// 文件同步后，地址
+		this.browserDir = fs.pathExistsSync(path.resolve(this.tempDir, this.options.browser))
+			? path.resolve(this.tempDir, this.options.browser)
+			: null;
 	}
 
 
@@ -33,17 +40,16 @@ module.exports = class App {
 	 * 其中包含加载页面和插件、应用插件等。
 	 */
 	async process() {
-		let result = require(path.resolve(this.sourceDir, this.options.config));
+		let result = require(this.docDir);
 		this.docConfig = typeof result === 'function' ? result() : result;
-
 		return new Promise((resolve, reject) => {
-			const { sourceDir } = this;
+			const { tempDir } = this;
 			const { locales, routes } = this.docConfig;
 			// 输出文件
 			fs.outputFileSync(
 				path.resolve(__dirname, '../client/src/routes.js'), 
 				generateRoutes({
-					sourceDir,
+					tempDir,
 					routes, 
 					locales,
 				}), 
@@ -81,8 +87,10 @@ module.exports = class App {
 	}
 
 	async build() {
-		process.env.NODE_ENV = 'production';
+		process.env.NODE_ENV = 'production';		
 		this.isProd = true;
+
+		this.tempWatcher.close();
 		await this.process();
 
 		this.buildProcess = new BuildProcess(this);

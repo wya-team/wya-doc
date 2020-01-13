@@ -4,9 +4,9 @@
   "description": "wya-doc for js",
   "main": "index.js",
   "files": [
-      "client/**",
-      "node/**",
-      "bin/**"
+    "client/**",
+    "node/**",
+    "bin/**"
   ],
   "scripts": {
     "link": "npm link",

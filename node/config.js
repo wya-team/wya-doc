@@ -6,9 +6,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 const { resolve } = path;
-
-const ROOT_PATH = process.cwd();
-
+const r = (source) => resolve(__dirname, '../node_modules', source);
 class Config {
 	constructor(type, parent) {
 
@@ -21,37 +19,49 @@ class Config {
 
 	generateDefault() {
 		let { port, host } = this.$parent;
-		const { docConfig = {}, sourceDir, browserDir } = this.$parent.$parent;
+		const { docConfig = {}, sourceDir, tempDir, browserDir } = this.$parent.$parent;
 		const { webpackConfig, runtime, locales, layout, externalResources, } = docConfig || {};
+		const { __DOC_MD_DIR__: baseMDDir, __DOC_SITE_DIR__, __DOC_VERSION__ } = runtime.define || {};
 		const { devServer, ...override } = webpackConfig || {};
 		const ENV_IS_DEV = process.env.NODE_ENV === 'development';
-
-		const loaderPath = [
-			path.resolve(__dirname, '../client'),
-			sourceDir
-		];
 
 		const defaultOptions = {
 			mode: process.env.NODE_ENV,
 			devtool: ENV_IS_DEV ? 'cheap-module-eval-source-map' : undefined,
 			// 生成文件，是模块构建的终点
 			output: {
-				path: path.resolve(__dirname, '../dist'),
+				path: resolve(__dirname, '../dist'),
 				filename: `js/[name].bundle.js`, // 每个页面对应的主js的生成配置
 				chunkFilename: `js/[name].chunk.js`, // chunk生成的配置
 				sourceMapFilename: `js/[name].bundle.map`,
 				publicPath: '/',
 			},
 			resolve: {
-				extensions: ['.vue', '.js', '.json'],
-				// symlinks: false,
+				modules: [
+					'node_modules',
+					'client',
+					'.temp/'
+				],
+				extensions: ['.vue', '.js', '.json', '.md'],
+				symlinks: false,
 				alias: {
-				  'vue$': 'vue/dist/vue.esm.js',
-				  '@assets': resolve(__dirname, '../client/src/assets'),
-				  '@style': resolve(__dirname, '../client/src/style'),
-				  '@components': resolve(__dirname, '../client/src/components'),
-				  '@utils': resolve(__dirname, '../client/src/utils'),
+					'vue$': 'vue/dist/vue.esm.js',
+					'@assets': resolve(__dirname, '../client/src/assets'),
+					'@style': resolve(__dirname, '../client/src/style'),
+					'@components': resolve(__dirname, '../client/src/components'),
+					'@utils': resolve(__dirname, '../client/src/utils'),
+					// '@client': resolve(__dirname, '../client'),
+					// '@temp': resolve(__dirname, '../.temp')
 				}
+			},
+			"resolveLoader": {
+				symlinks: true,
+				modules: [
+					// ...module.paths, 
+					// process.cwd(),
+					// resolve(__dirname, '../.temp'),
+					resolve(__dirname, '../node_modules')
+				] 
 			},
 			module: {
 				rules: [
@@ -61,26 +71,30 @@ class Config {
 						use: {
 							loader: 'babel-loader',
 							options: {
+								// 不使用sourceDir本地配置
+								babelrc: false,
+								configFile: false,
+
 								compact: false,
 								cacheDirectory: true,
 								presets: [
-									"@babel/preset-env"
+									r('@babel/preset-env')
 								],
 								plugins: [
-									"@babel/plugin-proposal-export-namespace-from",
-									"@babel/plugin-proposal-export-default-from",
-									"@babel/plugin-proposal-function-bind",
-									"@babel/plugin-syntax-dynamic-import",
-									"@babel/plugin-syntax-jsx",
-									"transform-vue-jsx",
+									r('@babel/plugin-proposal-export-namespace-from'),
+									r('@babel/plugin-proposal-export-default-from'),
+									r('@babel/plugin-proposal-function-bind'),
+									r('@babel/plugin-syntax-dynamic-import'),
+									r('@babel/plugin-syntax-jsx'),
+									r('babel-plugin-transform-vue-jsx'),
 									[
-										"@babel/plugin-proposal-decorators",
+										r('@babel/plugin-proposal-decorators'),
 										{
 											"legacy": true
 										}
 									],
-									[
-										"@babel/plugin-proposal-class-properties",
+									[	
+										r('@babel/plugin-proposal-class-properties'),
 										{
 											"loose": true
 										}
@@ -93,7 +107,7 @@ class Config {
 						test: /\.vue$/,
 						loader: 'vue-loader',
 						exclude: /node_modules/,
-					},
+					},     
 					{
 						test: /\.(scss|css)$/,
 						use: [
@@ -104,8 +118,8 @@ class Config {
 								loader: 'sass-resources-loader',
 								options: {
 									resources: [
-										path.resolve(__dirname, "../client/src/style/themes/var.scss"),
-										path.resolve(__dirname, "../node_modules/@wya/sass/lib/mixins/bem.scss")
+										resolve(__dirname, "../client/src/style/themes/var.scss"),
+										resolve(__dirname, "../node_modules/@wya/sass/lib/mixins/bem.scss")
 									]
 								}
 							}
@@ -139,7 +153,7 @@ class Config {
 							'//unpkg.com/@wya/vc/lib/vc.min.css',
 							'//unpkg.com/@wya/vc/lib/vc.min.js'
 						],
-					template: path.resolve(__dirname, '../client/index.tpl.html'),
+					template: resolve(__dirname, '../client/index.tpl.html'),
 					inject: 'body',
 					filename: './index.html',
 				}),
@@ -153,9 +167,13 @@ class Config {
 					__DOC_LOCALES__: JSON.stringify(locales),
 					__DOC_LAYOUT__: JSON.stringify(layout || {}),
 					__DOC_SOCKET__: `'ws://${host}:${++port}'`,
-					__DOC_SITE_DIR__: "'/'",
-					__DOC_VERSION__: "'1.0.0'",
-					...runtime.define
+					__DOC_SITE_DIR__: `'${__DOC_SITE_DIR__ || '/'}'`,
+					__DOC_VERSION__: `'${__DOC_VERSION__ || '1.0.0'}'`,
+					__DOC_MD_DIR__: typeof baseMDDir === 'function' 
+						? baseMDDir
+						: baseMDDir 
+							? ENV_IS_DEV ? `'/.temp${baseMDDir}'` : `'${baseMDDir}'`
+							: `'/.temp/'`
 				})
 			],
 			externals: !ENV_IS_DEV 
@@ -168,10 +186,11 @@ class Config {
 				}
 				: {}
 		};
+
 		// 不允许被覆盖的配置
 		const noOverrideConfig = {
 			// 入口文件，是模块构建的起点
-			entry: [browserDir, path.resolve(__dirname, '../client/src/index.js')].filter(i => !!i),
+			entry: [browserDir, resolve(__dirname, '../client/src/index.js')].filter(i => !!i),
 		};
 
 		return merge(defaultOptions, override, noOverrideConfig);
@@ -186,6 +205,7 @@ class Config {
 			hot: true,
 			quiet: true,
 			historyApiFallback: true,
+			publicPath: '/',
 			port,
 			host
 		}, devServer);

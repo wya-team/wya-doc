@@ -1,5 +1,6 @@
 const { EventEmitter } = require('events');
 const path = require('path');
+const fs = require('fs-extra');
 const webpack = require('webpack');
 const portfinder = require('portfinder');
 const chokidar = require('chokidar');
@@ -32,8 +33,8 @@ class DevProcess extends EventEmitter {
 	}
 
 	watchSourceFiles() {
-		let mdWatcher = chokidar.watch(
-			['**/*.md'], 
+		let fileWatcher = chokidar.watch(
+			['**/*.js', '**/*.md', '**/*.vue'], 
 			{
 				cwd: this.$parent.sourceDir,
 				ignored: ['node_modules'],
@@ -41,33 +42,41 @@ class DevProcess extends EventEmitter {
 			}
 		);	
 
-		// add / unlink / change
-		mdWatcher.on('all', (type, fullpath) => {
-			this.socket.emit('md-update', { type, path: fullpath });
-		});
-
-		let jsWatcher = chokidar.watch(
-			['**/*.js'], 
-			{
-				cwd: this.$parent.sourceDir,
-				ignored: ['node_modules'],
-				ignoreInitial: true
-			}
-		);	
-
-		jsWatcher.on('all', (type, fullpath) => {
-
+		fileWatcher.on('all', (type, fullpath) => {
+			let name = fullpath;
 			if (!path.isAbsolute(fullpath)) {
-				fullpath = path.join(this.$parent.sourceDir, fullpath);
+				fullpath = path.join(this.$parent.tempDir, fullpath);
+			}
+
+			// 操作 js / md / vue
+			switch (type) {
+				case 'add':
+				case 'change':
+					// copy
+					fs.ensureDirSync(path.dirname(fullpath));
+					fs.copySync(path.join(this.$parent.sourceDir, name), fullpath);
+					break;
+				case 'addDir':
+					fs.ensureDirSync(path.dirname(fullpath));
+					break;
+				case 'unlink':
+				case 'unlinkDir':
+					fs.removeSync(fullpath);
+					break;
+				default:
+					return;
 			}
 
 			// 清理缓存，否则影响require, 其他引用修改，也要清理入口
-			if (fullpath.endsWith('.js')) {
+			if (fullpath.endsWith('.md')) {
+				this.socket.emit('md-update', { type, path: fullpath });
+			} else if (fullpath.endsWith('.js')) {
+				// 清理缓存，否则影响require, 其他引用修改，也要清理入口
 				delete require.cache[fullpath];
 				delete require.cache[this.$parent.docDir];
+				this.emit('fileChanged');
 			}
 
-			this.emit('fileChanged');
 		});
 	}
 
