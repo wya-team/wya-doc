@@ -170,8 +170,8 @@ class Config {
 					__DOC_MD_DIR__: typeof baseMDDir === 'function' 
 						? baseMDDir
 						: baseMDDir 
-							? ENV_IS_DEV ? `'/docs${baseMDDir}'` : `'${baseMDDir}'`
-							: `'/docs/'`
+							? `'${baseMDDir}'` 
+							: `'/'`
 				})
 			],
 			externals: !ENV_IS_DEV 

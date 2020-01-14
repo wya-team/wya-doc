@@ -114,6 +114,7 @@ $block: c-playground;
 	flex-direction: column;
 
 	box-shadow: rgb(229, 229, 229) 0px 0px 10px;
+	margin-bottom: 16px;
 	
 	@include element(header) {
 		display: flex;

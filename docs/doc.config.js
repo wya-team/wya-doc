@@ -51,7 +51,7 @@ module.exports = {
 	runtime: { 
 		define: {
 			__DOC_SITE_DIR__: ENV_IS_DEV ? '/' : '/wya-doc/site/',
-			__DOC_MD_DIR__: ENV_IS_DEV ? '/' : '/wya-doc/docs/',
+			__DOC_MD_DIR__: ENV_IS_DEV ? '/docs/' : '/wya-doc/docs/',
 			// __DOC_MD_DIR__: (lang, name) => { return lang + name; },
 			__DOC_VERSION__: "1.0.0",
 		}

@@ -87,7 +87,6 @@ module.exports = class App {
 		process.env.NODE_ENV = 'production';		
 		this.isProd = true;
 
-		this.tempWatcher.close();
 		await this.process();
 
 		this.buildProcess = new BuildProcess(this);
