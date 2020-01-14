@@ -19,21 +19,26 @@ export default class IndexedDB {
 
 	// 删库
 	deleteDatabase() {
-		const { name, version } = this.defaultOptions;
-		window.indexedDB.deleteDatabase(name, version);
+		return new Promise((resolve, reject) => {
+			const { name, version } = this.defaultOptions;
+			let request = window.indexedDB.deleteDatabase(name, version);
+
+			request.onsuccess = resolve;
+			request.onerror = reject;
+		});
 	}
 
 	// 删表
-	deleteObjecteStore(storeName = 'default-store') {
-		const { name, version } = this.defaultOptions;
-		return new Promise((resolve) => {
-			let request = window.indexedDB.open(name, version);
-			request.onsuccess = e => {
-				let db = e.target.result;
-				db.deleteObjecteStore(storeName);
-				resolve();
-			};
-			request.onerror = () => reject('数据库打开报错');
+	deleteObjectStore(storeName = 'default-store') {
+		return new Promise((resolve, reject) => {
+			this.open()
+				.then(db => {
+					db.deleteObjectStore(storeName);
+					resolve();
+				}).catch((e) => {
+					console.error(e);
+					reject(e);
+				});
 		});
 	}
 

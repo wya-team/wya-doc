@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { Message } from '@wya/vc';
 import { ajax } from '@wya/http';
 import md from '../extends/md';
 
@@ -47,6 +48,7 @@ export default {
 			immediate: true,
 			handler(v, oldV) {
 				this.loadData();
+				document.documentElement.scrollTop = 0;	
 			}
 		}
 	},
@@ -70,13 +72,14 @@ export default {
 
 			let data;
 
-			if (!__DEV__) {
+			if (__DEV__) {
 				try {
 					data = (await this.$global.db.read(url) || {}).data;
 				} catch (e) {
 					console.log(e);
 				}
 			}
+			let errorMsg = '请刷新后再试试';
 			ajax({
 				url,
 				debug: true,
@@ -84,13 +87,19 @@ export default {
 				onAfter: ({ response }) => {
 					return {
 						status: 1,
-						data: response.data || '请刷新后再试试'
+						data: response.data || errorMsg
 					};
+				},
+				onLoading: () => {
+					Message.loading('数据加载中...');
+				},
+				onLoaded: () => {
+					Message.destroy();
 				}
 			}).then((res) => {
 				this.content = res.data;
 
-				!__DEV__ && this.$global.db.update({
+				__DEV__ && res.data !== errorMsg && this.$global.db.update({
 					__id: url,
 					data: res,
 				});
@@ -112,7 +121,7 @@ export default {
 </script>
 
 <style lang="scss">
-@include block(md-content) {
-	
+@include block(v-layout-content) {
+	min-height: 600px;
 }
 </style>

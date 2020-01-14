@@ -94,8 +94,13 @@ export default {
 		},
 
 		handleClear() {
-			this.$global.db.deleteDatabase();
-			Message.success('缓存清理成功');
+			return this.$global.db.deleteDatabase().then((e) => {
+				Message.success('缓存清理成功');
+			}).catch(e => {
+				Message.success('缓存清理失败');
+				console.log(e);
+			});
+			
 		}
 	}
 };
