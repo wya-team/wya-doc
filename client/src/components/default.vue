@@ -84,6 +84,7 @@ export default {
 				url,
 				debug: true,
 				localData: data,
+				credentials: 'omit', // cors下关闭
 				onAfter: ({ response }) => {
 					return {
 						status: 1,
