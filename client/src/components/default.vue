@@ -5,11 +5,8 @@
 </template>
 
 <script>
-import hljs from 'highlight.js';
 import { ajax } from '@wya/http';
 import md from '../extends/md';
-
-import 'highlight.js/styles/github.css';
 
 let socket;
 if (__DEV__) {
@@ -98,12 +95,12 @@ export default {
 					data: res,
 				});
 
-				// this.$nextTick(() => {
-				// 	let id = location.hash.replace(/#/, '');
-				// 	if (id && document.getElementById(id)) {
-				// 		document.getElementById(id).scrollIntoView();
-				// 	}
-				// });
+				this.$nextTick(() => {
+					// let id = location.hash.replace(/#/, '');
+					// if (id && document.getElementById(id)) {
+					// 	document.getElementById(id).scrollIntoView();
+					// }
+				});
 
 			}).catch((e) => {
 				console.log(e);

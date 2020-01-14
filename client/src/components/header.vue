@@ -35,6 +35,13 @@
 						{{ localeName }}
 					</vc-option>
 				</vc-select>
+
+				<vc-button 
+					style="margin-left: 10px"
+					@click="handleClear"
+				>
+					<vc-icon type="empty" />
+				</vc-button>
 			</div>
 		</div>
 	</div>
@@ -42,8 +49,9 @@
 
 <script>	
 import { Storage } from '@wya/utils';
+import { Message } from '@wya/vc';
 import { LOCALE_TAG, DEFAULT_HEADER } from '../constants';
-import { URLSchema } from '../utils';
+import { URLSchema, IndexedDB } from '../utils';
 
 export default {
 	name: 'c-layout-header',
@@ -83,6 +91,11 @@ export default {
 			} else {
 				this.$router.push(`/${this.currentLocale}${item.path}`);
 			}
+		},
+
+		handleClear() {
+			this.$global.db.deleteDatabase();
+			Message.success('缓存清理成功');
 		}
 	}
 };

@@ -5,6 +5,7 @@ dist
 tmp
 lib
 build
+.temp
 
 # dependencies
 node_modules

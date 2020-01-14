@@ -14,8 +14,7 @@ module.exports = class App {
 		this.options = { ...defaultOptions, ...options };
 		
 		this.sourceDir = this.options.sourceDir || path.join(__dirname, 'docs.fallback');
-		this.tempDir = path.resolve(__dirname, '../.temp/');
-		this.docDir = path.resolve(this.tempDir, defaultOptions.config);
+		this.docDir = path.resolve(this.sourceDir, defaultOptions.config);
 
 		this.cwd = process.cwd();
 
@@ -23,14 +22,12 @@ module.exports = class App {
 			throw new Error('error');
 		}
 
-		// 退出进程
+		// 退出进程Hack
 		process.on('SIGINT', process.exit);
-		fs.emptyDirSync(this.tempDir);
-		fs.copySync(this.sourceDir, this.tempDir);
 
 		// 文件同步后，地址
-		this.browserDir = fs.pathExistsSync(path.resolve(this.tempDir, this.options.browser))
-			? path.resolve(this.tempDir, this.options.browser)
+		this.browserDir = fs.pathExistsSync(path.resolve(this.sourceDir, this.options.browser))
+			? path.resolve(this.sourceDir, this.options.browser)
 			: null;
 	}
 
@@ -43,13 +40,13 @@ module.exports = class App {
 		let result = require(this.docDir);
 		this.docConfig = typeof result === 'function' ? result() : result;
 		return new Promise((resolve, reject) => {
-			const { tempDir } = this;
+			const { sourceDir } = this;
 			const { locales, routes } = this.docConfig;
 			// 输出文件
 			fs.outputFileSync(
 				path.resolve(__dirname, '../client/src/routes.js'), 
 				generateRoutes({
-					tempDir,
+					sourceDir,
 					routes, 
 					locales,
 				}), 

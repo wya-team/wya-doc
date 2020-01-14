@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import hljs from 'highlight.js';
+
 import { Markdown } from '../utils';
 import Playground from '../components/playground';
 
@@ -14,7 +16,7 @@ export default (el, binding) => {
 	
 	el.innerHTML = result;
 
-	const palygrounds = el.querySelectorAll('div[data-code]');
+	let palygrounds = el.querySelectorAll('div[data-code]');
 	[...palygrounds].forEach(it => {
 		const code = it.dataset.code;
 		const { $store: store, $router: router } = app || {};
@@ -29,4 +31,7 @@ export default (el, binding) => {
 			}
 		});
 	});
+
+	let blocks = el.querySelectorAll('pre code:not(.hljs)');
+	[...blocks].forEach(hljs.highlightBlock);
 };

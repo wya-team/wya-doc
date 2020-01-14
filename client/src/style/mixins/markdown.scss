@@ -450,14 +450,6 @@
 	border: 0;
 }
 
-.g-md-reset code {
-	background-color: #f9fafc;
-	padding: 0 4px;
-	border: 1px solid #eaeefb;
-	border-radius: 2px;
-}
-
-
 .g-md-reset .TIP {
 	padding: 8px 16px;
 	background-color: #f9f0ff;
@@ -480,10 +472,17 @@
 	}
 }
 
+
+.g-md-reset code:not(.hljs)  {
+	background-color: #f9fafc;
+	padding: 0 4px;
+	border: 1px solid #eaeefb;
+	border-radius: 2px;
+}
+
 .g-md-reset .TIP {
-	code {
+	code:not(.hljs)  {
 		background-color: #ffffffb3;
 		color: #445368;
 	}
 }
-

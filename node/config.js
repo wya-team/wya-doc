@@ -19,7 +19,7 @@ class Config {
 
 	generateDefault() {
 		let { port, host } = this.$parent;
-		const { docConfig = {}, sourceDir, tempDir, browserDir } = this.$parent.$parent;
+		const { docConfig = {}, sourceDir, browserDir } = this.$parent.$parent;
 		const { webpackConfig, runtime, locales, layout, externalResources, } = docConfig || {};
 		const { __DOC_MD_DIR__: baseMDDir, __DOC_SITE_DIR__, __DOC_VERSION__ } = runtime.define || {};
 		const { devServer, ...override } = webpackConfig || {};
@@ -36,30 +36,28 @@ class Config {
 				sourceMapFilename: `js/[name].bundle.map`,
 				publicPath: '/',
 			},
+			// resolve
 			resolve: {
 				modules: [
-					'node_modules',
-					'client',
-					'.temp/'
+					resolve(__dirname, '../node_modules')
 				],
 				extensions: ['.vue', '.js', '.json', '.md'],
-				symlinks: false,
+				symlinks: true,
 				alias: {
-					'vue$': 'vue/dist/vue.esm.js',
+					'vue$': r('vue/dist/vue.esm.js'),
 					'@assets': resolve(__dirname, '../client/src/assets'),
 					'@style': resolve(__dirname, '../client/src/style'),
 					'@components': resolve(__dirname, '../client/src/components'),
 					'@utils': resolve(__dirname, '../client/src/utils'),
-					// '@client': resolve(__dirname, '../client'),
-					// '@temp': resolve(__dirname, '../.temp')
+					'@client': resolve(__dirname, '../client'),
+					'@app': resolve(__dirname, '../client'),
 				}
 			},
+
+			// resolve loader
 			"resolveLoader": {
 				symlinks: true,
 				modules: [
-					// ...module.paths, 
-					// process.cwd(),
-					// resolve(__dirname, '../.temp'),
 					resolve(__dirname, '../node_modules')
 				] 
 			},
@@ -105,8 +103,8 @@ class Config {
 					},
 					{
 						test: /\.vue$/,
-						loader: 'vue-loader',
 						exclude: /node_modules/,
+						loader: 'vue-loader',
 					},     
 					{
 						test: /\.(scss|css)$/,
@@ -172,8 +170,8 @@ class Config {
 					__DOC_MD_DIR__: typeof baseMDDir === 'function' 
 						? baseMDDir
 						: baseMDDir 
-							? ENV_IS_DEV ? `'/.temp${baseMDDir}'` : `'${baseMDDir}'`
-							: `'/.temp/'`
+							? ENV_IS_DEV ? `'/docs${baseMDDir}'` : `'${baseMDDir}'`
+							: `'/docs/'`
 				})
 			],
 			externals: !ENV_IS_DEV 

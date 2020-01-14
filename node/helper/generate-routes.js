@@ -1,7 +1,7 @@
 const path = require('path');
 const { js: beautify } = require('js-beautify');
 
-module.exports = ({ tempDir, routes, locales }) => {
+module.exports = ({ sourceDir, routes, locales }) => {
 	let langs = Object.keys(locales) || [''];
 	let content = ''; 
 
@@ -10,7 +10,7 @@ module.exports = ({ tempDir, routes, locales }) => {
 		if (typeof type === 'string') {
 			return type === 'default' 
 				? `require('${path.resolve(__dirname, `../../client/src/components/${mode}.vue`)}').default`
-				: `require('${path.resolve(tempDir, `./${lang}`, type)}').default`;
+				: `require('${path.resolve(sourceDir, `./${lang}`, type)}').default`;
 		} else if (typeof type === 'object' && type != null) {
 			return `require('${path.resolve(__dirname, `../../client/src/components/${mode}.vue`)}').default`;
 		}

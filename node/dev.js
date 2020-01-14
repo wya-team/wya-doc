@@ -45,26 +45,7 @@ class DevProcess extends EventEmitter {
 		fileWatcher.on('all', (type, fullpath) => {
 			let name = fullpath;
 			if (!path.isAbsolute(fullpath)) {
-				fullpath = path.join(this.$parent.tempDir, fullpath);
-			}
-
-			// 操作 js / md / vue
-			switch (type) {
-				case 'add':
-				case 'change':
-					// copy
-					fs.ensureDirSync(path.dirname(fullpath));
-					fs.copySync(path.join(this.$parent.sourceDir, name), fullpath);
-					break;
-				case 'addDir':
-					fs.ensureDirSync(path.dirname(fullpath));
-					break;
-				case 'unlink':
-				case 'unlinkDir':
-					fs.removeSync(fullpath);
-					break;
-				default:
-					return;
+				fullpath = path.join(this.$parent.sourceDir, fullpath);
 			}
 
 			// 清理缓存，否则影响require, 其他引用修改，也要清理入口
