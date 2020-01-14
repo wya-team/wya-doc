@@ -72,7 +72,7 @@ export default {
 
 			let data;
 
-			if (__DEV__) {
+			if (!__DEV__) {
 				try {
 					data = (await this.$global.db.read(url) || {}).data;
 				} catch (e) {
@@ -99,7 +99,7 @@ export default {
 			}).then((res) => {
 				this.content = res.data;
 
-				__DEV__ && res.data !== errorMsg && this.$global.db.update({
+				!__DEV__ && res.data !== errorMsg && this.$global.db.update({
 					__id: url,
 					data: res,
 				});
