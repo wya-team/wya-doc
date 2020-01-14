@@ -85,6 +85,10 @@ export default {
 				debug: true,
 				localData: data,
 				credentials: 'omit', // cors下关闭
+				headers: {
+					Accept: null,
+					'X-Requested-With': null
+				},
 				onAfter: ({ response }) => {
 					return {
 						status: 1,
