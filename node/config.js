@@ -25,6 +25,7 @@ class Config {
 		const { devServer, ...override } = webpackConfig || {};
 		const ENV_IS_DEV = process.env.NODE_ENV === 'development';
 
+		const exclude = new RegExp(resolve(__dirname, '../node_modules'));
 		const defaultOptions = {
 			mode: process.env.NODE_ENV,
 			devtool: ENV_IS_DEV ? 'cheap-module-eval-source-map' : undefined,
@@ -39,6 +40,7 @@ class Config {
 			// resolve
 			resolve: {
 				modules: [
+					...module.paths,
 					resolve(__dirname, '../node_modules')
 				],
 				extensions: ['.vue', '.js', '.json', '.md'],
@@ -58,6 +60,7 @@ class Config {
 			"resolveLoader": {
 				symlinks: true,
 				modules: [
+					...module.paths,
 					resolve(__dirname, '../node_modules')
 				] 
 			},
@@ -65,7 +68,8 @@ class Config {
 				rules: [
 					{
 						test: /\.js$/,
-						exclude: /node_modules/,
+						// exclude: /node_modules/,
+						exclude,
 						use: {
 							loader: 'babel-loader',
 							options: {
@@ -103,8 +107,9 @@ class Config {
 					},
 					{
 						test: /\.vue$/,
-						exclude: /node_modules/,
-						loader: 'vue-loader',
+						// exclude: /node_modules/,
+						exclude,
+						loader: r('vue-loader'),
 					},     
 					{
 						test: /\.(scss|css)$/,

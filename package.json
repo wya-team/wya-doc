@@ -1,6 +1,6 @@
 {
   "name": "@wya/doc",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "wya-doc for js",
   "main": "index.js",
   "files": [
