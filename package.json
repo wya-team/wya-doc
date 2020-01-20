@@ -1,6 +1,6 @@
 {
   "name": "@wya/doc",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "wya-doc for js",
   "main": "index.js",
   "files": [
@@ -74,6 +74,7 @@
     "portfinder": "^1.0.25",
     "sass-loader": "^8.0.0",
     "sass-resources-loader": "^2.0.1",
+    "upath": "^1.2.0",
     "url-loader": "^3.0.0",
     "vue": "^2.6.10",
     "vue-loader": "^15.7.2",

@@ -1,18 +1,18 @@
 const path = require('path');
+const { normalize } = require('upath');
 const { js: beautify } = require('js-beautify');
 
 module.exports = ({ sourceDir, routes, locales }) => {
 	let langs = Object.keys(locales) || [''];
 	let content = ''; 
-
 	// TODO: 文件是否存在
 	const getPath = (mode, type, lang) => {
 		if (typeof type === 'string') {
 			return type === 'default' 
-				? `require('${path.resolve(__dirname, `../../client/src/components/${mode}.vue`)}').default`
-				: `require('${path.resolve(sourceDir, `./${lang}`, type)}').default`;
+				? `require('${normalize(path.resolve(__dirname, `../../client/src/components/${mode}.vue`))}').default`
+				: `require('${normalize(path.resolve(sourceDir, `./${lang}`, type))}').default`;
 		} else if (typeof type === 'object' && type != null) {
-			return `require('${path.resolve(__dirname, `../../client/src/components/${mode}.vue`)}').default`;
+			return `require('${normalize(path.resolve(__dirname, `../../client/src/components/${mode}.vue`))}').default`;
 		}
 
 		return null;
