@@ -17,6 +17,9 @@ class Config {
 			: this.generateServer();
 	}
 
+	/**
+	 * 针对@wya/vc有做特殊处理
+	 */
 	generateDefault() {
 		let { port, host } = this.$parent;
 		const { docConfig = {}, sourceDir, browserDir } = this.$parent.$parent;
@@ -25,6 +28,14 @@ class Config {
 		const { devServer, ...override } = webpackConfig || {};
 		const ENV_IS_DEV = process.env.NODE_ENV === 'development';
 
+		let __DEP_VC__ = false;
+		if (
+			override.resolve 
+			&& override.resolve.alias
+			&& Object.keys(override.resolve.alias).some(i => i.includes('@wya/vc'))
+		) {
+			__DEP_VC__ = true;
+		}
 		const exclude = new RegExp(resolve(__dirname, '../node_modules'));
 		const defaultOptions = {
 			mode: process.env.NODE_ENV,
@@ -41,9 +52,10 @@ class Config {
 			resolve: {
 				modules: [
 					...module.paths,
+					// process.cwd(),
 					resolve(__dirname, '../node_modules')
 				],
-				extensions: ['.vue', '.js', '.json', '.md'],
+				extensions: ['.vue', '.js', '.json', '.md', '.css', '.scss'],
 				symlinks: true,
 				alias: {
 					'vue$': r('vue/dist/vue.esm.js'),
@@ -87,6 +99,7 @@ class Config {
 									r('@babel/plugin-proposal-export-default-from'),
 									r('@babel/plugin-proposal-function-bind'),
 									r('@babel/plugin-syntax-dynamic-import'),
+									r('@babel/plugin-transform-modules-commonjs'),
 									r('@babel/plugin-syntax-jsx'),
 									r('babel-plugin-transform-vue-jsx'),
 									[
@@ -114,11 +127,11 @@ class Config {
 					{
 						test: /\.(scss|css)$/,
 						use: [
-							'vue-style-loader',
-							'css-loader',
-							'sass-loader',
+							r('vue-style-loader'),
+							r('css-loader'),
+							r('sass-loader'),
 							{
-								loader: 'sass-resources-loader',
+								loader: r('sass-resources-loader'),
 								options: {
 									resources: [
 										resolve(__dirname, "../client/src/style/themes/var.scss"),
@@ -130,13 +143,13 @@ class Config {
 					},
 					{
 						test: /\.(png|jpg|gif|eot|ttf|woff|woff2|svg)$/,
-						loader: 'url-loader'
+						loader: r('url-loader')
 					},
 					{
 						test: /\.md$/,
 						use: [
 							{ 
-								loader: "html-loader",
+								loader: r("html-loader"),
 								options: {
 									minimize: false // 如果被压缩了，就无法正常解析了
 								}
@@ -166,6 +179,7 @@ class Config {
 					}
 				}),
 				new webpack.DefinePlugin({
+					__DEP_VC__, 
 					__DEV__: JSON.stringify(ENV_IS_DEV),
 					__DOC_LOCALES__: JSON.stringify(locales),
 					__DOC_LAYOUT__: JSON.stringify(layout || {}),
@@ -179,15 +193,15 @@ class Config {
 							: `'/'`
 				})
 			],
-			externals: !ENV_IS_DEV 
-				? {
+			externals: ENV_IS_DEV 
+				? {}
+				: {
 					vue: 'Vue',
 					lodash: '_',
 					'@babel/standalone': 'Babel',
 					'@babel/preset-env-standalone': 'BabelPresetEnv',
 					'@wya/vc': 'WYA_VC',
 				}
-				: {}
 		};
 
 		// 不允许被覆盖的配置

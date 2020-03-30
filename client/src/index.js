@@ -5,7 +5,9 @@ import App from './app.vue';
 import GLOBAL, { Global } from './global';
 
 if (__DEV__) {
-	require('@wya/vc/lib/vc.min.css');
+	!__DEP_VC__ 
+		? require('@wya/vc/lib/vc.min.css')
+		: require('@wya/vc/src/style/reset.scss');
 }
 
 // 使用import 会比上面提前引入

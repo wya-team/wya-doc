@@ -4,6 +4,10 @@ import hljs from 'highlight.js';
 import { Markdown } from '../utils';
 import Playground from '../components/playground';
 
+hljs.configure({
+	// 一个缩进为四空格
+	tabReplace: '    '
+});
 /**
  * directive
  */
@@ -33,5 +37,7 @@ export default (el, binding) => {
 	});
 
 	let blocks = el.querySelectorAll('pre code:not(.hljs)');
-	[...blocks].forEach(hljs.highlightBlock);
+	[...blocks].forEach((block) => {
+		hljs.highlightBlock(block);
+	});
 };
