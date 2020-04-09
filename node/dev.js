@@ -36,7 +36,7 @@ class DevProcess extends EventEmitter {
 		let fileWatcher = chokidar.watch(
 			['**/*.js', '**/*.md', '**/*.vue'], 
 			{
-				cwd: this.$parent.sourceDir,
+				cwd: this.$parent.entry,
 				ignored: ['node_modules'],
 				ignoreInitial: true
 			}

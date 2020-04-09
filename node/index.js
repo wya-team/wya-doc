@@ -39,6 +39,7 @@ module.exports = class App {
 	async process() {
 		let result = require(this.docDir);
 		this.docConfig = typeof result === 'function' ? result() : result;
+		this.entry = this.docConfig.entry || this.sourceDir;
 		return new Promise((resolve, reject) => {
 			const { sourceDir } = this;
 			const { locales, routes } = this.docConfig;
