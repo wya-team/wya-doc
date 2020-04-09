@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs-extra');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -6,7 +7,24 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 const { resolve } = path;
-const r = (source) => resolve(__dirname, '../node_modules', source);
+const cwd = process.cwd();
+
+const r = (source) => {
+	let fullpath;
+
+	fullpath = resolve(__dirname, '../node_modules', source);
+	if (fs.pathExistsSync(fullpath)) {
+		return fullpath;
+	}
+	
+	fullpath = resolve(cwd, './node_modules', source);
+	if (fs.pathExistsSync(fullpath)) {
+		return fullpath;
+	}
+
+	throw new Error(`@wya/doc: 未找到${source}`);
+};
+
 class Config {
 	constructor(type, parent) {
 
@@ -83,7 +101,7 @@ class Config {
 						// exclude: /node_modules/,
 						exclude,
 						use: {
-							loader: 'babel-loader',
+							loader: r('babel-loader'),
 							options: {
 								// 不使用sourceDir本地配置
 								babelrc: false,
