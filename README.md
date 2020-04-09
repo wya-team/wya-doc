@@ -3,6 +3,20 @@
 
 - [Demo & Documents](https://wya-team.github.io/wya-doc/site/index.html)
 
+### 安装
+
+- 全局
+
+```
+# 避免权限问题，这样安装
+sudo npm install -g --unsafe-perm --verbose @wya/doc
+```
+
+- 跟随项目
+
+```
+npm install @wya/doc -D
+```
 
 ### TODO
 
