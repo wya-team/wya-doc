@@ -3,6 +3,7 @@ import anchor from 'markdown-it-anchor';
 import mdContainer from 'markdown-it-container';
 import markdownIt from 'markdown-it';
 
+const HTML_MD_SIGN = 'md';
 const RUNTIME = 'RUNTIME';
 const TIP = 'TIP';
 const WARNING = 'WARNING';
@@ -38,10 +39,19 @@ config
 	.end();
 
 
-
 const md = config.toMd(markdownIt);
-const defaultRender = md.renderer.rules.fence;
 
+const renderAttrs = md.renderer.renderAttrs;
+md.renderer.renderAttrs = (token) => {
+	const reg = new RegExp(`container_${RUNTIME}|fence|text`);
+	if (!reg.test(token.type)) {
+		token.attrPush([HTML_MD_SIGN, '']);
+	}
+	
+	return renderAttrs(token);
+};
+
+const defaultRender = md.renderer.rules.fence;
 md.renderer.rules.fence = (tokens, index, ...rest) => {
 	const prevToken = tokens[index - 1];
 
@@ -49,7 +59,7 @@ md.renderer.rules.fence = (tokens, index, ...rest) => {
 	const isHit = prevToken 
 		&& prevToken.nesting === 1 
 		&& prevToken.info.match(new RegExp(`^${RUNTIME}\\s*(.*)$`));
-	
+
 	return isHit
 		? `<div id="PG-${index}" data-code="${md.utils.escapeHtml(tokens[index].content)}"></div>`
 		: defaultRender(tokens, index, ...rest);

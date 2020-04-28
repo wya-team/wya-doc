@@ -1,10 +1,12 @@
+$sign: md;
+
 .g-md-reset {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	word-wrap: break-word;
 }
 
 .g-md-reset {
-	ol, ul, li {
+	ol[#{$sign}], ul[#{$sign}], li[#{$sign}] {
 		list-style: unset;
 	}
 }
@@ -19,50 +21,50 @@
 	content: "";
 }
 
-.g-md-reset>*:first-child {
+.g-md-reset>*[#{$sign}]:first-child {
 	margin-top: 0 !important;
 }
 
-.g-md-reset>*:last-child {
+.g-md-reset>*[#{$sign}]:last-child {
 	margin-bottom: 0 !important;
 }
 
-.g-md-reset a:not([href]) {
+.g-md-reset a[#{$sign}]:not([href]) {
 	color: inherit;
 	text-decoration: none;
 }
 
-.g-md-reset .absent {
+.g-md-reset .absent[#{$sign}] {
 	color: #cb2431;
 }
 
-.g-md-reset .anchor {
+.g-md-reset .anchor[#{$sign}] {
 	float: left;
 	padding-right: 6px;
 	margin-left: -20px;
 	line-height: 1;
 }
 
-.g-md-reset .anchor i {
+.g-md-reset .anchor i[#{$sign}] {
 	font-size: 18px;
 }
 
-.g-md-reset .anchor:focus {
+.g-md-reset .anchor[#{$sign}]:focus {
 	outline: none;
 }
 
-.g-md-reset p,
-.g-md-reset blockquote,
-.g-md-reset ul,
-.g-md-reset ol,
-.g-md-reset dl,
-.g-md-reset table,
-.g-md-reset pre {
+.g-md-reset p[#{$sign}],
+.g-md-reset blockquote[#{$sign}],
+.g-md-reset ul[#{$sign}],
+.g-md-reset ol[#{$sign}],
+.g-md-reset dl[#{$sign}],
+.g-md-reset table[#{$sign}],
+.g-md-reset pre[#{$sign}] {
 	margin-top: 0;
 	margin-bottom: 16px;
 }
 
-.g-md-reset hr {
+.g-md-reset hr[#{$sign}] {
 	height: 0.25em;
 	padding: 0;
 	margin: 24px 0;
@@ -70,21 +72,21 @@
 	border: 0;
 }
 
-.g-md-reset blockquote {
+.g-md-reset blockquote[#{$sign}] {
 	padding: 0 1em;
 	color: #6a737d;
 	border-left: 0.25em solid #dfe2e5;
 }
 
-.g-md-reset blockquote>:first-child {
+.g-md-reset blockquote[#{$sign}]>:first-child {
 	margin-top: 0;
 }
 
-.g-md-reset blockquote>:last-child {
+.g-md-reset blockquote[#{$sign}]>:last-child {
 	margin-bottom: 0;
 }
 
-.g-md-reset kbd {
+.g-md-reset kbd[#{$sign}] {
 	display: inline-block;
 	padding: 3px 5px;
 	font-size: 11px;
@@ -98,128 +100,128 @@
 	box-shadow: inset 0 -1px 0 #959da5;
 }
 
-.g-md-reset h1,
-.g-md-reset h2,
-.g-md-reset h3,
-.g-md-reset h4,
-.g-md-reset h5,
-.g-md-reset h6 {
+.g-md-reset h1[#{$sign}],
+.g-md-reset h2[#{$sign}],
+.g-md-reset h3[#{$sign}],
+.g-md-reset h4[#{$sign}],
+.g-md-reset h5[#{$sign}],
+.g-md-reset h6[#{$sign}] {
 	margin-top: 24px;
 	margin-bottom: 16px;
 	font-weight: 600;
 	line-height: 1.25;
 }
 
-.g-md-reset h1 .octicon-link,
-.g-md-reset h2 .octicon-link,
-.g-md-reset h3 .octicon-link,
-.g-md-reset h4 .octicon-link,
-.g-md-reset h5 .octicon-link,
-.g-md-reset h6 .octicon-link {
+.g-md-reset h1 .octicon-link[#{$sign}],
+.g-md-reset h2 .octicon-link[#{$sign}],
+.g-md-reset h3 .octicon-link[#{$sign}],
+.g-md-reset h4 .octicon-link[#{$sign}],
+.g-md-reset h5 .octicon-link[#{$sign}],
+.g-md-reset h6 .octicon-link[#{$sign}] {
 	color: #1b1f23;
 	vertical-align: middle;
 	visibility: hidden;
 }
 
-.g-md-reset h1:hover .anchor,
-.g-md-reset h2:hover .anchor,
-.g-md-reset h3:hover .anchor,
-.g-md-reset h4:hover .anchor,
-.g-md-reset h5:hover .anchor,
-.g-md-reset h6:hover .anchor {
+.g-md-reset h1:hover .anchor[#{$sign}],
+.g-md-reset h2:hover .anchor[#{$sign}],
+.g-md-reset h3:hover .anchor[#{$sign}],
+.g-md-reset h4:hover .anchor[#{$sign}],
+.g-md-reset h5:hover .anchor[#{$sign}],
+.g-md-reset h6:hover .anchor[#{$sign}] {
 	text-decoration: none;
 }
 
-.g-md-reset h1:hover .anchor .octicon-link,
-.g-md-reset h2:hover .anchor .octicon-link,
-.g-md-reset h3:hover .anchor .octicon-link,
-.g-md-reset h4:hover .anchor .octicon-link,
-.g-md-reset h5:hover .anchor .octicon-link,
-.g-md-reset h6:hover .anchor .octicon-link {
+.g-md-reset h1:hover .anchor .octicon-link[#{$sign}],
+.g-md-reset h2:hover .anchor .octicon-link[#{$sign}],
+.g-md-reset h3:hover .anchor .octicon-link[#{$sign}],
+.g-md-reset h4:hover .anchor .octicon-link[#{$sign}],
+.g-md-reset h5:hover .anchor .octicon-link[#{$sign}],
+.g-md-reset h6:hover .anchor .octicon-link[#{$sign}] {
 	visibility: visible;
 }
 
-.g-md-reset h1 tt,
-.g-md-reset h1 code,
-.g-md-reset h2 tt,
-.g-md-reset h2 code,
-.g-md-reset h3 tt,
-.g-md-reset h3 code,
-.g-md-reset h4 tt,
-.g-md-reset h4 code,
-.g-md-reset h5 tt,
-.g-md-reset h5 code,
-.g-md-reset h6 tt,
-.g-md-reset h6 code 
+.g-md-reset h1 tt[#{$sign}],
+.g-md-reset h1 code[#{$sign}],
+.g-md-reset h2 tt[#{$sign}],
+.g-md-reset h2 code[#{$sign}],
+.g-md-reset h3 tt[#{$sign}],
+.g-md-reset h3 code[#{$sign}],
+.g-md-reset h4 tt[#{$sign}],
+.g-md-reset h4 code[#{$sign}],
+.g-md-reset h5 tt[#{$sign}],
+.g-md-reset h5 code[#{$sign}],
+.g-md-reset h6 tt[#{$sign}],
+.g-md-reset h6 code[#{$sign}] 
 {
 	font-size: inherit;
 }
 
-.g-md-reset h1 {
+.g-md-reset h1[#{$sign}] {
 	padding-bottom: 0.3em;
 	font-size: 2em;
 	border-bottom: 1px solid #eaecef;
 }
 
-.g-md-reset h2 {
+.g-md-reset h2[#{$sign}] {
 	padding-bottom: 0.3em;
 	font-size: 1.5em;
 	border-bottom: 1px solid #eaecef;
 }
 
-.g-md-reset h3 {
+.g-md-reset h3[#{$sign}] {
 	font-size: 1.25em;
 }
 
-.g-md-reset h4 {
+.g-md-reset h4[#{$sign}] {
 	font-size: 1em;
 }
 
-.g-md-reset h5 {
+.g-md-reset h5[#{$sign}] {
 	font-size: 0.875em;
 }
 
-.g-md-reset h6 {
+.g-md-reset h6[#{$sign}] {
 	font-size: 0.85em;
 	color: #6a737d;
 }
 
-.g-md-reset ul,
-.g-md-reset ol {
+.g-md-reset ul[#{$sign}],
+.g-md-reset ol[#{$sign}] {
 	padding-left: 2em;
 }
 
-.g-md-reset ul.no-list,
-.g-md-reset ol.no-list {
+.g-md-reset ul.no-list[#{$sign}],
+.g-md-reset ol.no-list[#{$sign}] {
 	padding: 0;
 	list-style-type: none;
 }
 
-.g-md-reset ul ul,
-.g-md-reset ul ol,
-.g-md-reset ol ol,
-.g-md-reset ol ul {
+.g-md-reset ul ul[#{$sign}],
+.g-md-reset ul ol[#{$sign}],
+.g-md-reset ol ol[#{$sign}],
+.g-md-reset ol ul[#{$sign}] {
 	margin-top: 0;
 	margin-bottom: 0;
 }
 
-.g-md-reset li {
+.g-md-reset li[#{$sign}] {
 	word-wrap: break-all;
 }
 
-.g-md-reset li>p {
+.g-md-reset li>p[#{$sign}] {
 	margin-top: 16px;
 }
 
-.g-md-reset li+li {
+.g-md-reset li+li[#{$sign}] {
 	margin-top: 0.25em;
 }
 
-.g-md-reset dl {
+.g-md-reset dl[#{$sign}] {
 	padding: 0;
 }
 
-.g-md-reset dl dt {
+.g-md-reset dl dt[#{$sign}] {
 	padding: 0;
 	margin-top: 16px;
 	font-size: 1em;
@@ -227,12 +229,12 @@
 	font-weight: 600;
 }
 
-.g-md-reset dl dd {
+.g-md-reset dl dd[#{$sign}] {
 	padding: 0 16px;
 	margin-bottom: 16px;
 }
 
-.g-md-reset table {
+.g-md-reset table[#{$sign}] {
 	display: block;
 	width: 100%;
 	overflow: auto;
@@ -241,55 +243,55 @@
 	border-collapse: collapse;
 }
 
-.g-md-reset table th {
+.g-md-reset table th[#{$sign}] {
 	font-weight: 600;
 }
 
-.g-md-reset table th,
-.g-md-reset table td {
+.g-md-reset table th[#{$sign}],
+.g-md-reset table td[#{$sign}] {
 	padding: 6px 13px;
 	border: 1px solid #dfe2e5;
 }
 
-.g-md-reset table tr {
+.g-md-reset table tr[#{$sign}] {
 	background-color: #fff;
 	border-top: 1px solid #c6cbd1;
 }
 
-.g-md-reset table tr:nth-child(2n) {
+.g-md-reset table tr[#{$sign}]:nth-child(2n) {
 	background-color: #f6f8fa;
 }
 
-.g-md-reset table img {
+.g-md-reset table img[#{$sign}] {
 	background-color: transparent;
 }
 
-.g-md-reset img {
+.g-md-reset img[#{$sign}] {
 	max-width: 100%;
 	box-sizing: content-box;
 	background-color: #fff;
 }
 
-.g-md-reset img[align=right] {
+.g-md-reset img[align=right][#{$sign}] {
 	padding-left: 20px;
 }
 
-.g-md-reset img[align=left] {
+.g-md-reset img[align=left][#{$sign}] {
 	padding-right: 20px;
 }
 
-.g-md-reset .emoji {
+.g-md-reset .emoji[#{$sign}] {
 	max-width: none;
 	vertical-align: text-top;
 	background-color: transparent;
 }
 
-.g-md-reset span.frame {
+.g-md-reset span.frame[#{$sign}] {
 	display: block;
 	overflow: hidden;
 }
 
-.g-md-reset span.frame>span {
+.g-md-reset span.frame>span[#{$sign}] {
 	display: block;
 	float: left;
 	width: auto;
@@ -299,81 +301,81 @@
 	border: 1px solid #dfe2e5;
 }
 
-.g-md-reset span.frame span img {
+.g-md-reset span.frame span img[#{$sign}] {
 	display: block;
 	float: left;
 }
 
-.g-md-reset span.frame span span {
+.g-md-reset span.frame span span[#{$sign}] {
 	display: block;
 	padding: 5px 0 0;
 	clear: both;
 	color: #24292e;
 }
 
-.g-md-reset span.align-center {
+.g-md-reset span.align-center[#{$sign}] {
 	display: block;
 	overflow: hidden;
 	clear: both;
 }
 
-.g-md-reset span.align-center>span {
+.g-md-reset span.align-center>span[#{$sign}] {
 	display: block;
 	margin: 13px auto 0;
 	overflow: hidden;
 	text-align: center;
 }
 
-.g-md-reset span.align-center span img {
+.g-md-reset span.align-center span img[#{$sign}] {
 	margin: 0 auto;
 	text-align: center;
 }
 
-.g-md-reset span.align-right {
+.g-md-reset span.align-right[#{$sign}] {
 	display: block;
 	overflow: hidden;
 	clear: both;
 }
 
-.g-md-reset span.align-right>span {
+.g-md-reset span.align-right>span[#{$sign}] {
 	display: block;
 	margin: 13px 0 0;
 	overflow: hidden;
 	text-align: right;
 }
 
-.g-md-reset span.align-right span img {
+.g-md-reset span.align-right span img[#{$sign}] {
 	margin: 0;
 	text-align: right;
 }
 
-.g-md-reset span.float-left {
+.g-md-reset span.float-left[#{$sign}] {
 	display: block;
 	float: left;
 	margin-right: 13px;
 	overflow: hidden;
 }
 
-.g-md-reset span.float-left span {
+.g-md-reset span.float-left span[#{$sign}] {
 	margin: 13px 0 0;
 }
 
-.g-md-reset span.float-right {
+.g-md-reset span.float-right[#{$sign}] {
 	display: block;
 	float: right;
 	margin-left: 13px;
 	overflow: hidden;
 }
 
-.g-md-reset span.float-right>span {
+.g-md-reset span.float-right>span[#{$sign}] {
 	display: block;
 	margin: 13px auto 0;
 	overflow: hidden;
 	text-align: right;
 }
 
-.g-md-reset .csv-data td,
-.g-md-reset .csv-data th {
+.g-md-reset .csv-data td[#{$sign}],
+.g-md-reset .csv-data th[#{$sign}] {
 	padding: 5px;
 	overflow: hidden;
 	font-size: 12px;
@@ -382,54 +384,54 @@
 	white-space: nowrap;
 }
 
-.g-md-reset .csv-data .blob-num {
+.g-md-reset .csv-data .blob-num[#{$sign}] {
 	padding: 10px 8px 9px;
 	text-align: right;
 	background: #fff;
 	border: 0;
 }
 
-.g-md-reset .csv-data tr {
+.g-md-reset .csv-data tr[#{$sign}] {
 	border-top: 0;
 }
 
-.g-md-reset .csv-data th {
+.g-md-reset .csv-data th[#{$sign}] {
 	font-weight: 600;
 	background: #f6f8fa;
 	border-top: 0;
 }
 
 // 代码样式
-.g-md-reset code,
-.g-md-reset tt {
+.g-md-reset code[#{$sign}],
+.g-md-reset tt[#{$sign}] {
 	margin: 0;
 	font-size: 85%; // 文字大小缩放
 	border-radius: 3px; // 圆角
 }
 
-.g-md-reset code br,
-.g-md-reset tt br {
+.g-md-reset code br[#{$sign}],
+.g-md-reset tt br[#{$sign}] {
 	display: none;
 }
 
-.g-md-reset del code {
+.g-md-reset del code[#{$sign}] {
 	text-decoration: inherit;
 }
 
-.g-md-reset pre {
+.g-md-reset pre[#{$sign}] {
 	word-wrap: normal;
 }
 
-.g-md-reset .highlight {
+.g-md-reset .highlight[#{$sign}] {
 	margin-bottom: 16px;
 }
 
-.g-md-reset .highlight pre {
+.g-md-reset .highlight pre[#{$sign}] {
 	margin-bottom: 0;
 	word-break: normal;
 }
 
-.g-md-reset .highlight pre{
+.g-md-reset .highlight pre[#{$sign}] {
 	padding: 16px;
 	overflow: auto;
 	font-size: 85%;
@@ -438,7 +440,7 @@
 	border-radius: 3px;
 }
 
-.g-md-reset pre tt {
+.g-md-reset pre tt[#{$sign}] {
 	display: inline;
 	max-width: auto;
 	padding: 0;
@@ -450,7 +452,7 @@
 	border: 0;
 }
 
-.g-md-reset .TIP {
+.g-md-reset .TIP[#{$sign}] {
 	padding: 8px 16px;
 	background-color: #f9f0ff;
 	border-radius: 4px;
@@ -461,7 +463,7 @@
 	}
 }
 
-.g-md-reset .WARNING {
+.g-md-reset .WARNING[#{$sign}] {
 	padding: 8px 16px;
 	background-color: #fff6f7;
 	border-radius: 4px;
@@ -473,20 +475,20 @@
 }
 
 
-.g-md-reset code:not(.hljs)  {
+.g-md-reset code[#{$sign}]:not(.hljs)  {
 	background-color: #f9fafc;
 	padding: 0 4px;
 	border: 1px solid #eaeefb;
 	border-radius: 2px;
 }
 
-.g-md-reset .TIP {
+.g-md-reset .TIP[#{$sign}] {
 	code:not(.hljs)  {
 		background-color: #ffffffb3;
 		color: #445368;
 	}
 }
 
-.g-md-reset p a {
+.g-md-reset p a[#{$sign}] {
 	color: #2d8cf0;
 }
