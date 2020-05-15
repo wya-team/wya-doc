@@ -2,3 +2,5 @@ node_modules/**
 **/*.css
 **/*.html
 **/*.min.js
+**/node_modules/**
+site/**
