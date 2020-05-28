@@ -135,7 +135,7 @@ export default class CompileCtor {
 					"proposal-export-namespace-from",
 					"proposal-export-default-from",
 					"proposal-function-bind",
-					"syntax-dynamic-import",
+					// "syntax-dynamic-import",
 					"syntax-jsx",
 					"transform-vue-jsx",
 					[
