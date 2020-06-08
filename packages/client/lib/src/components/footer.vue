@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { URLSchema } from '@wya-doc/utils';
+import { URLSchema } from '@wya/doc-utils';
 import { DEFAULT_FOOTER } from '../constants';
 
 export default {

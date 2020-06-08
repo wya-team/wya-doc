@@ -10,7 +10,7 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const { resolve } = path;
 const cwd = process.cwd();
 
-const clientPath = resolve(__dirname, '../node_modules', '@wya-doc/client');
+const clientPath = resolve(__dirname, '../node_modules', '@wya/doc-client');
 console.log(clientPath);
 
 const r = (source) => {

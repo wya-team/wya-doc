@@ -1,11 +1,11 @@
-# `@wya-doc/utils`
+# `@wya/doc-utils`
 
 > TODO: description
 
 ## Usage
 
 ```
-const utils = require('@wya-doc/utils');
+const utils = require('@wya/doc-utils');
 
 // TODO: DEMONSTRATE API
 ```

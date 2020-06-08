@@ -49,7 +49,7 @@
 
 <script>	
 import { Message } from '@wya/vc';
-import { Storage, URLSchema, IndexedDB } from '@wya-doc/utils';
+import { Storage, URLSchema, IndexedDB } from '@wya/doc-utils';
 import { LOCALE_TAG, DEFAULT_HEADER } from '../constants';
 
 export default {

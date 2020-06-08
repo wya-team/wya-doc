@@ -2,7 +2,7 @@
 const chalk = require('chalk');
 const program = require('cac')();
 const { resolve } = require('path');
-const App = require('@wya-doc/dev-server');
+const App = require('@wya/doc-dev-server');
 
 const { log } = console;
 program

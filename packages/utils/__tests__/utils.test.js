@@ -2,6 +2,6 @@
 
 const utils = require('..');
 
-describe('@wya-doc/utils', () => {
+describe('@wya/doc-utils', () => {
     it('needs tests');
 });

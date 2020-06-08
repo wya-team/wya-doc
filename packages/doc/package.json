@@ -26,7 +26,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@wya-doc/dev-server": "^2.0.0",
+    "@wya/doc-dev-server": "^2.0.0",
     "cac": "^6.5.8",
     "chalk": "^4.0.0",
     "yargs": "^15.3.1"

@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import hljs from 'highlight.js';
 
-import { Markdown } from '@wya-doc/utils';
-import Playground from '@wya-doc/playground';
+import { Markdown } from '@wya/doc-utils';
+import Playground from '@wya/doc-playground';
 
 hljs.configure({
 	// 一个缩进为四空格

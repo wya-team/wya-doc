@@ -18,7 +18,7 @@
 <script>
 import Vue from 'vue';
 import { Clipboard } from '@wya/vc';
-import { Compiler, Load } from '@wya-doc/utils';
+import { Compiler, Load } from '@wya/doc-utils';
 import { Editor } from './popup/editor';
 
 const COPY = {

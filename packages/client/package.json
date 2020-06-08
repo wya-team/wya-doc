@@ -1,5 +1,5 @@
 {
-  "name": "@wya-doc/client",
+  "name": "@wya/doc-client",
   "version": "2.0.0",
   "description": "> TODO: description",
   "author": "ScoutYin <yinbin_web@163.com>",
@@ -27,8 +27,8 @@
     "url": "https://github.com/wya-team/wya-doc/issues"
   },
   "dependencies": {
-    "@wya-doc/playground": "^2.0.0",
-    "@wya-doc/utils": "^2.0.0",
+    "@wya/doc-playground": "^2.0.0",
+    "@wya/doc-utils": "^2.0.0",
     "@wya/http": "^1.4.3",
     "@wya/sass": "^1.2.0",
     "@wya/socket": "^1.1.0",
