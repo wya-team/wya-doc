@@ -1,35 +1,37 @@
 {
   "name": "@wya/doc-playground",
-  "version": "2.0.0",
-  "description": "> TODO: description",
-  "author": "ScoutYin <yinbin_web@163.com>",
-  "homepage": "https://github.com/wya-team/wya-doc#readme",
-  "license": "ISC",
-  "main": "lib/index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
   "files": [
-    "lib"
+    "dist/**",
+    "src/**"
   ],
-  "publishConfig": {
-    "registry": "http://registry.npmjs.org"
+  "scripts": {
+    "test": "mocha --require esm ./src/__tests__/*.test.js",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wya-team/wya-doc.git"
+    "url": "git+https://github.com/wya-team/wya-doc"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
+  "keywords": [],
+  "author": "wya-team",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wya-team/wya-doc/issues"
   },
+  "homepage": "https://github.com/wya-team/wya-doc#readme",
   "dependencies": {
+    "@wya/doc-utils": "^1.0.0",
     "@wya/utils": "^1.6.0",
     "@wya/vc": "^2.0.0-alpha.51",
     "codemirror": "^5.53.2",
     "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "esm": "^3.2.25",
+    "mocha": "^7.0.1"
   }
 }

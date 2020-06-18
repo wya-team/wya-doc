@@ -57,7 +57,6 @@ class DevProcess extends EventEmitter {
 				delete require.cache[this.$parent.docDir];
 				this.emit('fileChanged');
 			}
-
 		});
 	}
 

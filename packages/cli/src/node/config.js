@@ -1,6 +1,5 @@
 const path = require('path');
-const fs = require('fs');
-const fse = require('fs-extra');
+const fs = require('fs-extra');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -10,19 +9,21 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const { resolve } = path;
 const cwd = process.cwd();
 
-const clientPath = resolve(__dirname, '../node_modules', '@wya/doc-client');
-console.log(clientPath);
-
 const r = (source) => {
 	let fullpath;
 
 	fullpath = resolve(__dirname, '../node_modules', source);
-	if (fse.pathExistsSync(fullpath)) {
+	if (fs.pathExistsSync(fullpath)) {
 		return fullpath;
 	}
 	
 	fullpath = resolve(cwd, './node_modules', source);
-	if (fse.pathExistsSync(fullpath)) {
+	if (fs.pathExistsSync(fullpath)) {
+		return fullpath;
+	}
+
+	fullpath = resolve(cwd, '../../node_modules', source);
+	if (fs.pathExistsSync(fullpath)) {
 		return fullpath;
 	}
 
@@ -58,12 +59,7 @@ class Config {
 		) {
 			__DEP_VC__ = true;
 		}
-		
-		const pkgs = fs.readdirSync(resolve(__dirname, '../../../packages'));
-		let pkgNodeModules = pkgs.filter(pkgName => pkgName !== 'doc').map(dir => {
-			return resolve(__dirname, `../../../packages/${dir}/node_modules`);
-		});
-		const exclude = [resolve(__dirname, '../../../node_modules')].concat(pkgNodeModules);
+		const exclude = new RegExp(resolve(__dirname, '../node_modules'));
 		const defaultOptions = {
 			mode: process.env.NODE_ENV,
 			devtool: ENV_IS_DEV ? 'cheap-module-eval-source-map' : undefined,
@@ -75,24 +71,24 @@ class Config {
 				sourceMapFilename: `js/[name].bundle.map`,
 				publicPath: '/',
 			},
-			node: {
-				fs: 'empty'
-			},
 			// resolve
 			resolve: {
 				modules: [
 					...module.paths,
-					...pkgNodeModules
+					process.cwd(),
+					resolve(__dirname, '../node_modules')
 				],
 				extensions: ['.vue', '.js', '.json', '.md', '.css', '.scss'],
 				symlinks: true,
 				alias: {
 					'vue$': r('vue/dist/vue.esm.js'),
-					'@assets': resolve(clientPath, './lib/src/assets'),
-					'@style': resolve(clientPath, './lib/src/style'),
-					'@components': resolve(clientPath, './lib/src/components'),
-					'@utils': resolve(clientPath, './lib/src/utils'),
-					'@client': resolve(clientPath, './lib')
+					'babel-runtime': r('@babel/runtime'),
+					'@assets': resolve(__dirname, '../client/src/assets'),
+					'@style': resolve(__dirname, '../client/src/style'),
+					'@components': resolve(__dirname, '../client/src/components'),
+					'@utils': resolve(__dirname, '../client/src/utils'),
+					'@client': resolve(__dirname, '../client'),
+					'@app': resolve(__dirname, '../client'),
 				}
 			},
 
@@ -108,6 +104,7 @@ class Config {
 				rules: [
 					{
 						test: /\.js$/,
+						// exclude: /node_modules/,
 						exclude,
 						use: {
 							loader: r('babel-loader'),
@@ -147,6 +144,7 @@ class Config {
 					},
 					{
 						test: /\.vue$/,
+						// exclude: /node_modules/,
 						exclude,
 						loader: r('vue-loader'),
 					},     
@@ -160,8 +158,8 @@ class Config {
 								loader: r('sass-resources-loader'),
 								options: {
 									resources: [
-										resolve(clientPath, "./lib/src/style/themes/var.scss"),
-										resolve(clientPath, "./node_modules/@wya/sass/lib/mixins/bem.scss")
+										resolve(__dirname, "../client/style/themes/var.scss"),
+										r("@wya/sass/lib/mixins/bem.scss")
 									]
 								}
 							}
@@ -195,7 +193,7 @@ class Config {
 							'//unpkg.com/@wya/vc/lib/vc.min.css',
 							'//unpkg.com/@wya/vc/lib/vc.min.js'
 						],
-					template: resolve(clientPath, './lib/index.tpl.html'),
+					template: resolve(__dirname, '../client/static/index.tpl.html'),
 					inject: 'body',
 					filename: './index.html',
 				}),
@@ -225,6 +223,7 @@ class Config {
 					vue: 'Vue',
 					lodash: '_',
 					'@babel/standalone': 'Babel',
+					'@babel/preset-env-standalone': 'BabelPresetEnv',
 					'@wya/vc': 'WYA_VC',
 				}
 		};
@@ -232,7 +231,7 @@ class Config {
 		// 不允许被覆盖的配置
 		const noOverrideConfig = {
 			// 入口文件，是模块构建的起点
-			entry: [browserDir, resolve(clientPath, './lib/src/index.js')].filter(i => !!i),
+			entry: [browserDir, resolve(__dirname, '../client/index.js')].filter(i => !!i),
 		};
 
 		return merge(defaultOptions, override, noOverrideConfig);
@@ -240,7 +239,7 @@ class Config {
 
 	generateServer() {
 		const { port, host } = this.$parent;
-		const { docConfig = {} } = this.$parent.$parent;
+		const { docConfig = {}, sourceDir } = this.$parent.$parent;
 		const { devServer = {} } = docConfig.webpackConfig || {};
 
 		return merge({
@@ -248,6 +247,7 @@ class Config {
 			quiet: true,
 			historyApiFallback: true,
 			publicPath: '/',
+			contentBase: path.resolve(sourceDir, "../"),
 			port,
 			host
 		}, devServer);

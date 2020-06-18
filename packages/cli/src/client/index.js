@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import routes from './routes';
+import routes from './.temp/routes';
 import App from './app.vue';
 import GLOBAL, { Global } from './global';
 
@@ -11,7 +11,7 @@ if (__DEV__) {
 }
 
 // 使用import 会比上面提前引入
-require('@style/index.scss');
+require('./style/index.scss');
 
 const { baseSiteDir } = Global.docConfig || {};
 Vue.use(GLOBAL);

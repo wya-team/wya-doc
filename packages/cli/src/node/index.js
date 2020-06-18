@@ -45,7 +45,7 @@ module.exports = class App {
 			const { locales, routes } = this.docConfig;
 			// 输出文件
 			fs.outputFileSync(
-				path.resolve(__dirname, '../../client/lib/src/routes.js'), 
+				path.resolve(__dirname, '../client/.temp/routes.js'), 
 				generateRoutes({
 					sourceDir,
 					routes, 
@@ -78,6 +78,7 @@ module.exports = class App {
 				resolve(err);
 			}
 		});
+
 		if (error) {
 			throw error;
 		}

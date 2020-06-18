@@ -9,10 +9,10 @@ module.exports = ({ sourceDir, routes, locales }) => {
 	const getPath = (mode, type, lang) => {
 		if (typeof type === 'string') {
 			return type === 'default' 
-				? `require('${normalize(path.resolve(__dirname, `../../../client/lib/src/components/${mode}.vue`))}').default`
+				? `require('${normalize(path.resolve(__dirname, `../../client/components/${mode}.vue`))}').default`
 				: `require('${normalize(path.resolve(sourceDir, `./${lang}`, type))}').default`;
 		} else if (typeof type === 'object' && type != null) {
-			return `require('${normalize(path.resolve(__dirname, `../../../client/lib/src/components/${mode}.vue`))}').default`;
+			return `require('${normalize(path.resolve(__dirname, `../../client/components/${mode}.vue`))}').default`;
 		}
 
 		return null;

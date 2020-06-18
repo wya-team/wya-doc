@@ -1,6 +1,10 @@
-node_modules/**
-**/*.css
-**/*.html
 **/*.min.js
-**/node_modules/**
 site/**
+dist/**
+templates/**
+packages/*/dist/**
+node_modules/**
+**/node_modules/**
+packages/*/node_modules/**
+
+
