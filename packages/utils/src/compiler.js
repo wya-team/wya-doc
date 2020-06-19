@@ -6,7 +6,9 @@ import * as types from '@babel/types';
 import * as compiler from 'vue-template-compiler';
 import stripWith from 'vue-template-es2015-compiler';
 
-window.require = (url) => app.$global.dependence[url] || window[url];
+let root = typeof window !== 'undefined' ? window : global;
+
+root.require = (url) => app.$global.dependence[url] || root[url];
 Babel.registerPlugin('transform-vue-jsx', TransformVueJsx);
 Babel.registerPlugin('doc', (babel, opts = {}) => {
 	const { render, staticRenderFns } = opts;

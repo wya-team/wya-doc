@@ -1,6 +1,6 @@
 import { $ } from '@wya/utils';
 
-let isTouch = 'ontouchstart' in document;
+let isTouch = typeof document !== 'undefined' && 'ontouchstart' in document;
 let events = {
 	start: 'mousedown',
 	move: 'mousemove',
