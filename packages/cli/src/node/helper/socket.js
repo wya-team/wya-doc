@@ -13,6 +13,7 @@ module.exports = ({ port, host, server }) => {
 	wss.on('connection', (socket, request) => {
 		socketArr.push(socket);
 
+		console.log(`[event connection] - 连接数：${socketArr.length}`);
 		// 服务端订阅
 		socket.on('message', (res) => {
 			console.log('log:', res);
@@ -20,6 +21,14 @@ module.exports = ({ port, host, server }) => {
 
 		socket.on('close', (res) => {
 			socketArr = socketArr.filter(i => i != socket && i.readyState == 1);
+
+			console.log(`[event close] - 连接数：${socketArr.length}`);
+		});
+
+		socket.on('error', (res) => {
+			socket.close();
+
+			console.log(`[event error]`, res);
 		});
 	});
 

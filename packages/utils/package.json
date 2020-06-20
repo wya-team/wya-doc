@@ -2,7 +2,7 @@
   "name": "@wya/doc-utils",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/utils.min.js",
   "files": [
     "dist/**",
     "src/**"

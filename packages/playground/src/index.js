@@ -1,1 +1,3 @@
-module.exports = require('./playground.vue');
+import Playground from './playground.vue';
+
+export default Playground;

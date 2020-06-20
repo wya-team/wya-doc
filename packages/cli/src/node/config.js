@@ -9,21 +9,25 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const { resolve } = path;
 const cwd = process.cwd();
 
+const BASIC_NMS = [
+	resolve(__dirname, '../node_modules'),
+	resolve(cwd, './node_modules'),
+	resolve(cwd, '../../node_modules')
+];
+const NMS = [
+	...BASIC_NMS,
+	// 增加编译速度
+	...module.paths
+];
+
 const resolvePackage = (source) => {
-	let nms = [
-		resolve(__dirname, '../node_modules', source),
-		resolve(cwd, './node_modules', source),
-		resolve(cwd, '../../node_modules', source),
-		...module.paths.map($path => resolve($path, source))
-	];
+	let $path = NMS.find(i => fs.pathExistsSync(resolve(i, source)));
 
-	let fullpath = nms.find(i => fs.pathExistsSync(i));
-
-	if (!fullpath) {
+	if (!$path) {
 		throw new Error(`@wya/doc: 未找到${source}`);
 	}
 
-	return fullpath;
+	return resolve($path, source);
 };
 const resolveClient = (source) => {
 	return resolve(__dirname, '../client', source || '');
@@ -58,7 +62,7 @@ class Config {
 		) {
 			__DEP_VC__ = true;
 		}
-		const exclude = new RegExp(resolve(__dirname, '../node_modules'));
+		const exclude = new RegExp(`(${BASIC_NMS.join('|')})`);
 
 		// 不允许被覆盖的配置
 		const noOverrideConfig = {
@@ -77,7 +81,7 @@ class Config {
 			},
 			resolve: {
 				modules: [
-					...module.paths,
+					...BASIC_NMS,
 					process.cwd()
 				],
 				extensions: ['.vue', '.js', '.json', '.md', '.css', '.scss'],
@@ -91,6 +95,8 @@ class Config {
 					'@utils': resolveClient('src/utils'),
 					'@client': resolveClient(),
 					'@app': resolveClient(),
+					'@wya/doc-utils': resolvePackage('@wya/doc-utils/src/index.js'),
+					'@wya/doc-playground': resolvePackage('@wya/doc-playground/src/index.js'),
 				}
 			},
 			module: {
@@ -115,6 +121,7 @@ class Config {
 									resolvePackage('@babel/plugin-syntax-dynamic-import'),
 									resolvePackage('@babel/plugin-transform-modules-commonjs'),
 									resolvePackage('@babel/plugin-syntax-jsx'),
+									resolvePackage("@babel/plugin-transform-runtime"),
 									resolvePackage('babel-plugin-transform-vue-jsx'),
 									[
 										resolvePackage('@babel/plugin-proposal-decorators'),

@@ -20,7 +20,7 @@ const postcssLoader = {
 	loader: resolvePackage('postcss-loader'),
 	options: {
 		config: {
-			path: resolve(__dirname, '../postcss.config.js')
+			path: resolve(__dirname, '../../../postcss.config.js')
 		}
 	}
 };
@@ -47,7 +47,8 @@ module.exports = {
 					{
 						loader: resolvePackage('babel-loader'),
 						options: {
-							cacheDirectory: true // 启用编译缓存
+							cacheDirectory: true,
+							extends: resolve(__dirname, '../../../babel.config.js')
 						}
 					}
 				]

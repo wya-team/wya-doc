@@ -2,7 +2,7 @@
   "name": "@wya/doc-playground",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/playground.min.js",
   "files": [
     "dist/**",
     "src/**"

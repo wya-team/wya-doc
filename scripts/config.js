@@ -1,9 +1,9 @@
 const path = require('path');
+const { babel } = require('@rollup/plugin-babel');
 const buble = require('@rollup/plugin-buble');
 const replace = require('@rollup/plugin-replace');
 const commonjs = require('@rollup/plugin-commonjs');
-const nodeResolve = require('@rollup/plugin-node-resolve');
-const babel = require('rollup-plugin-babel');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const { uglify } = require('rollup-plugin-uglify');
 const postcss = require('rollup-plugin-postcss');
 const vue = require('rollup-plugin-vue');
@@ -18,9 +18,15 @@ const external = filename => {
 	let regex = [
 		'^vue$',
 		'^@babel/runtime',
-		// 用于测试用例?
+		
 		'^@wya/ps$',
-		'^@wya/utils$'
+		'^@wya/utils$',
+		'^@wya/vc',
+
+		'^markdown-it$',
+		'^markdown-it-chain$',
+		'^markdown-it-container$',
+		'^codemirror'
 	].join('|');
 
 	return new RegExp(`(${regex})`).test(filename);
@@ -63,16 +69,17 @@ const builds = {
 					],
 					extensions: ['.css', '.scss'],
 				})
-			]
+			],
+			external
 		},
-		external,
 	},
 	utils: {
 		script: 'babel packages/utils/src --out-dir packages/utils/dist --copy-files --ignore **.test.js,**.md,examples/**',
 		rollup: {
 			entry: 'packages/utils/src/index.js',
 			dest: 'packages/utils/dist/utils.min.js',
-			format: 'cjs'
+			format: 'cjs',
+			external
 		}
 	}
 };
@@ -101,7 +108,7 @@ class Config {
 				}), 
 				// 使用cjs模块引入
 				commonjs({
-					include: /node_modules/
+					include: 'node_modules/**'
 				}), 
 				replace({
 					'__DEV__': 'false',
@@ -110,12 +117,11 @@ class Config {
 				}),
 				...(opts.plugins || []),
 				babel({
-					babelrc: true,
 					exclude: 'node_modules/**',
-					runtimeHelpers: true
+					babelHelpers: 'runtime'
 				}),
 				buble({
-					objectAssign: 'Object.assign' // ...Object spread and rest
+					objectAssign: 'Object.assign'
 				})
 				// process.env.NODE_ENV === 'production' && uglify()
 			],

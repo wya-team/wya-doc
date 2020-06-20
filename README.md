@@ -9,13 +9,13 @@
 
 ```
 # 避免权限问题，这样安装
-sudo npm install -g --unsafe-perm --verbose @wya/doc
+sudo npm install -g --unsafe-perm --verbose @wya/doc-cli
 ```
 
 - 跟随项目
 
 ```
-npm install @wya/doc -D
+npm install @wya/doc-cli -D
 ```
 
 ### TODO
