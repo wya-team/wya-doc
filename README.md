@@ -20,7 +20,7 @@ npm install @wya/doc-cli -D
 
 ### TODO
 
-- Scss 在线编译(node-sass -> browser-sass)
+- Scss 在线编译(node-sass -> browser-sass -> @wya/doc-sass)
 - 样式域(style scoped)
 - 自适应（responsive -> 移动端）
 - 多文件管理（playground -> super editor🔥）
