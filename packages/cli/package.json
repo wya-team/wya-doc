@@ -9,9 +9,8 @@
     "bin/**"
   ],
   "scripts": {
-    "link": "npm link",
-    "dev": "doc-cli dev ../../docs",
-    "build": "doc-cli build ../../docs"
+    "dev": "wya-doc dev ../../docs",
+    "build": "wya-doc build ../../docs"
   },
   "repository": {
     "type": "git",
@@ -79,6 +78,6 @@
     "webpack-merge": "^4.2.2"
   },
   "bin": {
-    "doc-cli": "bin/doc-cli"
+    "wya-doc": "bin/cli"
   }
 }
