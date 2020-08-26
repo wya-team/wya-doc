@@ -13,8 +13,6 @@ const setSocket = require('./helper/socket');
 class DevProcess extends EventEmitter {
 	constructor(parent) {
 		super();
-		process.env.NODE_ENV = 'development';
-
 		this.$parent = parent;
 		this.port = 8080;
 		this.host = localhost;

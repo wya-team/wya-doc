@@ -8,8 +8,6 @@ const Config = require('./config');
 class BuildProcess extends EventEmitter {
 	constructor(parent) {
 		super();
-		process.env.NODE_ENV = 'production';
-
 		this.$parent = parent;
 	}
 
