@@ -80,10 +80,7 @@ class Config {
 				publicPath: '/',
 			},
 			resolve: {
-				modules: [
-					...BASIC_NMS,
-					process.cwd()
-				],
+				modules: NMS,
 				extensions: ['.vue', '.js', '.json', '.md', '.css', '.scss'],
 				symlinks: true,
 				alias: {
