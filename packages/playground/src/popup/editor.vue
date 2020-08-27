@@ -20,8 +20,7 @@ import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/selection/active-line.js';
 import 'codemirror/theme/material.css';
 import 'codemirror/lib/codemirror.css';
-import Portal from '@wya/vc/lib/portal';
-import Transition from '@wya/vc/lib/transition';
+import { Portal, Transition } from '@wya/vc';
 import { Drag } from '@wya/doc-utils';
 
 const wrapperComponent = {

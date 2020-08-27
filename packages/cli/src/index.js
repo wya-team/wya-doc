@@ -18,6 +18,7 @@ program
 	.option('-p, --port <port>', 'server port (default: 8080)')
 	.option('--host <host>', 'server host (default: 0.0.0.0)')
 	.option('--config <config file>', 'config options file')
+	.option('--debug', 'debug mode')
 	.action((sourceDir = '.', commandOptions) => {
 		let app = new App({
 			sourceDir: resolve(sourceDir),

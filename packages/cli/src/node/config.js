@@ -48,11 +48,12 @@ class Config {
 	 */
 	generateDefault() {
 		let { port, host } = this.$parent;
-		const { docConfig = {}, sourceDir, browserDir } = this.$parent.$parent;
+		const { docConfig = {}, sourceDir, browserDir, options } = this.$parent.$parent;
 		const { webpackConfig, runtime, locales, layout, externalResources, } = docConfig || {};
 		const { __DOC_MD_DIR__: baseMDDir, __DOC_SITE_DIR__, __DOC_VERSION__ } = runtime.define || {};
 		const { devServer, ...override } = webpackConfig || {};
 		const ENV_IS_DEV = process.env.NODE_ENV === 'development';
+		const useExternals = options.debug || !ENV_IS_DEV || undefined;
 
 		let __DEP_VC__ = false;
 		if (
@@ -178,14 +179,11 @@ class Config {
 			plugins: [
 				new VueLoaderPlugin(),
 				new HtmlWebpackPlugin({
-					__DEV__: ENV_IS_DEV, 
-					// TODO: 是否考虑针对dev也开放
-					externalResources: ENV_IS_DEV 
-						? ''
-						: externalResources || [
-							'//unpkg.com/@wya/vc/lib/vc.min.css',
-							'//unpkg.com/@wya/vc/lib/vc.min.js'
-						],
+					useExternals, 
+					externalResources: (useExternals && externalResources) || [
+						'//unpkg.com/@wya/vc/lib/vc.min.css',
+						'//unpkg.com/@wya/vc/lib/vc.min.js'
+					],
 					template: resolveClient('static/index.tpl.html'),
 					inject: 'body',
 					filename: './index.html',
@@ -210,14 +208,14 @@ class Config {
 							: `'/'`
 				})
 			],
-			externals: ENV_IS_DEV 
-				? {}
-				: {
+			externals: useExternals && (
+				{
 					vue: 'Vue',
 					lodash: '_',
 					'@babel/standalone': 'Babel',
 					'@wya/vc': 'WYA_VC',
 				}
+			)
 		};
 
 		return merge(defaultOptions, override, noOverrideConfig);
