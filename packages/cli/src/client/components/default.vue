@@ -34,9 +34,9 @@ export default {
 	},
 	computed: {
 		contentStyle() {
-			return this.$parent.sidebar 
+			return this.$parent.sidebar
 				? {
-					marginLeft: '300px', 
+					marginLeft: '300px',
 					paddingBottom: '60px',
 					paddingRight: '130px'
 				}
@@ -48,7 +48,7 @@ export default {
 			immediate: true,
 			handler(v, oldV) {
 				this.loadData();
-				document.documentElement.scrollTop = 0;	
+				document.documentElement.scrollTop = 0;
 			}
 		}
 	},
@@ -64,11 +64,11 @@ export default {
 		async loadData() {
 			let { name: $name } = this.$route.params;
 			let $locale = this.$route.path.split('/')[1];
-			
+
 			let { baseMDDir } 	= this.$global.docConfig;
-			let url = typeof baseMDDir === 'string' 
+			let url = typeof baseMDDir === 'string'
 				? `${location.origin}${baseMDDir}${$locale}/${$name}.md`
-				: baseMDDir($locale, $name);
+				: baseMDDir($locale, $name, this.$route);
 
 			let data;
 
