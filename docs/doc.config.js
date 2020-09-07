@@ -26,7 +26,7 @@ module.exports = {
 		},
 		'/api/:name': {
 			default: 'default',
-			sidebar,
+			sidebar: ENV_IS_DEV ? '/docs/sidebar.json' : '/wya-doc/docs/sidebar.json',
 			header: './components/header.vue',
 			footer: './components/footer.vue',
 			extra: null,
@@ -48,7 +48,7 @@ module.exports = {
 		},
 		devServer: {},
 	},
-	runtime: { 
+	runtime: {
 		define: {
 			__DOC_SITE_DIR__: ENV_IS_DEV ? '/' : '/wya-doc/site/',
 			__DOC_MD_DIR__: ENV_IS_DEV ? '/docs/' : '/wya-doc/docs/',

@@ -29,7 +29,7 @@ export default {
 				extra,
 			} = this;
 
-			return { 
+			return {
 				sidebar,
 				footer,
 				header,
@@ -62,7 +62,7 @@ export default {
 <style lang="scss">
 #pages {
 	padding: 90px 0 0;
-	
+
 	display: flex;
 	align-content: flex-start;
 	justify-content: space-between;
@@ -73,5 +73,4 @@ export default {
 	width: 100%;
 	min-height: 100vh;
 }
-
 </style>

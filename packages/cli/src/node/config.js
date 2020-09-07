@@ -38,7 +38,7 @@ class Config {
 
 		this.$parent = parent;
 
-		this.result = type === 'webpack' || type === true 
+		this.result = type === 'webpack' || type === true
 			? this.generateDefault()
 			: this.generateServer();
 	}
@@ -57,7 +57,7 @@ class Config {
 
 		let __DEP_VC__ = false;
 		if (
-			override.resolve 
+			override.resolve
 			&& override.resolve.alias
 			&& Object.keys(override.resolve.alias).some(i => i.includes('@wya/vc'))
 		) {
@@ -67,7 +67,7 @@ class Config {
 
 		// 不允许被覆盖的配置
 		const noOverrideConfig = {
-			entry: [browserDir, resolveClient('index.js')].filter(i => !!i),
+			entry: [browserDir, resolveClient('entry-client.js')].filter(i => !!i),
 		};
 
 		const defaultOptions = {
@@ -127,7 +127,7 @@ class Config {
 											"legacy": true
 										}
 									],
-									[	
+									[
 										resolvePackage('@babel/plugin-proposal-class-properties'),
 										{
 											"loose": true
@@ -141,7 +141,7 @@ class Config {
 						test: /\.vue$/,
 						exclude,
 						loader: resolvePackage('vue-loader'),
-					},     
+					},
 					{
 						test: /\.(scss|css)$/,
 						use: [
@@ -166,7 +166,7 @@ class Config {
 					{
 						test: /\.md$/,
 						use: [
-							{ 
+							{
 								loader: resolvePackage("html-loader"),
 								options: {
 									minimize: false // 如果被压缩了，就无法正常解析了
@@ -179,7 +179,7 @@ class Config {
 			plugins: [
 				new VueLoaderPlugin(),
 				new HtmlWebpackPlugin({
-					useExternals, 
+					useExternals,
 					externalResources: (useExternals && externalResources) || [
 						'//unpkg.com/@wya/vc/lib/vc.min.css',
 						'//unpkg.com/@wya/vc/lib/vc.min.js'
@@ -194,17 +194,17 @@ class Config {
 					}
 				}),
 				new webpack.DefinePlugin({
-					__DEP_VC__, 
+					__DEP_VC__,
 					__DEV__: JSON.stringify(ENV_IS_DEV),
 					__DOC_LOCALES__: JSON.stringify(locales),
 					__DOC_LAYOUT__: JSON.stringify(layout || {}),
 					__DOC_SOCKET__: `'ws://${host}:${++port}'`,
 					__DOC_SITE_DIR__: `'${__DOC_SITE_DIR__ || '/'}'`,
 					__DOC_VERSION__: `'${__DOC_VERSION__ || '1.0.0'}'`,
-					__DOC_MD_DIR__: typeof baseMDDir === 'function' 
+					__DOC_MD_DIR__: typeof baseMDDir === 'function'
 						? baseMDDir
-						: baseMDDir 
-							? `'${baseMDDir}'` 
+						: baseMDDir
+							? `'${baseMDDir}'`
 							: `'/'`
 				})
 			],
@@ -235,11 +235,11 @@ class Config {
 				contentBase: resolve(sourceDir, "../"),
 				port,
 				host
-			}, 
+			},
 			devServer
 		);
 	}
-	
+
 }
 module.exports = {
 	get(type = 'webpack', parent) {

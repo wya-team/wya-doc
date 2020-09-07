@@ -41,7 +41,7 @@
     "@babel/runtime": "^7.10.2",
     "@wya/doc-playground": "^1.0.0",
     "@wya/doc-utils": "^1.0.0",
-    "@wya/http": "^1.4.5",
+    "@wya/http": "^1.5.0-alpha.2",
     "@wya/ps": "^1.0.2",
     "@wya/sass": "^1.2.0",
     "@wya/socket": "^1.1.0",

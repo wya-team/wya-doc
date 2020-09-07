@@ -2,17 +2,17 @@
 	<div class="c-layout-sidebar">
 		<div class="c-layout-sidebar__scroller">
 			<ul class="">
-				<li 
+				<li
 					v-for="(item, index) in navs"
 					:key="index"
 					class="c-layout-sidebar__item"
-				>	
+				>
 					<div>
-						<router-link 
-							v-if="item.path" 
+						<router-link
+							v-if="item.path"
 							:to="`${rootPath}${item.path}`"
-							:class="{'is-active': $route.path === `${rootPath}${item.path}`}" 
-							tag="span" 
+							:class="{'is-active': $route.path === `${rootPath}${item.path}`}"
+							tag="span"
 							class="c-layout-sidebar__item--link"
 						>
 							{{ item.name | i18n(currentLocale) }}
@@ -40,7 +40,7 @@
 								{{ group.name | i18n(currentLocale) }}
 							</div>
 							<ul>
-								<router-link 
+								<router-link
 									v-for="component in group.list"
 									:key="component.path"
 									:class="{'is-active': $route.path === `${rootPath}${component.path}`}"
@@ -60,17 +60,19 @@
 </template>
 
 <script>
+import { Message } from '@wya/vc';
+import { ajax } from '@wya/http';
 
 export default {
 	name: 'c-layout-sidebar',
 
 	data() {
-		const { sidebar } = this.$route.meta || {};
-		const locale = this.$route.path.split('/')[1];
+		const [, locale, route] = this.$route.path.split('/');
+
 		return {
-			currentLocale: locale, 
-			rootPath: locale ? `/${locale}/components` : `/components`,
-			navs: sidebar
+			currentLocale: locale,
+			rootPath: locale ? `/${locale}/${route}` : `/${route}`,
+			navs: []
 		};
 	},
 
@@ -80,6 +82,8 @@ export default {
 
 		let el = this.$el.querySelector('.c-layout-sidebar__item.is-active');
 		el && el.scrollIntoView();
+
+		this.loadNavs();
 	},
 	beforeDestroy() {
 		this.$vc.emit('layout-sidebar', { status: false });
@@ -87,9 +91,43 @@ export default {
 	},
 	methods: {
 		handleUpdate({ locale }) {
-			const { sidebar } = this.$route.meta || {};
-			this.navs = sidebar;
 			this.currentLocale = locale;
+			this.loadNavs();
+		},
+		async loadNavs() {
+			const { sidebar } = this.$route.meta || {};
+			if (typeof sidebar === 'string') {
+
+				let url = `${location.origin}${sidebar}`;
+				let data;
+				if (__DEV__) {
+					try {
+						data = (await this.$global.db.read(url) || {}).data;
+					} catch (e) {
+						console.log(e);
+					}
+				}
+				ajax({
+					url,
+					onAfter: ({ response }) => {
+						return {
+							status: 1,
+							data: response.data
+						};
+					},
+					localData: data
+				}).then((res) => {
+					this.navs = res.data;
+					__DEV__ && this.$global.db.update({
+						__id: url,
+						data: res
+					});
+				}).catch(e => {
+					console.log(e);
+				});
+			} else {
+				this.navs = sidebar;
+			}
 		}
 	}
 };

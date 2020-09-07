@@ -4,11 +4,12 @@ const { js: beautify } = require('js-beautify');
 
 module.exports = ({ sourceDir, routes, locales }) => {
 	let langs = Object.keys(locales) || [''];
-	let content = ''; 
+	let content = '';
+
 	// TODO: 文件是否存在
 	const getPath = (mode, type, lang) => {
 		if (typeof type === 'string') {
-			return type === 'default' 
+			return type === 'default' || !/\.(vue|js)$/.test(type)
 				? `require('${normalize(path.resolve(__dirname, `../../client/components/${mode}.vue`))}').default`
 				: `require('${normalize(path.resolve(sourceDir, `./${lang}`, type))}').default`;
 		} else if (typeof type === 'object' && type != null) {
@@ -17,7 +18,6 @@ module.exports = ({ sourceDir, routes, locales }) => {
 
 		return null;
 	};
-
 
 	// TODO: code split / TODO: 优化
 	langs.forEach((lang) => {
