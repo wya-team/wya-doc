@@ -96,38 +96,42 @@ export default {
 		},
 		async loadNavs() {
 			const { sidebar } = this.$route.meta || {};
-			if (typeof sidebar === 'string') {
-
-				let url = `${location.origin}${sidebar}`;
-				let data;
-				if (__DEV__) {
-					try {
-						data = (await this.$global.db.read(url) || {}).data;
-					} catch (e) {
-						console.log(e);
-					}
-				}
-				ajax({
-					url,
-					onAfter: ({ response }) => {
-						return {
-							status: 1,
-							data: response.data
-						};
-					},
-					localData: data
-				}).then((res) => {
-					this.navs = res.data;
-					__DEV__ && this.$global.db.update({
-						__id: url,
-						data: res
-					});
-				}).catch(e => {
-					console.log(e);
-				});
-			} else {
+			if (typeof sidebar !== 'string') {
 				this.navs = sidebar;
+				return;
 			}
+
+			let data;
+			let url = /[a-zA-z]+:\/\/[^\s]*/.test(sidebar)
+				? sidebar
+				: `${location.origin}${sidebar}`;
+
+			if (__DEV__) {
+				try {
+					data = (await this.$global.db.read(url) || {}).data;
+				} catch (e) {
+					console.log(e);
+				}
+			}
+
+			ajax({
+				url,
+				onAfter: ({ response }) => {
+					return {
+						status: 1,
+						data: response.data
+					};
+				},
+				localData: data
+			}).then((res) => {
+				this.navs = res.data;
+				__DEV__ && this.$global.db.update({
+					__id: url,
+					data: res
+				});
+			}).catch(e => {
+				console.log(e);
+			});
 		}
 	}
 };
