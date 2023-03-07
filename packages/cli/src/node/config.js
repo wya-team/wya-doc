@@ -183,8 +183,8 @@ class Config {
 				new HtmlWebpackPlugin({
 					useExternals,
 					externalResources: (useExternals && externalResources) || [
-						'//unpkg.com/@wya/vc/lib/vc.min.css',
-						'//unpkg.com/@wya/vc/lib/vc.min.js'
+						'//unpkg.com/@wya/vc@2/lib/vc.min.css',
+						'//unpkg.com/@wya/vc@2/lib/vc.min.js'
 					],
 					template: resolveClient('static/index.tpl.html'),
 					inject: 'body',
